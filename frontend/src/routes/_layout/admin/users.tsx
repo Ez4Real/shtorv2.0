@@ -4,7 +4,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router"
 import { z } from "zod"
 
 import { type UserPublic, UsersService } from "@/client"
-import AddUser from "@/components/Admin/AddUser"
+import AddUser from "@/components/Users/AddUser"
 import { UserActionsMenu } from "@/components/Common/UserActionsMenu"
 import PendingUsers from "@/components/Pending/PendingUsers"
 import {
@@ -28,8 +28,8 @@ function getUsersQueryOptions({ page }: { page: number }) {
   }
 }
 
-export const Route = createFileRoute("/_layout/admin")({
-  component: Admin,
+export const Route = createFileRoute("/_layout/admin/users")({
+  component: Users,
   validateSearch: (search) => usersSearchSchema.parse(search),
 })
 
@@ -46,7 +46,8 @@ function UsersTable() {
 
   const setPage = (page: number) =>
     navigate({
-      search: (prev: { [key: string]: string }) => ({ ...prev, page }),
+      // search: (prev: { [key: string]: string }) => ({ ...prev, page }),
+      search: (prev: { [key: string]: number }) => ({ ...prev, page }),
     })
 
   const users = data?.data.slice(0, PER_PAGE) ?? []
@@ -113,7 +114,7 @@ function UsersTable() {
   )
 }
 
-function Admin() {
+function Users() {
   return (
     <Container maxW="full">
       <Heading size="lg" pt={12}>

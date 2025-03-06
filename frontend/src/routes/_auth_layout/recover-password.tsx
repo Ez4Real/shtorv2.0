@@ -16,7 +16,7 @@ interface FormData {
   email: string
 }
 
-export const Route = createFileRoute("/recover-password")({
+export const Route = createFileRoute("/_auth_layout/recover-password")({
   component: RecoverPassword,
   beforeLoad: async () => {
     if (isLoggedIn()) {

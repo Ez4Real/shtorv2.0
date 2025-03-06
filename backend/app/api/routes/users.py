@@ -1,4 +1,4 @@
-import uuid
+from uuid import UUID
 from typing import Any
 
 from fastapi import APIRouter, Depends, HTTPException
@@ -13,7 +13,7 @@ from app.api.deps import (
 from app.core.config import settings
 from app.core.security import get_password_hash, verify_password
 from app.models import (
-    Item,
+    Product,
     Message,
     UpdatePassword,
     User,
@@ -134,9 +134,11 @@ def delete_user_me(session: SessionDep, current_user: CurrentUser) -> Any:
         raise HTTPException(
             status_code=403, detail="Super users are not allowed to delete themselves"
         )
+    statement = delete(Product).where(col(Product.owner_id) == current_user.id)
+    session.exec(statement)
     session.delete(current_user)
     session.commit()
-    return Message(message="User deleted successfully")
+    return Message(message="User and belong products deleted successfully")
 
 
 @router.post("/signup", response_model=UserPublic)
@@ -157,7 +159,7 @@ def register_user(session: SessionDep, user_in: UserRegister) -> Any:
 
 @router.get("/{user_id}", response_model=UserPublic)
 def read_user_by_id(
-    user_id: uuid.UUID, session: SessionDep, current_user: CurrentUser
+    user_id: UUID, session: SessionDep, current_user: CurrentUser
 ) -> Any:
     """
     Get a specific user by id.
@@ -181,7 +183,7 @@ def read_user_by_id(
 def update_user(
     *,
     session: SessionDep,
-    user_id: uuid.UUID,
+    user_id: UUID,
     user_in: UserUpdate,
 ) -> Any:
     """
@@ -207,7 +209,7 @@ def update_user(
 
 @router.delete("/{user_id}", dependencies=[Depends(get_current_active_superuser)])
 def delete_user(
-    session: SessionDep, current_user: CurrentUser, user_id: uuid.UUID
+    session: SessionDep, current_user: CurrentUser, user_id: UUID
 ) -> Message:
     """
     Delete a user.

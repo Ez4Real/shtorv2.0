@@ -1,5 +1,6 @@
 import secrets
 import warnings
+from pathlib import Path
 from typing import Annotated, Any, Literal
 
 from pydantic import (
@@ -36,6 +37,7 @@ class Settings(BaseSettings):
     # 60 minutes * 24 hours * 8 days = 8 days
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 8
     FRONTEND_HOST: str = "http://localhost:5173"
+    BACKEND_HOST: str
     ENVIRONMENT: Literal["local", "staging", "production"] = "local"
 
     BACKEND_CORS_ORIGINS: Annotated[
@@ -51,6 +53,8 @@ class Settings(BaseSettings):
 
     PROJECT_NAME: str
     SENTRY_DSN: HttpUrl | None = None
+    
+    # DB Configuration
     POSTGRES_SERVER: str
     POSTGRES_PORT: int = 5432
     POSTGRES_USER: str
@@ -114,6 +118,23 @@ class Settings(BaseSettings):
             "FIRST_SUPERUSER_PASSWORD", self.FIRST_SUPERUSER_PASSWORD
         )
 
+        return self
+
+    UPLOAD_DIR: Path = Path("uploads/productImages")
+    @model_validator(mode="after")
+    def _ensure_upload_dir_exists(self) -> Self:
+        """Ensure the upload directory exists."""
+        self.UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
+        return self
+
+    MEDIA_DIR: Path = Path()
+    @model_validator(mode="after")
+    def _set_images_media_dir(self) -> Self:
+        """Set correct Images Media Directory"""
+        if self.ENVIRONMENT == "production":
+            self.MEDIA_DIR = Path("uploads/productImages")
+        else:
+            self.MEDIA_DIR = Path("media/productImages")
         return self
 
 

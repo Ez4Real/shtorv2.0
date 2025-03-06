@@ -58,7 +58,7 @@ export const Body_login_login_access_tokenSchema = {
 export const HTTPValidationErrorSchema = {
   properties: {
     detail: {
-      items: {
+      products: {
         $ref: "#/components/schemas/ValidationError",
       },
       type: "array",
@@ -69,7 +69,7 @@ export const HTTPValidationErrorSchema = {
   title: "HTTPValidationError",
 } as const
 
-export const ItemCreateSchema = {
+export const ProductCreateSchema = {
   properties: {
     title: {
       type: "string",
@@ -92,10 +92,10 @@ export const ItemCreateSchema = {
   },
   type: "object",
   required: ["title"],
-  title: "ItemCreate",
+  title: "ProductCreate",
 } as const
 
-export const ItemPublicSchema = {
+export const ProductPublicSchema = {
   properties: {
     title: {
       type: "string",
@@ -128,10 +128,10 @@ export const ItemPublicSchema = {
   },
   type: "object",
   required: ["title", "id", "owner_id"],
-  title: "ItemPublic",
+  title: "ProductPublic",
 } as const
 
-export const ItemUpdateSchema = {
+export const ProductUpdateSchema = {
   properties: {
     title: {
       anyOf: [
@@ -160,14 +160,14 @@ export const ItemUpdateSchema = {
     },
   },
   type: "object",
-  title: "ItemUpdate",
+  title: "ProductUpdate",
 } as const
 
-export const ItemsPublicSchema = {
+export const ProductsPublicSchema = {
   properties: {
     data: {
-      items: {
-        $ref: "#/components/schemas/ItemPublic",
+      products: {
+        $ref: "#/components/schemas/ProductPublic",
       },
       type: "array",
       title: "Data",
@@ -179,7 +179,7 @@ export const ItemsPublicSchema = {
   },
   type: "object",
   required: ["data", "count"],
-  title: "ItemsPublic",
+  title: "ProductsPublic",
 } as const
 
 export const MessageSchema = {
@@ -454,7 +454,7 @@ export const UserUpdateMeSchema = {
 export const UsersPublicSchema = {
   properties: {
     data: {
-      items: {
+      products: {
         $ref: "#/components/schemas/UserPublic",
       },
       type: "array",
@@ -473,7 +473,7 @@ export const UsersPublicSchema = {
 export const ValidationErrorSchema = {
   properties: {
     loc: {
-      items: {
+      products: {
         anyOf: [
           {
             type: "string",

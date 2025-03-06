@@ -14,14 +14,14 @@ import { InputGroup } from "@/components/ui/input-group"
 import { PasswordInput } from "@/components/ui/password-input"
 import useAuth, { isLoggedIn } from "@/hooks/useAuth"
 import Logo from "/assets/images/fastapi-logo.svg"
-import { emailPattern, passwordRules } from "../utils"
+import { emailPattern, passwordRules } from "../../utils"
 
-export const Route = createFileRoute("/login")({
+export const Route = createFileRoute("/_auth_layout/login")({
   component: Login,
   beforeLoad: async () => {
     if (isLoggedIn()) {
       throw redirect({
-        to: "/",
+        to: "/admin",
       })
     }
   },

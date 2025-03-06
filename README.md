@@ -24,107 +24,8 @@
 - 🚢 Deployment instructions using Docker Compose, including how to set up a frontend Traefik proxy to handle automatic HTTPS certificates.
 - 🏭 CI (continuous integration) and CD (continuous deployment) based on GitHub Actions.
 
-### Dashboard Login
 
-[![API docs](img/login.png)](https://github.com/fastapi/full-stack-fastapi-template)
-
-### Dashboard - Admin
-
-[![API docs](img/dashboard.png)](https://github.com/fastapi/full-stack-fastapi-template)
-
-### Dashboard - Create User
-
-[![API docs](img/dashboard-create.png)](https://github.com/fastapi/full-stack-fastapi-template)
-
-### Dashboard - Items
-
-[![API docs](img/dashboard-items.png)](https://github.com/fastapi/full-stack-fastapi-template)
-
-### Dashboard - User Settings
-
-[![API docs](img/dashboard-user-settings.png)](https://github.com/fastapi/full-stack-fastapi-template)
-
-### Dashboard - Dark Mode
-
-[![API docs](img/dashboard-dark.png)](https://github.com/fastapi/full-stack-fastapi-template)
-
-### Interactive API Documentation
-
-[![API docs](img/docs.png)](https://github.com/fastapi/full-stack-fastapi-template)
-
-## How To Use It
-
-You can **just fork or clone** this repository and use it as is.
-
-✨ It just works. ✨
-
-### How to Use a Private Repository
-
-If you want to have a private repository, GitHub won't allow you to simply fork it as it doesn't allow changing the visibility of forks.
-
-But you can do the following:
-
-- Create a new GitHub repo, for example `my-full-stack`.
-- Clone this repository manually, set the name with the name of the project you want to use, for example `my-full-stack`:
-
-```bash
-git clone git@github.com:fastapi/full-stack-fastapi-template.git my-full-stack
-```
-
-- Enter into the new directory:
-
-```bash
-cd my-full-stack
-```
-
-- Set the new origin to your new repository, copy it from the GitHub interface, for example:
-
-```bash
-git remote set-url origin git@github.com:octocat/my-full-stack.git
-```
-
-- Add this repo as another "remote" to allow you to get updates later:
-
-```bash
-git remote add upstream git@github.com:fastapi/full-stack-fastapi-template.git
-```
-
-- Push the code to your new repository:
-
-```bash
-git push -u origin master
-```
-
-### Update From the Original Template
-
-After cloning the repository, and after doing changes, you might want to get the latest changes from this original template.
-
-- Make sure you added the original repository as a remote, you can check it with:
-
-```bash
-git remote -v
-
-origin    git@github.com:octocat/my-full-stack.git (fetch)
-origin    git@github.com:octocat/my-full-stack.git (push)
-upstream    git@github.com:fastapi/full-stack-fastapi-template.git (fetch)
-upstream    git@github.com:fastapi/full-stack-fastapi-template.git (push)
-```
-
-- Pull the latest changes without merging:
-
-```bash
-git pull --no-commit upstream master
-```
-
-This will download the latest changes from this template without committing them, that way you can check everything is right before committing.
-
-- If there are conflicts, solve them in your editor.
-
-- Once you are done, commit the changes:
-
-```bash
-git merge --continue
-```
+## BACKEND
 
 ### Configure
 
@@ -152,88 +53,196 @@ python -c "import secrets; print(secrets.token_urlsafe(32))"
 
 Copy the content and use that as password / secret key. And run that again to generate another secure key.
 
-## How To Use It - Alternative With Copier
+### General Workflow
 
-This repository also supports generating a new project using [Copier](https://copier.readthedocs.io).
+By default, the dependencies are managed with [uv](https://docs.astral.sh/uv/), go there and install it.
 
-It will copy all the files, ask you configuration questions, and update the `.env` files with your answers.
+From `./backend/` you can install all the dependencies with:
 
-### Install Copier
-
-You can install Copier with:
-
-```bash
-pip install copier
+```console
+$ uv sync
 ```
 
-Or better, if you have [`pipx`](https://pipx.pypa.io/), you can run it with:
+Then you can activate the virtual environment with:
 
-```bash
-pipx install copier
+```console
+$ source .venv/bin/activate
+```
+Make sure your editor is using the correct Python virtual environment, with the interpreter at `backend/.venv/bin/python`.
+
+Modify or add SQLModel models for data and SQL tables in `./backend/app/models.py`, API endpoints in `./backend/app/api/`, CRUD (Create, Read, Update, Delete) utils in `./backend/app/crud.py`.
+
+## Backend tests
+
+To test the backend run:
+
+```console
+$ bash ./scripts/test.sh
 ```
 
-**Note**: If you have `pipx`, installing copier is optional, you could run it directly.
+The tests run with Pytest, modify and add tests to `./backend/app/tests/`.
 
-### Generate a Project With Copier
+If you use GitHub Actions the tests will run automatically.
 
-Decide a name for your new project's directory, you will use it below. For example, `my-awesome-project`.
+## Test running stack
 
-Go to the directory that will be the parent of your project, and run the command with your project's name:
-
-```bash
-copier copy https://github.com/fastapi/full-stack-fastapi-template my-awesome-project --trust
-```
-
-If you have `pipx` and you didn't install `copier`, you can run it directly:
+If your stack is already up and you just want to run the tests, you can use:
 
 ```bash
-pipx run copier copy https://github.com/fastapi/full-stack-fastapi-template my-awesome-project --trust
+docker compose exec backend bash scripts/tests-start.sh
 ```
 
-**Note** the `--trust` option is necessary to be able to execute a [post-creation script](https://github.com/fastapi/full-stack-fastapi-template/blob/master/.copier/update_dotenv.py) that updates your `.env` files.
+That `/app/scripts/tests-start.sh` script just calls `pytest` after making sure that the rest of the stack is running. If you need to pass extra arguments to `pytest`, you can pass them to that command and they will be forwarded.
 
-### Input Variables
+For example, to stop on first error:
 
-Copier will ask you for some data, you might want to have at hand before generating the project.
+```bash
+docker compose exec backend bash scripts/tests-start.sh -x
+```
 
-But don't worry, you can just update any of that in the `.env` files afterwards.
 
-The input variables, with their default values (some auto generated) are:
+## Migrations
 
-- `project_name`: (default: `"FastAPI Project"`) The name of the project, shown to API users (in .env).
-- `stack_name`: (default: `"fastapi-project"`) The name of the stack used for Docker Compose labels and project name (no spaces, no periods) (in .env).
-- `secret_key`: (default: `"changethis"`) The secret key for the project, used for security, stored in .env, you can generate one with the method above.
-- `first_superuser`: (default: `"admin@example.com"`) The email of the first superuser (in .env).
-- `first_superuser_password`: (default: `"changethis"`) The password of the first superuser (in .env).
-- `smtp_host`: (default: "") The SMTP server host to send emails, you can set it later in .env.
-- `smtp_user`: (default: "") The SMTP server user to send emails, you can set it later in .env.
-- `smtp_password`: (default: "") The SMTP server password to send emails, you can set it later in .env.
-- `emails_from_email`: (default: `"info@example.com"`) The email account to send emails from, you can set it later in .env.
-- `postgres_password`: (default: `"changethis"`) The password for the PostgreSQL database, stored in .env, you can generate one with the method above.
-- `sentry_dsn`: (default: "") The DSN for Sentry, if you are using it, you can set it later in .env.
+As during local development your app directory is mounted as a volume inside the container, you can also run the migrations with `alembic` commands inside the container and the migration code will be in your app directory (instead of being only inside the container). So you can add it to your git repository.
 
-## Backend Development
+Make sure you create a "revision" of your models and that you "upgrade" your database with that revision every time you change them. As this is what will update the tables in your database. Otherwise, your application will have errors.
 
-Backend docs: [backend/README.md](./backend/README.md).
+* Alembic is already configured to import your SQLModel models from `./backend/app/models.py`.
 
-## Frontend Development
+* After changing a model (for example, adding a column), inside the container, create a revision, e.g.:
 
-Frontend docs: [frontend/README.md](./frontend/README.md).
+```console
+$ alembic revision --autogenerate -m "Add column last_name to User model"
+```
 
-## Deployment
+* Commit to the git repository the files generated in the alembic directory.
 
-Deployment docs: [deployment.md](./deployment.md).
+* After creating the revision, run the migration in the database (this is what will actually change the database):
 
-## Development
+```console
+$ alembic upgrade head
+```
 
-General development docs: [development.md](./development.md).
+If you don't want to use migrations at all, uncomment the lines in the file at `./backend/app/core/db.py` that end in:
 
-This includes using Docker Compose, custom local domains, `.env` configurations, etc.
+```python
+SQLModel.metadata.create_all(engine)
+```
 
-## Release Notes
+and comment the line in the file `scripts/prestart.sh` that contains:
 
-Check the file [release-notes.md](./release-notes.md).
+```console
+$ alembic upgrade head
+```
 
-## License
+If you don't want to start with the default models and want to remove them / modify them, from the beginning, without having any previous revision, you can remove the revision files (`.py` Python files) under `./backend/app/alembic/versions/`. And then create a first migration as described above.
 
-The Full Stack FastAPI Template is licensed under the terms of the MIT license.
+## Email Templates (if present)
+
+The email templates are in `./backend/app/email-templates/`. Here, there are two directories: `build` and `src`. The `src` directory contains the source files that are used to build the final email templates. The `build` directory contains the final email templates that are used by the application.
+
+Before continuing, ensure you have the [MJML extension](https://marketplace.visualstudio.com/items?itemName=attilabuti.vscode-mjml) installed in your VS Code.
+
+Once you have the MJML extension installed, you can create a new email template in the `src` directory. After creating the new email template and with the `.mjml` file open in your editor, open the command palette with `Ctrl+Shift+P` and search for `MJML: Export to HTML`. This will convert the `.mjml` file to a `.html` file and now you can save it in the build directory.
+
+### FRONTEND 
+
+## Install Dependencies
+
+Before you begin, ensure that you have either the Node Version Manager (nvm) or Fast Node Manager (fnm) installed on your system.
+
+* To install fnm follow the [official fnm guide](https://github.com/Schniz/fnm#installation). If you prefer nvm, you can install it using the [official nvm guide](https://github.com/nvm-sh/nvm#installing-and-updating).
+
+* After installing either nvm or fnm, proceed to the `frontend` directory:
+
+```bash
+cd frontend
+```
+* If the Node.js version specified in the `.nvmrc` file isn't installed on your system, you can install it using the appropriate command:
+
+```bash
+# If using fnm
+fnm install
+
+# If using nvm
+nvm install
+```
+
+* Once the installation is complete, switch to the installed version:
+
+```bash
+# If using fnm
+fnm use
+
+# If using nvm
+nvm use
+```
+
+* Within the `frontend` directory, install the necessary NPM packages:
+
+```bash
+npm install
+```
+
+* And start the live server with the following `npm` script:
+
+```bash
+npm run dev
+```
+
+* Then open your browser at http://localhost:5173/.
+
+Notice that this live server is not running inside Docker, it's for local development, and that is the recommended workflow. Once you are happy with your frontend, you can build the frontend Docker image and start it, to test it in a production-like environment. But building the image at every change will not be as productive as running the local development server with live reload.
+
+Check the file `package.json` to see other available options.
+
+## Generate Client
+
+### Automatically
+
+* Activate the backend virtual environment.
+* From the top level project directory, run the script:
+
+```bash
+./scripts/generate-client.sh
+```
+
+* Commit the changes.
+
+### Manually
+
+* Start the Docker Compose stack.
+
+* Download the OpenAPI JSON file from `http://localhost/api/v1/openapi.json` and copy it to a new file `openapi.json` at the root of the `frontend` directory.
+
+* To generate the frontend client, run:
+
+```bash
+npm run generate-client
+```
+
+* Commit the changes.
+
+Notice that everytime the backend changes (changing the OpenAPI schema), you should follow these steps again to update the frontend client.
+
+## Using a Remote API
+
+If you want to use a remote API, you can set the environment variable `VITE_API_URL` to the URL of the remote API. For example, you can set it in the `frontend/.env` file:
+
+```env
+VITE_API_URL=https://api.my-domain.example.com
+```
+
+Then, when you run the frontend, it will use that URL as the base URL for the API.
+
+## Code Structure
+
+The frontend code is structured as follows:
+
+* `frontend/src` - The main frontend code.
+* `frontend/src/assets` - Static assets.
+* `frontend/src/client` - The generated OpenAPI client.
+* `frontend/src/components` -  The different components of the frontend.
+* `frontend/src/hooks` - Custom hooks.
+* `frontend/src/routes` - The different routes of the frontend which include the pages.
+* `theme.tsx` - The Chakra UI custom theme.

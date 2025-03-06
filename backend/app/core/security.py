@@ -25,3 +25,9 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
 
 def get_password_hash(password: str) -> str:
     return pwd_context.hash(password)
+
+
+def verify_activation_token(token: str) -> str:
+    ''' Defined for verify email activation token '''
+    decoded_token = jwt.decode(token, settings.SECRET_KEY, algorithms=[ALGORITHM])
+    return str(decoded_token["sub"])

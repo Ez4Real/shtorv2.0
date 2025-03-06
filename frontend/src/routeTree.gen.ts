@@ -11,35 +11,23 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as SignupImport } from './routes/signup'
-import { Route as ResetPasswordImport } from './routes/reset-password'
-import { Route as RecoverPasswordImport } from './routes/recover-password'
-import { Route as LoginImport } from './routes/login'
+import { Route as MainlayoutImport } from './routes/_main_layout'
 import { Route as LayoutImport } from './routes/_layout'
-import { Route as LayoutIndexImport } from './routes/_layout/index'
-import { Route as LayoutSettingsImport } from './routes/_layout/settings'
-import { Route as LayoutItemsImport } from './routes/_layout/items'
-import { Route as LayoutAdminImport } from './routes/_layout/admin'
+import { Route as AuthlayoutImport } from './routes/_auth_layout'
+import { Route as MainlayoutIndexImport } from './routes/_main_layout/index'
+import { Route as AuthlayoutSignupImport } from './routes/_auth_layout/signup'
+import { Route as AuthlayoutResetPasswordImport } from './routes/_auth_layout/reset-password'
+import { Route as AuthlayoutRecoverPasswordImport } from './routes/_auth_layout/recover-password'
+import { Route as AuthlayoutLoginImport } from './routes/_auth_layout/login'
+import { Route as LayoutAdminIndexImport } from './routes/_layout/admin/index'
+import { Route as LayoutAdminUsersImport } from './routes/_layout/admin/users'
+import { Route as LayoutAdminSettingsImport } from './routes/_layout/admin/settings'
+import { Route as LayoutAdminProductsImport } from './routes/_layout/admin/products'
 
 // Create/Update Routes
 
-const SignupRoute = SignupImport.update({
-  path: '/signup',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const ResetPasswordRoute = ResetPasswordImport.update({
-  path: '/reset-password',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const RecoverPasswordRoute = RecoverPasswordImport.update({
-  path: '/recover-password',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const LoginRoute = LoginImport.update({
-  path: '/login',
+const MainlayoutRoute = MainlayoutImport.update({
+  id: '/_main_layout',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -48,23 +36,53 @@ const LayoutRoute = LayoutImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const LayoutIndexRoute = LayoutIndexImport.update({
+const AuthlayoutRoute = AuthlayoutImport.update({
+  id: '/_auth_layout',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const MainlayoutIndexRoute = MainlayoutIndexImport.update({
   path: '/',
+  getParentRoute: () => MainlayoutRoute,
+} as any)
+
+const AuthlayoutSignupRoute = AuthlayoutSignupImport.update({
+  path: '/signup',
+  getParentRoute: () => AuthlayoutRoute,
+} as any)
+
+const AuthlayoutResetPasswordRoute = AuthlayoutResetPasswordImport.update({
+  path: '/reset-password',
+  getParentRoute: () => AuthlayoutRoute,
+} as any)
+
+const AuthlayoutRecoverPasswordRoute = AuthlayoutRecoverPasswordImport.update({
+  path: '/recover-password',
+  getParentRoute: () => AuthlayoutRoute,
+} as any)
+
+const AuthlayoutLoginRoute = AuthlayoutLoginImport.update({
+  path: '/login',
+  getParentRoute: () => AuthlayoutRoute,
+} as any)
+
+const LayoutAdminIndexRoute = LayoutAdminIndexImport.update({
+  path: '/admin/',
   getParentRoute: () => LayoutRoute,
 } as any)
 
-const LayoutSettingsRoute = LayoutSettingsImport.update({
-  path: '/settings',
+const LayoutAdminUsersRoute = LayoutAdminUsersImport.update({
+  path: '/admin/users',
   getParentRoute: () => LayoutRoute,
 } as any)
 
-const LayoutItemsRoute = LayoutItemsImport.update({
-  path: '/items',
+const LayoutAdminSettingsRoute = LayoutAdminSettingsImport.update({
+  path: '/admin/settings',
   getParentRoute: () => LayoutRoute,
 } as any)
 
-const LayoutAdminRoute = LayoutAdminImport.update({
-  path: '/admin',
+const LayoutAdminProductsRoute = LayoutAdminProductsImport.update({
+  path: '/admin/products',
   getParentRoute: () => LayoutRoute,
 } as any)
 
@@ -72,40 +90,52 @@ const LayoutAdminRoute = LayoutAdminImport.update({
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/_auth_layout': {
+      preLoaderRoute: typeof AuthlayoutImport
+      parentRoute: typeof rootRoute
+    }
     '/_layout': {
       preLoaderRoute: typeof LayoutImport
       parentRoute: typeof rootRoute
     }
-    '/login': {
-      preLoaderRoute: typeof LoginImport
+    '/_main_layout': {
+      preLoaderRoute: typeof MainlayoutImport
       parentRoute: typeof rootRoute
     }
-    '/recover-password': {
-      preLoaderRoute: typeof RecoverPasswordImport
-      parentRoute: typeof rootRoute
+    '/_auth_layout/login': {
+      preLoaderRoute: typeof AuthlayoutLoginImport
+      parentRoute: typeof AuthlayoutImport
     }
-    '/reset-password': {
-      preLoaderRoute: typeof ResetPasswordImport
-      parentRoute: typeof rootRoute
+    '/_auth_layout/recover-password': {
+      preLoaderRoute: typeof AuthlayoutRecoverPasswordImport
+      parentRoute: typeof AuthlayoutImport
     }
-    '/signup': {
-      preLoaderRoute: typeof SignupImport
-      parentRoute: typeof rootRoute
+    '/_auth_layout/reset-password': {
+      preLoaderRoute: typeof AuthlayoutResetPasswordImport
+      parentRoute: typeof AuthlayoutImport
     }
-    '/_layout/admin': {
-      preLoaderRoute: typeof LayoutAdminImport
+    '/_auth_layout/signup': {
+      preLoaderRoute: typeof AuthlayoutSignupImport
+      parentRoute: typeof AuthlayoutImport
+    }
+    '/_main_layout/': {
+      preLoaderRoute: typeof MainlayoutIndexImport
+      parentRoute: typeof MainlayoutImport
+    }
+    '/_layout/admin/products': {
+      preLoaderRoute: typeof LayoutAdminProductsImport
       parentRoute: typeof LayoutImport
     }
-    '/_layout/items': {
-      preLoaderRoute: typeof LayoutItemsImport
+    '/_layout/admin/settings': {
+      preLoaderRoute: typeof LayoutAdminSettingsImport
       parentRoute: typeof LayoutImport
     }
-    '/_layout/settings': {
-      preLoaderRoute: typeof LayoutSettingsImport
+    '/_layout/admin/users': {
+      preLoaderRoute: typeof LayoutAdminUsersImport
       parentRoute: typeof LayoutImport
     }
-    '/_layout/': {
-      preLoaderRoute: typeof LayoutIndexImport
+    '/_layout/admin/': {
+      preLoaderRoute: typeof LayoutAdminIndexImport
       parentRoute: typeof LayoutImport
     }
   }
@@ -114,16 +144,19 @@ declare module '@tanstack/react-router' {
 // Create and export the route tree
 
 export const routeTree = rootRoute.addChildren([
-  LayoutRoute.addChildren([
-    LayoutAdminRoute,
-    LayoutItemsRoute,
-    LayoutSettingsRoute,
-    LayoutIndexRoute,
+  AuthlayoutRoute.addChildren([
+    AuthlayoutLoginRoute,
+    AuthlayoutRecoverPasswordRoute,
+    AuthlayoutResetPasswordRoute,
+    AuthlayoutSignupRoute,
   ]),
-  LoginRoute,
-  RecoverPasswordRoute,
-  ResetPasswordRoute,
-  SignupRoute,
+  LayoutRoute.addChildren([
+    LayoutAdminProductsRoute,
+    LayoutAdminSettingsRoute,
+    LayoutAdminUsersRoute,
+    LayoutAdminIndexRoute,
+  ]),
+  MainlayoutRoute.addChildren([MainlayoutIndexRoute]),
 ])
 
 /* prettier-ignore-end */

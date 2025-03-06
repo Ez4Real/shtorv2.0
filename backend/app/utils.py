@@ -1,8 +1,11 @@
+import os
 import logging
+from uuid import uuid4
 from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
-from typing import Any
+from typing import Any, Optional, List
+from fastapi import UploadFile
 
 import emails  # type: ignore
 import jwt
@@ -35,6 +38,7 @@ def send_email(
     email_to: str,
     subject: str = "",
     html_content: str = "",
+    attachments: Optional[List[dict]] = None
 ) -> None:
     assert settings.emails_enabled, "no provided configuration for email variables"
     message = emails.Message(
@@ -42,6 +46,16 @@ def send_email(
         html=html_content,
         mail_from=(settings.EMAILS_FROM_NAME, settings.EMAILS_FROM_EMAIL),
     )
+    
+    if attachments:
+      for filename, filedata, cid in attachments:
+        message.attach(
+            filename=filename,
+            content_disposition="inline",
+            data=filedata,
+            cid=cid
+        )
+    
     smtp_options = {"host": settings.SMTP_HOST, "port": settings.SMTP_PORT}
     if settings.SMTP_TLS:
         smtp_options["tls"] = True
@@ -121,3 +135,28 @@ def verify_password_reset_token(token: str) -> str | None:
         return str(decoded_token["sub"])
     except InvalidTokenError:
         return None
+
+
+def save_image_to_local(image: UploadFile, upload_dir: Path) -> str:
+    """
+    Save an image to the specified upload directory and return its URL.
+    """
+    extension = os.path.splitext(image.filename)[1]
+    filename = f"{uuid4().hex}{extension}"
+    
+    upload_path = upload_dir / filename
+    with open(upload_path, "wb") as f:
+        f.write(image.file.read())
+    
+    media_path = settings.MEDIA_DIR / filename
+    return f"/{media_path.as_posix()}"
+
+def delete_image_from_local(image_path: str, upload_dir: Path) -> bool:
+    """
+    Deletes an image from the specified upload directory.
+    """
+    image_path = upload_dir / Path(image_path).name
+    if image_path.exists():
+        image_path.unlink()
+        return True
+    return False

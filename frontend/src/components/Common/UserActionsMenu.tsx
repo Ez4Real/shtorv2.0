@@ -3,8 +3,8 @@ import { BsThreeDotsVertical } from "react-icons/bs"
 import { MenuContent, MenuRoot, MenuTrigger } from "../ui/menu"
 
 import type { UserPublic } from "@/client"
-import DeleteUser from "../Admin/DeleteUser"
-import EditUser from "../Admin/EditUser"
+import DeleteUser from "../Users/DeleteUser"
+import EditUser from "../Users/EditUser"
 
 interface UserActionsMenuProps {
   user: UserPublic
