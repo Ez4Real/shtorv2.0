@@ -1,4 +1,8 @@
 import { Outlet, createFileRoute } from "@tanstack/react-router"
+import { CustomProvider } from "@/components/ui/provider"
+import Header from "@/components/Header"
+import Footer from "@/components/Footer"
+import { main } from "@/theme"
 import "../index.css"
 
 export const Route = createFileRoute("/_main_layout")({
@@ -8,12 +12,10 @@ export const Route = createFileRoute("/_main_layout")({
 function MainLayout() {
 
   return (
-    // <div className="main-layout">
-    <>
-      <>Header Component comes here</>
+    <CustomProvider theme={main}>
+      <Header />
       <Outlet />
-      <>Footer Component comes here</>
-    </>
-    // </div>
+      <Footer />
+    </CustomProvider>
   )
 }
