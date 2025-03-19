@@ -4,19 +4,4 @@ body {
 
 #root {
     white-space: pre-line;
-    overflow: hidden;
 }
-
-
-/* Global Scrollbar styles */
-/* ::-webkit-scrollbar {
-    width: 0.5rem;
-    height: 0.5rem;
-}
-::-webkit-scrollbar-thumb {
-    background: rgba(136, 136, 136, 0.5); 
-    border-radius: 24px;
-}
-::-webkit-scrollbar-track {
-    background: transparent; 
-} */
