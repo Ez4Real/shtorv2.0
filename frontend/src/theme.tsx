@@ -11,10 +11,6 @@ export const system = createSystem(defaultConfig, {
       margin: 0,
       padding: 0,
     },
-    ".main-link": {
-      color: "ui.main",
-      fontWeight: "bold",
-    },
   },
   theme: {
     tokens: {
@@ -44,10 +40,8 @@ export const main = createSystem(defaultConfig, {
     ".underline-link": {
       color: "ui.white",
       textDecoration: "underline",
-      fontSize: "28px",
       fontWeight: "300",
       textTransform: "uppercase",
-      lineHeight: "35px",
     },
   },
   theme: {
@@ -56,6 +50,7 @@ export const main = createSystem(defaultConfig, {
         ui: {
           main: { value: "#000000" },
           white: {value: "#FFFFFF" },
+          border: {value: "#3A3A3A"}
         },
       },
     },

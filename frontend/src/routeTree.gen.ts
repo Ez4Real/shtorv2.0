@@ -15,6 +15,7 @@ import { Route as MainlayoutImport } from './routes/_main_layout'
 import { Route as LayoutImport } from './routes/_layout'
 import { Route as AuthlayoutImport } from './routes/_auth_layout'
 import { Route as MainlayoutIndexImport } from './routes/_main_layout/index'
+import { Route as MainlayoutAboutUsImport } from './routes/_main_layout/about-us'
 import { Route as AuthlayoutSignupImport } from './routes/_auth_layout/signup'
 import { Route as AuthlayoutResetPasswordImport } from './routes/_auth_layout/reset-password'
 import { Route as AuthlayoutRecoverPasswordImport } from './routes/_auth_layout/recover-password'
@@ -43,6 +44,11 @@ const AuthlayoutRoute = AuthlayoutImport.update({
 
 const MainlayoutIndexRoute = MainlayoutIndexImport.update({
   path: '/',
+  getParentRoute: () => MainlayoutRoute,
+} as any)
+
+const MainlayoutAboutUsRoute = MainlayoutAboutUsImport.update({
+  path: '/about-us',
   getParentRoute: () => MainlayoutRoute,
 } as any)
 
@@ -118,6 +124,10 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthlayoutSignupImport
       parentRoute: typeof AuthlayoutImport
     }
+    '/_main_layout/about-us': {
+      preLoaderRoute: typeof MainlayoutAboutUsImport
+      parentRoute: typeof MainlayoutImport
+    }
     '/_main_layout/': {
       preLoaderRoute: typeof MainlayoutIndexImport
       parentRoute: typeof MainlayoutImport
@@ -156,7 +166,7 @@ export const routeTree = rootRoute.addChildren([
     LayoutAdminUsersRoute,
     LayoutAdminIndexRoute,
   ]),
-  MainlayoutRoute.addChildren([MainlayoutIndexRoute]),
+  MainlayoutRoute.addChildren([MainlayoutAboutUsRoute, MainlayoutIndexRoute]),
 ])
 
 /* prettier-ignore-end */

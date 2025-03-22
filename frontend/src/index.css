@@ -1,7 +1,9 @@
 body {
     margin: 0;
+    box-sizing: border-box;
 }
 
 #root {
     white-space: pre-line;
+    overflow-x: hidden;
 }

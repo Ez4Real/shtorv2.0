@@ -7,7 +7,7 @@ interface BurgerMenuProps {
 
 const BurgerMenu = ({
     isWhiteTheme = false,
-    isOpen,
+    // isOpen,
     //   toggleMenu
 }: BurgerMenuProps) => {
 
@@ -44,7 +44,10 @@ const BurgerMenu = ({
             <Button
                 variant="plain"
                 p="0"
-                h="35px">
+                h="35px"
+                display="contents"
+                >
+                
                 <Box>
                     <Box
                         {...barProps}
@@ -61,6 +64,11 @@ const BurgerMenu = ({
                     <Box
                         {...barProps}
                         as="span"
+                        css={{
+                            "&:nth-of-type(3)": {
+                                mb: "0"
+                            },
+                        }}
                     // animation={`
                     //     ${isOpen ? TranslateBottomToTop : TranslateBottomToBasic}
                     //     0.3s forwards
