@@ -40,9 +40,12 @@ const Footer = () => {
                             fontWeight="400"
                         >Будь в курсі випусків і спеціальних подій</Text>
 
-                        <Group attached w="full" maxW="sm">
+                        <Group
+                            attached
+                            w={["100%", "100%", "373px", "373px"]}
+                        >
 
-                            <Input 
+                            <Input
                                 placeholder="Email"
                                 border="0.5px solid #3A3A3A"
                                 borderRadius="0"
