@@ -1,22 +1,9 @@
 body {
     margin: 0;
+    box-sizing: border-box;
 }
 
 #root {
     white-space: pre-line;
-    overflow: hidden;
+    overflow-x: hidden;
 }
-
-
-/* Global Scrollbar styles */
-/* ::-webkit-scrollbar {
-    width: 0.5rem;
-    height: 0.5rem;
-}
-::-webkit-scrollbar-thumb {
-    background: rgba(136, 136, 136, 0.5); 
-    border-radius: 24px;
-}
-::-webkit-scrollbar-track {
-    background: transparent; 
-} */
