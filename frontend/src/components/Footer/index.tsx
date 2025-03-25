@@ -33,6 +33,7 @@ const Footer = () => {
           </Text>
           <Group attached w={["100%", "100%", "373px", "373px"]}>
             <Input
+              css={{ "--error-color": "ui.error" }} //css color for future error 
               placeholder="Email"
               border="0.5px solid #3A3A3A"
               borderRadius="0"
@@ -66,37 +67,45 @@ const Footer = () => {
             gap={{ base: "16px", sm: "12px", md: "12px" }}
           >
             <RouterLink to="/">
-              <Text
+              <Text 
+                className="main-link"
                 fontSize="16px"
                 fontWeight="400"
                 lineHeight="20px"
+                textAlign="right"
               >
                 Політика Конфіденційності
               </Text>
             </RouterLink>
             <RouterLink to="/">
-              <Text
+              <Text 
+                className="main-link"
                 fontSize="16px"
                 fontWeight="400"
                 lineHeight="20px"
+                textAlign="right"
               >
                 Оплата і доставка
               </Text>
             </RouterLink>
             <RouterLink to="/">
-              <Text
+              <Text 
+                className="main-link"
                 fontSize="16px"
                 fontWeight="400"
                 lineHeight="20px"
+                textAlign="right"
               >
                 Повернення та обмін
               </Text>
             </RouterLink>
             <RouterLink to="/">
-              <Text
+              <Text 
+                className="main-link"
                 fontSize="16px"
                 fontWeight="400"
                 lineHeight="20px"
+                textAlign="right"
               >
                 Чат
               </Text>
@@ -116,12 +125,18 @@ const Footer = () => {
                 UA/UAH
               </Text>
             </RouterLink>
-            <RouterLink to="/">
+            <RouterLink 
+              to="/"
+            >
               <Text
                 fontSize="20px"
                 fontWeight="500"
                 lineHeight={["21px", "25px", "25px", "25px"]}
                 textDecoration="underline"
+                _hover={{ 
+                  color: "ui.grey", 
+                  textDecoration: "none" 
+                }}
               >
                 INSTAGRAM
               </Text>

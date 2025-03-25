@@ -1,4 +1,4 @@
-import { createSystem, defaultConfig } from "@chakra-ui/react"
+import { createSystem, defaultConfig, defineTextStyles } from "@chakra-ui/react"
 import { buttonRecipe } from "./theme/button.recipe"
 
 export const system = createSystem(defaultConfig, {
@@ -42,15 +42,45 @@ export const main = createSystem(defaultConfig, {
       textDecoration: "underline",
       fontWeight: "300",
       textTransform: "uppercase",
+      transition: ".1s",
+      "&:hover": {
+        color: "ui.grey",
+        textDecoration: "none",
+      },
+    },
+    ".main-link": {
+      color: "ui.main",
+      fontWeight: "300",
+      position: "relative",
+      transition: ".1s",
+      textDecoration: "none",
+      "&::after": {
+        content: '""',
+        position: "absolute",
+        left: "0",
+        bottom: "0",
+        width: "0", 
+        height: "1px",
+        backgroundColor: "ui.main",
+        transition: "width 0.2s ease-in-out",
+      },
+      "&:hover": {
+        "&::after": {
+          width: "100%",
+        },
+      },
     },
   },
   theme: {
     tokens: {
       colors: {
         ui: {
-          main: { value: "#000000" },
+          main: { value: "#1E1E1E" },
           white: {value: "#FFFFFF" },
-          border: {value: "#3A3A3A"}
+          grey: {value: "#BABABA" },
+          border: {value: "#3A3A3A"},
+          error: {value: "#A50000"},
+          succes: {value: "#017D18"}
         },
       },
     },

@@ -5,14 +5,14 @@ import { Link as RouterLink } from "@tanstack/react-router"
 const Header = () => {
     return (
       <>
-        <Box
-          h="35px"
+        <Box          
           position="relative"
           top={["61px", "61px", "46px", "46px"]}
           p={["0 16px", "0 16px", "0 46px", "0 46px"]}
           zIndex="1"
         >
           <Flex
+            h="35px"
             justifyContent="space-between"
             alignItems="center"
           >
@@ -25,7 +25,7 @@ const Header = () => {
             </RouterLink>
             <Flex
               alignItems="center"
-              gap="16px"
+              gap="22px"
               fontWeight="300"
             >
               <Box
