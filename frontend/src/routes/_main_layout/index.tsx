@@ -11,8 +11,8 @@ export const Route = createFileRoute("/_main_layout/")({
 
 function Main() {
   const mainBanner = useBreakpointValue({
-    base: "url(/assets/images/banner-mobile.svg)",  // для мобильных
-    lg: "url(/assets/images/main-banner.svg)",  // для десктопов
+    base: "url(/assets/images/banner-mobile.svg)",  // mobile
+    lg: "url(/assets/images/main-banner.svg)",  // desktop
   });
 
   return (
@@ -25,14 +25,14 @@ function Main() {
         h="100vh"
         backgroundImage={mainBanner}
         backgroundSize="cover"
-        backgroundPosition="top center"
+        backgroundPosition="center"
         backgroundRepeat="no-repeat"
         position="relative"
         mt="-35px"
-        zIndex="1"
       >
         <RouterLink
           to="/about-us"
+          from="/"
         >
           <Box
             className="underline-link"
@@ -47,6 +47,7 @@ function Main() {
       </Box>
 
       <Collection />
+      
     </Container>
   )
 }

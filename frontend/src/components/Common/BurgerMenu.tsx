@@ -2,15 +2,14 @@ import { Box, Button, Flex } from "@chakra-ui/react"
 interface BurgerMenuProps {
     isWhiteTheme?: boolean
     isOpen: boolean
-    //   toggleMenu: () => void
+    // toggleMenu: () => void
 }
 
 const BurgerMenu = ({
     isWhiteTheme = false,
     // isOpen,
-    //   toggleMenu
+    // toggleMenu
 }: BurgerMenuProps) => {
-
     // const TranslateTopToBottom = keyframes`
     //   0% { transform: translateY(0); }
     //   100% { transform: translateY(6px); }
@@ -40,43 +39,42 @@ const BurgerMenu = ({
     };
 
     return (
-        <Flex>
-            <Button
-                variant="plain"
-                p="0"
-                h="35px"
-                display="contents"
-                >
-                
-                <Box>
-                    <Box
-                        {...barProps}
-                        as="span"
-                    // animation={`
-                    //     ${isOpen ? TranslateTopToBottom : TranslateTopToBasic}
-                    //     0.3s forwards
-                    // `}
-                    />
-                    <Box
-                        {...barProps}
-                        as="span"
-                    />
-                    <Box
-                        {...barProps}
-                        as="span"
-                        css={{
-                            "&:nth-of-type(3)": {
-                                mb: "0"
-                            },
-                        }}
-                    // animation={`
-                    //     ${isOpen ? TranslateBottomToTop : TranslateBottomToBasic}
-                    //     0.3s forwards
-                    // `}
-                    />
-                </Box>
-            </Button>
-        </Flex>
+      <Flex>
+        <Button
+          variant="plain"
+          p="0"
+          h="35px"
+          display="contents"
+        > 
+          <Box>
+            <Box
+              {...barProps}
+              as="span"
+              // animation={`
+              //     ${isOpen ? TranslateTopToBottom : TranslateTopToBasic}
+              //     0.3s forwards
+              // `}
+            />
+            <Box
+              {...barProps}
+              as="span"
+            />
+            <Box
+              {...barProps}
+              as="span"
+              css={{
+                "&:nth-of-type(3)": {
+                  mb: "0"
+                },
+              }}
+              // animation={`
+              //     ${isOpen ? TranslateBottomToTop : TranslateBottomToBasic}
+              //     0.3s forwards
+              // `}
+            />
+          </Box>
+        </Button>
+      </Flex>
     );
 };
 

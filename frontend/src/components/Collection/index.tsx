@@ -1,6 +1,15 @@
 import { Box, useBreakpointValue } from "@chakra-ui/react"
 import { Link as RouterLink } from "@tanstack/react-router"
 
+
+// !!!!!
+// To REWRITE and REFACTOR
+// Define Collection interface
+// Passing params in interface:
+//   1. 1 dynamic image url for mobile and desktop
+//   2. Title 
+
+
 const Collection = () => {
     const CollectionBanner1 = useBreakpointValue({
         base: "url(/assets/images/collect-mobile.svg)",  // для мобильных  

@@ -10,9 +10,7 @@ export const Route = createFileRoute("/_auth_layout")({
 function AuthLayout() {
   return (
     <CustomProvider theme={system}>
-    <>
       <Outlet />
-    </>
     </CustomProvider>
   )
 }
