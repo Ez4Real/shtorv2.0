@@ -1,7 +1,9 @@
 import uuid
+from datetime import datetime, timezone
 
-from pydantic import EmailStr
+from pydantic import EmailStr, BaseModel
 from sqlmodel import Field, Relationship, SQLModel
+from fastapi import UploadFile, File
 
 
 # Shared properties
@@ -45,6 +47,56 @@ class UserPublic(UserBase):
 
 class UsersPublic(SQLModel):
     data: list[UserPublic]
+    count: int
+    
+    
+class ImageBase(SQLModel):
+    url: str
+    alt_text: str
+
+class ImagesUpload(BaseModel):
+    images: list[UploadFile] = File(...)
+
+class ImageCreate(ImageBase):
+    pass
+    
+class ImageUpdate(ImageBase):
+    id: uuid.UUID
+
+
+class CollectionBase(SQLModel):
+    title: str = Field(min_length=1, max_length=255)
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+class CollectionCreate(CollectionBase):
+    banner: ImageCreate = Field()
+
+class CollectionUpdate(CollectionBase):
+    title: str | None = Field(default=None, min_length=5, max_length=255)
+    banner: ImageCreate | None = Field(default=None)
+
+class Collection(CollectionBase, table=True):
+    id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
+    banner: "CollectionBanner" = Relationship(back_populates="collection", cascade_delete=True)
+
+class CollectionBanner(ImageBase, table=True):
+    __tablename__ = "collection_banner"
+
+    id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
+    collection_id: uuid.UUID = Field(
+        foreign_key="collection.id", nullable=False, ondelete="CASCADE"
+    )
+    collection: Collection = Relationship(back_populates="banner")
+
+class CollectionBannerPublic(ImageBase):
+    id: uuid.UUID
+
+class CollectionPublic(CollectionBase):
+    id: uuid.UUID
+    banner: CollectionBannerPublic
+
+class CollectionsPublic(SQLModel):
+    data: list[CollectionPublic]
     count: int
 
 

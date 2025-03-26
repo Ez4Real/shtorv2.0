@@ -25,7 +25,7 @@ function Main() {
         h="100vh"
         backgroundImage={mainBanner}
         backgroundSize="cover"
-        backgroundPosition="center"
+        backgroundPosition="center top"
         backgroundRepeat="no-repeat"
         position="relative"
         mt="-35px"
@@ -46,7 +46,10 @@ function Main() {
         </RouterLink>
       </Box>
 
-      <Collection />
+      <Collection
+        title="CENC X SHTOR"
+        bannerImagePath="/assets/images/collect-banner.svg"
+      />
       
     </Container>
   )

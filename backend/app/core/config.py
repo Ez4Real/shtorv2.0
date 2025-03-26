@@ -120,7 +120,7 @@ class Settings(BaseSettings):
 
         return self
 
-    UPLOAD_DIR: Path = Path("uploads/productImages")
+    UPLOAD_DIR: Path = Path("uploads")
     @model_validator(mode="after")
     def _ensure_upload_dir_exists(self) -> Self:
         """Ensure the upload directory exists."""
@@ -131,10 +131,12 @@ class Settings(BaseSettings):
     @model_validator(mode="after")
     def _set_images_media_dir(self) -> Self:
         """Set correct Images Media Directory"""
-        if self.ENVIRONMENT == "production":
-            self.MEDIA_DIR = Path("uploads/productImages")
-        else:
-            self.MEDIA_DIR = Path("media/productImages")
+        # if self.ENVIRONMENT == "production":
+        #     self.MEDIA_DIR = Path("uploads")
+        # else:
+        #     self.MEDIA_DIR = Path("media")
+        # !!!!!
+        self.MEDIA_DIR = Path("media")
         return self
 
 
