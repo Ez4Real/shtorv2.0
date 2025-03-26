@@ -1,9 +1,14 @@
 import { Box, Button, Flex, Group, Image, Input, Text } from "@chakra-ui/react";
-import { Link as RouterLink } from "@tanstack/react-router";
+import { Link as RouterLink, useRouterState } from "@tanstack/react-router";
 
 const Footer = () => {
+  const { location } = useRouterState()
+  const isHomepage = location.pathname === "/"
   return (
-    <Box pb={["92px", "92px", "112px", "112px"]}>
+    <Box 
+      display={isHomepage ? "none" : "block" }
+      as="footer" 
+      pb={["92px", "92px", "112px", "112px"]}>
       <Flex justifyContent="center">
         <RouterLink to="/">
           <Image
@@ -68,7 +73,7 @@ const Footer = () => {
           >
             <RouterLink to="/">
               <Text 
-                className="main-link"
+                className="main-footer-link"
                 fontSize="16px"
                 fontWeight="400"
                 lineHeight="20px"
@@ -79,7 +84,7 @@ const Footer = () => {
             </RouterLink>
             <RouterLink to="/">
               <Text 
-                className="main-link"
+                className="main-footer-link"
                 fontSize="16px"
                 fontWeight="400"
                 lineHeight="20px"
@@ -90,7 +95,7 @@ const Footer = () => {
             </RouterLink>
             <RouterLink to="/">
               <Text 
-                className="main-link"
+                className="main-footer-link"
                 fontSize="16px"
                 fontWeight="400"
                 lineHeight="20px"
@@ -101,7 +106,7 @@ const Footer = () => {
             </RouterLink>
             <RouterLink to="/">
               <Text 
-                className="main-link"
+                className="main-footer-link"
                 fontSize="16px"
                 fontWeight="400"
                 lineHeight="20px"
@@ -133,6 +138,7 @@ const Footer = () => {
                 fontWeight="500"
                 lineHeight={["21px", "25px", "25px", "25px"]}
                 textDecoration="underline"
+                transition=".1s"
                 _hover={{ 
                   color: "ui.grey", 
                   textDecoration: "none" 

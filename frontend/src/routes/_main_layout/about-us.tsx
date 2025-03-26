@@ -23,7 +23,7 @@ function AboutUs() {
                 <Breadcrumb.List>
                     <Breadcrumb.Item>
                         <Breadcrumb.Link
-                            href="#"
+                            href="/#root"
                             fontSize="16px"
                         >HOME/
                         </Breadcrumb.Link>
@@ -92,6 +92,164 @@ function AboutUs() {
                     </Flex>
                 </Flex>
             </Box>
+            <Flex 
+              pt="177px"
+              pb="130px"
+              gap="46px"
+              translate="-46px"
+            >
+                <Image 
+                  src="/assets/images/about-us-big.svg"
+                />
+                <Box
+                  maxW="510px"
+                >
+                    <Text
+                      fontWeight="400"
+                      fontSize="46px"
+                      lineHeight="58px"
+                      mb="8px"
+                    >Gala Shtor</Text>
+                    <Text
+                      fontWeight="300"
+                      fontSize="16px"
+                      lineHeight="20px"
+                    >
+                        The name SHTOR comes from my surname and is a perfect symbiosis of my parents and the values they instilled in me. 
+                        My father always said: "The truth is a good way to the real you, without illusions and pretty words." This is not always 
+                        easy to understand. But what would we do without black and white in our lives? That is why black and white are the primary 
+                        colors used in the brand positioning.<br></br>
+                        As for my mother, she taught me to see this world as beautiful, introduced me to art, and supported me in all my wildest desires.
+                    </Text>
+                </Box>
+            </Flex>
+
+            <Flex
+              justifyContent="space-between"
+              gap="14px"
+              pb="310px"
+            >
+                <Flex
+                  direction="column"
+                  height="100%"
+                >
+                    <Image 
+                      src={aboutUsImg}
+                      height="220px"
+                      w="179px"
+                    />
+                    <Text 
+                      fontWeight="300"
+                      fontSize="24px"
+                      lineHeight="24px"
+                      mt="12px"
+                    >Name of the collection
+                    </Text>
+                </Flex>
+                <Flex
+                  direction="column"
+                  height="100%"
+                >
+                    <Image 
+                      src={aboutUsImg}
+                      height="220px"
+                      w="179px"
+                    />
+                    <Text 
+                      fontWeight="300"
+                      fontSize="24px"
+                      lineHeight="24px"
+                      mt="12px"
+                    >Name of the collection
+                    </Text>
+                </Flex>
+                <Flex
+                  direction="column"
+                  height="100%"
+                >
+                    <Image 
+                      src={aboutUsImg}
+                      height="220px"
+                      w="179px"
+                    />
+                    <Text 
+                      fontWeight="300"
+                      fontSize="24px"
+                      lineHeight="24px"
+                      mt="12px"
+                    >Name of the collection
+                    </Text>
+                </Flex>
+                <Flex
+                  direction="column"
+                  height="100%"
+                >
+                    <Image 
+                      src={aboutUsImg}
+                      height="220px"
+                      w="179px"
+                    />
+                    <Text 
+                      fontWeight="300"
+                      fontSize="24px"
+                      lineHeight="24px"
+                      mt="12px"
+                    >Name of the collection
+                    </Text>
+                </Flex>
+                <Flex
+                  direction="column"
+                  height="100%"
+                >
+                    <Image 
+                      src={aboutUsImg}
+                      height="220px"
+                      w="179px"
+                    />
+                    <Text 
+                      fontWeight="300"
+                      fontSize="24px"
+                      lineHeight="24px"
+                      mt="12px"
+                    >Name of the collection
+                    </Text>
+                </Flex>
+                <Flex
+                  direction="column"
+                  height="100%"
+                >
+                    <Image 
+                      src={aboutUsImg}
+                      height="220px"
+                      w="179px"
+                    />
+                    <Text 
+                      fontWeight="300"
+                      fontSize="24px"
+                      lineHeight="24px"
+                      mt="12px"
+                    >Name of the collection
+                    </Text>
+                </Flex>
+                <Flex
+                  direction="column"
+                  height="100%"
+                >
+                    <Image 
+                      src={aboutUsImg}
+                      height="220px"
+                      w="179px"
+                    />
+                    <Text 
+                      fontWeight="300"
+                      fontSize="24px"
+                      lineHeight="24px"
+                      mt="12px"
+                    >Name of the collection
+                    </Text>
+                </Flex>
+            </Flex>
+
 
         </Container>
     )

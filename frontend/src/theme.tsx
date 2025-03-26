@@ -1,4 +1,4 @@
-import { createSystem, defaultConfig, defineTextStyles } from "@chakra-ui/react"
+import { createSystem, defaultConfig } from "@chakra-ui/react"
 import { buttonRecipe } from "./theme/button.recipe"
 
 export const system = createSystem(defaultConfig, {
@@ -48,7 +48,7 @@ export const main = createSystem(defaultConfig, {
         textDecoration: "none",
       },
     },
-    ".main-link": {
+    ".main-footer-link": {
       color: "ui.main",
       fontWeight: "300",
       position: "relative",
@@ -80,7 +80,7 @@ export const main = createSystem(defaultConfig, {
           grey: {value: "#BABABA" },
           border: {value: "#3A3A3A"},
           error: {value: "#A50000"},
-          succes: {value: "#017D18"}
+          success: {value: "#017D18"}
         },
       },
     },
@@ -89,3 +89,4 @@ export const main = createSystem(defaultConfig, {
     },
   },
 })
+
