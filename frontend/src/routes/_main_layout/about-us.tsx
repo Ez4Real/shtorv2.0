@@ -1,10 +1,11 @@
 
-import { Box, Breadcrumb, Button, Container, Flex, Image, Text } from "@chakra-ui/react"
+import { Box, Breadcrumb, Button, CloseButton, Container, Dialog, Field, Flex, Image, Input, Portal, Text } from "@chakra-ui/react"
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { createFileRoute } from "@tanstack/react-router"
 import { Navigation } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
+import { url } from "inspector";
 
 export const Route = createFileRoute("/_main_layout/about-us")({
   component: AboutUs,
@@ -51,38 +52,38 @@ function AboutUs() {
         <Flex
           gap={["12px", "12px", "20px", "20px"]}
         >
-          <Image 
-            w={["108px", "108px", "273px", "273px"]} 
-            src={aboutUsImg} 
-          />
-          <Image 
-            w={["108px", "108px", "273px", "273px"]} 
-            src={aboutUsImg} 
-          />
-          <Box 
+          <Image
             w={["108px", "108px", "273px", "273px"]}
-            display={["block", "none", "none", "none",]} 
+            src={aboutUsImg}
+          />
+          <Image
+            w={["108px", "108px", "273px", "273px"]}
+            src={aboutUsImg}
+          />
+          <Box
+            w={["108px", "108px", "273px", "273px"]}
+            display={["block", "none", "none", "none",]}
           />
         </Flex>
         <Flex
           gap={["12px", "12px", "20px", "20px"]}
           justifyContent={["flex-end", "flex-end", "flex-start", "flex-start"]}
         >
-          <Box 
+          <Box
             w={["108px", "108px", "273px", "273px"]}
-            display={["block", "none", "none", "none",]}  
+            display={["block", "none", "none", "none",]}
           />
-          <Image 
-            w={["108px", "108px", "273px", "273px"]} 
-            src={aboutUsImg} 
+          <Image
+            w={["108px", "108px", "273px", "273px"]}
+            src={aboutUsImg}
           />
-          <Image 
-            w={["108px", "108px", "273px", "273px"]} 
-            src={aboutUsImg} 
+          <Image
+            w={["108px", "108px", "273px", "273px"]}
+            src={aboutUsImg}
           />
         </Flex>
       </Flex>
-      
+
 
       <Box>
         <Text
@@ -180,7 +181,7 @@ function AboutUs() {
             768: { slidesPerView: 4 },
             1024: { slidesPerView: 6 },
           }}
-          >
+        >
           <SwiperSlide>
             <Image
               src={aboutUsImg}
@@ -303,6 +304,94 @@ function AboutUs() {
           </SwiperSlide>
         </Swiper>
       </Box>
+
+      <Dialog.Root
+        size="xs"
+        motionPreset="slide-in-bottom"
+      >
+
+        <Dialog.Trigger asChild>
+          <Button variant="outline" size="sm">
+            Open Dialog
+          </Button>
+        </Dialog.Trigger>
+
+        <Portal>
+          <Dialog.Backdrop />
+          <Dialog.Positioner>
+
+            <Dialog.Content
+              borderRadius="0"
+            >
+              <Dialog.Body
+                p="72px 21px 37px 16px"
+              >
+                <Field.Root
+                  required
+                  gap="12px"
+                >
+                  <Field.Label
+                    fontSize="18px"
+                    fontWeight="400"
+                    lineHeight="23px"
+                  >
+                    From:
+                  </Field.Label>
+                  <Input
+                    border="1px solid #000000"
+                    borderRadius="0"
+                    fontFamily="'Lexend', sans-serif"
+                    fontWeight="300"
+                    pl="21px"
+                    pr="60px"
+                  />
+                  <Field.Label
+                    fontSize="18px"
+                    fontWeight="400"
+                    lineHeight="23px"
+                  >
+                    To:
+                  </Field.Label>
+                  <Input
+                    border="1px solid #3A3A3A"
+                    borderRadius="0"
+                    fontFamily="'Lexend', sans-serif"
+                    fontWeight="300"
+                    pl="21px"
+                    pr="60px"
+                  />
+                  <Field.HelperText
+                    color="ui.main"
+                    fontSize="12px"
+                    fontWeight="300"
+                    pl="8px"
+                    pr="13px"
+                  >
+                    Let us know if you'd like the gift certificate to be anonymous or if you'd like to include a message for your card
+                  </Field.HelperText>
+                </Field.Root>
+                <Button type="submit" mt="24px">Add to cart</Button>
+              </Dialog.Body>
+
+              <Dialog.CloseTrigger
+                position="absolute"
+                top="16px"
+                right="11px"
+                display="block"
+              >
+                <CloseButton
+                  size="sm"
+                  backgroundImage="url('assets/icons/close-btn.svg')"
+                  backgroundSize="cover"
+                  backgroundRepeat="no-repeat"
+                />
+              </Dialog.CloseTrigger>
+
+            </Dialog.Content>
+          </Dialog.Positioner>
+        </Portal>
+      </Dialog.Root>
+
     </Container>
   )
 }
