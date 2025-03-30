@@ -48,6 +48,18 @@ export const main = createSystem(defaultConfig, {
         textDecoration: "none",
       },
     },
+    ".menu-underline-link": {
+      color: "ui.main",
+      textDecoration: "underline",
+      fontWeight: "300",
+      transition: ".1s",
+      fontSize: "16px",
+      lineHeight: "20px",
+      "&:hover": {
+        color: "ui.grey",
+        textDecoration: "none",
+      },
+    },
     ".main-footer-link": {
       color: "ui.main",
       fontWeight: "300",
