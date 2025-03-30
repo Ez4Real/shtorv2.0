@@ -1,11 +1,12 @@
 
-import { Box, Breadcrumb, Button, CloseButton, Container, Dialog, Field, Flex, Image, Input, Portal, Text } from "@chakra-ui/react"
+import { Box, Breadcrumb, Container, Flex, Image, Text } from "@chakra-ui/react"
 import { Swiper, SwiperSlide } from 'swiper/react';
+import type { Swiper as SwiperCore } from "swiper";
 import { createFileRoute } from "@tanstack/react-router"
 import { Navigation } from 'swiper/modules';
+import { useRef } from "react";
 import 'swiper/css';
 import 'swiper/css/navigation';
-import { url } from "inspector";
 
 export const Route = createFileRoute("/_main_layout/about-us")({
   component: AboutUs,
@@ -13,8 +14,8 @@ export const Route = createFileRoute("/_main_layout/about-us")({
 
 
 function AboutUs() {
-
   const aboutUsImg = "/assets/images/about-us.svg"
+  const swiperRef = useRef<SwiperCore | null>(null);
 
   return (
     <Container
@@ -170,228 +171,42 @@ function AboutUs() {
 
       <Box pb={["132px", "132px", "303px", "303px"]}>
         <Swiper
-          className="swiper-about"
+          onSwiper={(swiper) => (swiperRef.current = swiper)}
           modules={[Navigation]}
           slidesPerView={6}
           spaceBetween={14}
           rewind={true}
-          navigation={true}
           breakpoints={{
             0: { slidesPerView: 2 },
             768: { slidesPerView: 4 },
             1024: { slidesPerView: 6 },
           }}
         >
-          <SwiperSlide>
-            <Image
-              src={aboutUsImg}
+          {Array.from({ length: 10 }).map((_, index) => (
+            <SwiperSlide key={index}>
+              <Image src={aboutUsImg} />
+              <Text 
+                fontWeight="300" 
+                fontSize="24px" 
+                lineHeight="24px" 
+                mt="12px">
+                Name of the collection
+              </Text>
+            </SwiperSlide>
+          ))}
+          <Box
+            mt="32px"
+            display={["block", "block", "none", "none"]}
+            onClick={() => swiperRef.current?.slideNext()}
+          >
+            <Image 
+              src="assets/icons/arrow-right.svg" 
+              alt="Next Slide"
+              w="46px"
             />
-            <Text
-              fontWeight="300"
-              fontSize="24px"
-              lineHeight="24px"
-              mt="12px"
-            >Name of the collection
-            </Text>
-          </SwiperSlide>
-          <SwiperSlide>
-            <Image
-              src={aboutUsImg}
-            />
-            <Text
-              fontWeight="300"
-              fontSize="24px"
-              lineHeight="24px"
-              mt="12px"
-            >Name of the collection
-            </Text>
-          </SwiperSlide>
-          <SwiperSlide>
-            <Image
-              src={aboutUsImg}
-            />
-            <Text
-              fontWeight="300"
-              fontSize="24px"
-              lineHeight="24px"
-              mt="12px"
-            >Name of the collection
-            </Text>
-          </SwiperSlide>
-          <SwiperSlide>
-            <Image
-              src={aboutUsImg}
-            />
-            <Text
-              fontWeight="300"
-              fontSize="24px"
-              lineHeight="24px"
-              mt="12px"
-            >Name of the collection
-            </Text>
-          </SwiperSlide>
-          <SwiperSlide>
-            <Image
-              src={aboutUsImg}
-            />
-            <Text
-              fontWeight="300"
-              fontSize="24px"
-              lineHeight="24px"
-              mt="12px"
-            >Name of the collection
-            </Text>
-          </SwiperSlide>
-          <SwiperSlide>
-            <Image
-              src={aboutUsImg}
-            />
-            <Text
-              fontWeight="300"
-              fontSize="24px"
-              lineHeight="24px"
-              mt="12px"
-            >Name of the collection
-            </Text>
-          </SwiperSlide>
-          <SwiperSlide>
-            <Image
-              src={aboutUsImg}
-            />
-            <Text
-              fontWeight="300"
-              fontSize="24px"
-              lineHeight="24px"
-              mt="12px"
-            >Name of the collection
-            </Text>
-          </SwiperSlide>
-          <SwiperSlide>
-            <Image
-              src={aboutUsImg}
-            />
-            <Text
-              fontWeight="300"
-              fontSize="24px"
-              lineHeight="24px"
-              mt="12px"
-            >Name of the collection
-            </Text>
-          </SwiperSlide>
-          <SwiperSlide>
-            <Image
-              src={aboutUsImg}
-            />
-            <Text
-              fontWeight="300"
-              fontSize="24px"
-              lineHeight="24px"
-              mt="12px"
-            >Name of the collection
-            </Text>
-          </SwiperSlide>
-          <SwiperSlide>
-            <Image
-              src={aboutUsImg}
-            />
-            <Text
-              fontWeight="300"
-              fontSize="24px"
-              lineHeight="24px"
-              mt="12px"
-            >Name of the collection
-            </Text>
-          </SwiperSlide>
+          </Box>
         </Swiper>
       </Box>
-
-      <Dialog.Root
-        size="xs"
-        motionPreset="slide-in-bottom"
-      >
-
-        <Dialog.Trigger asChild>
-          <Button variant="outline" size="sm">
-            Open Dialog
-          </Button>
-        </Dialog.Trigger>
-
-        <Portal>
-          <Dialog.Backdrop />
-          <Dialog.Positioner>
-
-            <Dialog.Content
-              borderRadius="0"
-            >
-              <Dialog.Body
-                p="72px 21px 37px 16px"
-              >
-                <Field.Root
-                  required
-                  gap="12px"
-                >
-                  <Field.Label
-                    fontSize="18px"
-                    fontWeight="400"
-                    lineHeight="23px"
-                  >
-                    From:
-                  </Field.Label>
-                  <Input
-                    border="1px solid #000000"
-                    borderRadius="0"
-                    fontFamily="'Lexend', sans-serif"
-                    fontWeight="300"
-                    pl="21px"
-                    pr="60px"
-                  />
-                  <Field.Label
-                    fontSize="18px"
-                    fontWeight="400"
-                    lineHeight="23px"
-                  >
-                    To:
-                  </Field.Label>
-                  <Input
-                    border="1px solid #3A3A3A"
-                    borderRadius="0"
-                    fontFamily="'Lexend', sans-serif"
-                    fontWeight="300"
-                    pl="21px"
-                    pr="60px"
-                  />
-                  <Field.HelperText
-                    color="ui.main"
-                    fontSize="12px"
-                    fontWeight="300"
-                    pl="8px"
-                    pr="13px"
-                  >
-                    Let us know if you'd like the gift certificate to be anonymous or if you'd like to include a message for your card
-                  </Field.HelperText>
-                </Field.Root>
-                <Button type="submit" mt="24px">Add to cart</Button>
-              </Dialog.Body>
-
-              <Dialog.CloseTrigger
-                position="absolute"
-                top="16px"
-                right="11px"
-                display="block"
-              >
-                <CloseButton
-                  size="sm"
-                  backgroundImage="url('assets/icons/close-btn.svg')"
-                  backgroundSize="cover"
-                  backgroundRepeat="no-repeat"
-                />
-              </Dialog.CloseTrigger>
-
-            </Dialog.Content>
-          </Dialog.Positioner>
-        </Portal>
-      </Dialog.Root>
-
     </Container>
   )
 }
