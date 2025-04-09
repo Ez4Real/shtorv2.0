@@ -7,3 +7,9 @@ body {
     white-space: pre-line;
     overflow-x: hidden;
 }
+
+.dot {
+    scale: unset;
+    width: 6px;
+    height: 6px;
+}
