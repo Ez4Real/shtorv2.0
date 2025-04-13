@@ -7,3 +7,17 @@ body {
     white-space: pre-line;
     overflow-x: hidden;
 }
+
+::-webkit-scrollbar {
+    width: 0.5rem;
+    height: 0.5rem;
+}
+  
+::-webkit-scrollbar-thumb {
+    background: #A0AEC0; 
+    border-radius: 24px;
+}
+  
+::-webkit-scrollbar-track {
+    background: transparent; 
+}

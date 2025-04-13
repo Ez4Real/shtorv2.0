@@ -1,10 +1,10 @@
 import { IconButton } from "@chakra-ui/react"
 import { BsThreeDotsVertical } from "react-icons/bs"
-import { MenuContent, MenuRoot, MenuTrigger } from "../ui/menu"
+import { MenuContent, MenuRoot, MenuTrigger } from "../../ui/menu"
 
 import type { ProductPublic } from "@/client"
-import DeleteProduct from "../Products/DeleteProduct"
-import EditProduct from "../Products/EditProduct"
+import DeleteProduct from "@/components/Products/DeleteProduct"
+import EditProduct from "@/components/Products/EditProduct"
 
 interface ProductActionsMenuProps {
   product: ProductPublic

@@ -1,5 +1,7 @@
+import { CollectionsService, OpenAPI } from "@/client";
 import Collection from "@/components/Collection"
 import { Box, Container, useBreakpointValue } from "@chakra-ui/react"
+import { useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { Link as RouterLink } from "@tanstack/react-router"
 
@@ -9,11 +11,26 @@ export const Route = createFileRoute("/_main_layout/")({
 })
 
 
+function getCollectionsQueryOptions() {
+  return {
+    queryFn: () => CollectionsService.readCollections(),
+    queryKey: ["collections"],
+  }
+}
+
+
 function Main() {
   const mainBanner = useBreakpointValue({
     base: "url(/assets/images/banner-mobile.svg)",  // mobile
     lg: "url(/assets/images/main-banner.svg)",  // desktop
   });
+
+  const { data: collections, isPending } = useQuery({
+    ...getCollectionsQueryOptions(),
+  })
+
+  console.log(collections)
+
 
   return (
     <Container
@@ -46,10 +63,12 @@ function Main() {
         </RouterLink>
       </Box>
 
-      <Collection
-        title="CENC X SHTOR"
-        bannerImagePath="/assets/images/collect-banner.svg"
-      />
+      {collections?.data.map((collection) => (
+        <Collection
+          title={collection.title}
+          bannerImagePath={`${OpenAPI.BASE}/media/${collection.banner.url}`}
+        />
+      ))}
       
     </Container>
   )

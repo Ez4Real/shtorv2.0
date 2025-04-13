@@ -4,7 +4,7 @@ import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { FiTrash2 } from "react-icons/fi"
 
-import { ProductsService } from "@/client"
+import { CollectionsService } from "@/client"
 import {
   DialogActionTrigger,
   DialogBody,
@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/dialog"
 import useCustomToast from "@/hooks/useCustomToast"
 
-const DeleteProduct = ({ id }: { id: string }) => {
+const DeleteCollection = ({ id }: { id: string }) => {
   const [isOpen, setIsOpen] = useState(false)
   const queryClient = useQueryClient()
   const { showSuccessToast, showErrorToast } = useCustomToast()
@@ -26,18 +26,18 @@ const DeleteProduct = ({ id }: { id: string }) => {
     formState: { isSubmitting },
   } = useForm()
 
-  const deleteProduct = async (id: string) => {
-    await ProductsService.deleteProduct({ id: id })
+  const deleteCollection = async (id: string) => {
+    await CollectionsService.deleteCollection({ id: id })
   }
 
   const mutation = useMutation({
-    mutationFn: deleteProduct,
+    mutationFn: deleteCollection,
     onSuccess: () => {
-      showSuccessToast("The product was deleted successfully")
+      showSuccessToast("The collection was deleted successfully")
       setIsOpen(false)
     },
     onError: () => {
-      showErrorToast("An error occurred while deleting the product")
+      showErrorToast("An error occurred while deleting the collection")
     },
     onSettled: () => {
       queryClient.invalidateQueries()
@@ -59,7 +59,7 @@ const DeleteProduct = ({ id }: { id: string }) => {
       <DialogTrigger asChild>
         <Button variant="ghost" size="sm" colorPalette="red">
           <FiTrash2 fontSize="16px" />
-          Delete Product
+          Delete Collection
         </Button>
       </DialogTrigger>
 
@@ -67,11 +67,11 @@ const DeleteProduct = ({ id }: { id: string }) => {
         <form onSubmit={handleSubmit(onSubmit)}>
           <DialogCloseTrigger />
           <DialogHeader>
-            <DialogTitle>Delete Product</DialogTitle>
+            <DialogTitle>Delete Collection</DialogTitle>
           </DialogHeader>
           <DialogBody>
             <Text mb={4}>
-              This product will be permanently deleted. Are you sure? You will not
+              This collection will be permanently deleted. Are you sure? You will not
               be able to undo this action.
             </Text>
           </DialogBody>
@@ -101,4 +101,4 @@ const DeleteProduct = ({ id }: { id: string }) => {
   )
 }
 
-export default DeleteProduct
+export default DeleteCollection

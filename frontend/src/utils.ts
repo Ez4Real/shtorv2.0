@@ -53,3 +53,21 @@ export const handleError = (err: ApiError) => {
   }
   showErrorToast(errorMessage)
 }
+
+export const setupHorizontalScrollOnOverflow = (container: HTMLElement | null) => {
+  if (!container) return
+
+  const isHorizontallyScrollable = container.scrollWidth > container.clientWidth
+  if (!isHorizontallyScrollable) return
+
+  const handleWheel = (evt: WheelEvent) => {
+    evt.preventDefault()
+    container.scrollLeft += evt.deltaY / 3
+  }
+
+  container.addEventListener("wheel", handleWheel)
+
+  return () => {
+    container.removeEventListener("wheel", handleWheel)
+  }
+}

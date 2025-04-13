@@ -131,12 +131,19 @@ class Settings(BaseSettings):
     @model_validator(mode="after")
     def _set_images_media_dir(self) -> Self:
         """Set correct Images Media Directory"""
+        # !!!!!
         # if self.ENVIRONMENT == "production":
         #     self.MEDIA_DIR = Path("uploads")
         # else:
         #     self.MEDIA_DIR = Path("media")
-        # !!!!!
         self.MEDIA_DIR = Path("media")
+        return self
+    
+    COLLECTION_BANNERS_DIR: Path = Path("collection-banners")
+    @model_validator(mode="after")
+    def _ensure_collection_banners_dir_exists(self) -> Self:
+        """Ensure the collection banners upload directory exists."""
+        Path(self.UPLOAD_DIR / self.COLLECTION_BANNERS_DIR).mkdir(parents=True, exist_ok=True)
         return self
 
 

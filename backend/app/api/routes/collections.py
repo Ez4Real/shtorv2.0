@@ -1,13 +1,15 @@
 from uuid import UUID
-from typing import Any, List
+from typing import Optional
 
-from fastapi import APIRouter, HTTPException, UploadFile, File
+from fastapi import APIRouter, HTTPException, UploadFile, File, Depends
 from sqlmodel import func, select
 
 from app.core.config import settings
-from app.api.deps import CurrentUser, SessionDep
+from app.api.deps import CurrentUser, SessionDep, parse_collection_create, \
+  parse_collection_update
 from app.models import Collection, CollectionCreate, CollectionUpdate, \
-    CollectionBanner, CollectionPublic, CollectionsPublic, Message
+    CollectionBanner, CollectionPublic, CollectionsPublic, \
+    Message
 from app.utils import save_image_to_local, delete_image_from_local
 
 router = APIRouter(prefix="/collections", tags=["collections"])
@@ -17,7 +19,7 @@ router = APIRouter(prefix="/collections", tags=["collections"])
 def read_collections(
   session: SessionDep,
   skip: int = 0, limit: int = 100
-) -> Any:
+) -> CollectionsPublic:
   """
   Retrieve collections.
   """
@@ -30,7 +32,7 @@ def read_collections(
 
 
 @router.get("/{id}", response_model=CollectionPublic)
-def read_collection(session: SessionDep, id: UUID) -> Any:
+def read_collection(session: SessionDep, id: UUID) -> CollectionPublic:
   """
   Get collection by ID.
   """
@@ -40,46 +42,44 @@ def read_collection(session: SessionDep, id: UUID) -> Any:
   return collection
 
 
-@router.post("/", response_model=CollectionPublic)
+@router.post("/")
 def create_collection(
-  *,
-  session: SessionDep,
-  current_user: CurrentUser,
-  collection_in: CollectionCreate
-) -> Any:
-  """
-  Create new collection.
-  """
-  collection = Collection.model_validate(
-    collection_in.model_dump(exclude={"banner"})
-  )
-  session.add(collection)
+    *,
+    session: SessionDep,
+    current_user: CurrentUser,
+    collection_in: CollectionCreate = Depends(parse_collection_create),
+) -> CollectionPublic:
+    """
+    Create new collection.
+    """
+    existing_collection = session.exec(
+        select(Collection).filter_by(title=collection_in.title)
+    ).first()
+    if existing_collection:
+        raise HTTPException(status_code=400, detail="Collection with this title already exists.")
+      
+    collection = Collection.model_validate(
+      collection_in.model_dump(exclude={"banner"})
+    )
+
+    banner_url = save_image_to_local(
+      collection_in.banner,
+      settings.COLLECTION_BANNERS_DIR
+    )
+    banner = CollectionBanner(
+      url=banner_url,
+      alt_text=f"{collection.title} collection banner",
+      collection_id=collection.id
+    )
+    session.add(banner)
   
-  banner = CollectionBanner.model_validate(
-    collection_in.banner, update={"collection_id": collection.id}
-  )
-  session.add(banner)
+    collection.banner = banner
+    session.add(collection)
+    
+    session.commit()
+    session.refresh(collection)
 
-  session.commit() 
-  session.refresh(collection)
-  return collection
-
-
-@router.post("/upload-banner")
-async def upload_banner(
-  *,
-  current_user: CurrentUser,
-  banner: UploadFile = File(...)
-) -> dict:
-  """
-  Upload multiple collection banner and save them to local storage.
-  """
-  banner_url = save_image_to_local(
-    banner,
-    settings.UPLOAD_DIR / "collections-banners"
-  )
-
-  return { "url": banner_url }
+    return collection
 
 
 @router.put("/{id}", response_model=CollectionPublic)
@@ -88,8 +88,8 @@ def update_collection(
   session: SessionDep,
   current_user: CurrentUser,
   id: UUID,
-collection_in: CollectionUpdate,
-) -> Any:
+  collection_in: CollectionUpdate = Depends(parse_collection_update),
+) -> CollectionPublic:
   """
   Update a collection.
   """
@@ -99,17 +99,26 @@ collection_in: CollectionUpdate,
   if not current_user.is_superuser:
     raise HTTPException(status_code=400, detail="Not enough permissions")
     
-  update_dict = collection_in.model_dump(exclude_unset=True)
+  update_dict = collection_in.model_dump(exclude_unset=True, exclude={"banner"})
   collection.sqlmodel_update(update_dict)
     
   if collection_in.banner:
-    banner_old = session.exec(select(CollectionBanner).filter_by(collection_id=id)).first()
-    session.delete(banner_old)
-    banner = CollectionBanner.model_validate(
-      collection_in.banner,
-      update={"collection_id": collection.id}
-    )
-    session.add(banner)
+    banner_old = session.get(CollectionBanner, collection.banner.id)
+    deleted = delete_image_from_local(banner_old.url)
+    if deleted:
+      session.delete(banner_old)
+    
+      banner_url = save_image_to_local(
+        collection_in.banner,
+        settings.COLLECTION_BANNERS_DIR
+      )
+      banner = CollectionBanner(
+        url=banner_url,
+        alt_text=f"{collection.title} collection banner",
+        collection_id=id
+      )
+      session.add(banner)
+      collection.banner = banner
     
   session.add(collection)
   session.commit()
@@ -129,15 +138,10 @@ def delete_collection(
     raise HTTPException(status_code=404, detail="Collection not found")
   if not current_user.is_superuser:
     raise HTTPException(status_code=400, detail="Not enough permissions")
-
-  # if collection.banner:
-  #   !!! session.exec(CollectionBanner).filter(CollectionBanner.collection_id == id).delete()
-  #   banner_old = session.exec(select(CollectionBanner).filter_by(collection_id=id)).first()
-  #   deleted = delete_image_from_local(
-  #     collection.banner.url,
-  #     settings.UPLOAD_DIR / "collections-banners"
-  #   )
-  #   if deleted: session.delete(banner_old)
+  
+  banner = session.get(CollectionBanner, collection.banner.id)
+  deleted = delete_image_from_local(banner.url)
+  if deleted: session.delete(banner)
     
   session.delete(collection)
   session.commit()

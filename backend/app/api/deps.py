@@ -2,7 +2,7 @@ from collections.abc import Generator
 from typing import Annotated 
 
 import jwt
-from fastapi import Depends, HTTPException, status
+from fastapi import Depends, HTTPException, status, UploadFile, Form, File
 from fastapi.security import OAuth2PasswordBearer
 from jwt.exceptions import InvalidTokenError
 from pydantic import ValidationError
@@ -11,7 +11,7 @@ from sqlmodel import Session
 from app.core import security
 from app.core.config import settings
 from app.core.db import engine
-from app.models import TokenPayload, User
+from app.models import TokenPayload, User, CollectionBase, CollectionCreate, CollectionUpdate
 
 reusable_oauth2 = OAuth2PasswordBearer(
     tokenUrl=f"{settings.API_V1_STR}/login/access-token"
@@ -76,3 +76,20 @@ def get_current_active_superuser(current_user: CurrentUser) -> User:
             status_code=403, detail="The user doesn't have enough privileges"
         )
     return current_user
+
+
+def parse_collection_create(
+    collection: CollectionBase = Form(...),
+    banner: UploadFile = File()
+) -> CollectionCreate:
+    collection_data = collection.model_dump()
+    collection = CollectionCreate(banner=banner, **collection_data)
+    return collection
+
+def parse_collection_update(
+    collection: CollectionBase = Form(...),
+    banner: UploadFile | None = File(default=None)
+) -> CollectionUpdate:
+    collection_data = collection.model_dump()
+    collection = CollectionUpdate(banner=banner, **collection_data)
+    return collection

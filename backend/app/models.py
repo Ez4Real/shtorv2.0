@@ -1,9 +1,10 @@
+import json
 import uuid
 from datetime import datetime, timezone
 
-from pydantic import EmailStr, BaseModel
+from pydantic import EmailStr, BaseModel, model_validator
 from sqlmodel import Field, Relationship, SQLModel
-from fastapi import UploadFile, File
+from fastapi import UploadFile, File, Form
 
 
 # Shared properties
@@ -65,18 +66,25 @@ class ImageUpdate(ImageBase):
 
 
 class CollectionBase(SQLModel):
-    title: str = Field(min_length=1, max_length=255)
-    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
-
+    title: str = Field(unique=True, index=True, min_length=1, max_length=255)
+    
+    @model_validator(mode='before')
+    def validate_to_json(cls, value):
+        if isinstance(value, str):
+            return cls(**json.loads(value))
+        return value
+    
 class CollectionCreate(CollectionBase):
-    banner: ImageCreate = Field()
+    banner: UploadFile
 
-class CollectionUpdate(CollectionBase):
-    title: str | None = Field(default=None, min_length=5, max_length=255)
-    banner: ImageCreate | None = Field(default=None)
+class CollectionUpdate(SQLModel):
+    title: str | None = Field(default=None, min_length=1, max_length=255) 
+    banner: UploadFile | None = File(default=None)
+
 
 class Collection(CollectionBase, table=True):
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     banner: "CollectionBanner" = Relationship(back_populates="collection", cascade_delete=True)
 
 class CollectionBanner(ImageBase, table=True):
@@ -93,6 +101,7 @@ class CollectionBannerPublic(ImageBase):
 
 class CollectionPublic(CollectionBase):
     id: uuid.UUID
+    created_at: datetime
     banner: CollectionBannerPublic
 
 class CollectionsPublic(SQLModel):
