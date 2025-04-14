@@ -1,9 +1,14 @@
 import { Box, Button, Flex, Group, Image, Input, Text } from "@chakra-ui/react";
-import { Link as RouterLink } from "@tanstack/react-router";
+import { Link as RouterLink, useRouterState } from "@tanstack/react-router";
 
 const Footer = () => {
+  const { location } = useRouterState()
+  const isHomepage = location.pathname === "/"
   return (
-    <Box pb={["92px", "92px", "112px", "112px"]}>
+    <Box 
+      display={isHomepage ? "none" : "block" }
+      as="footer" 
+      pb={["92px", "92px", "112px", "112px"]}>
       <Flex justifyContent="center">
         <RouterLink to="/">
           <Image
@@ -33,6 +38,7 @@ const Footer = () => {
           </Text>
           <Group attached w={["100%", "100%", "373px", "373px"]}>
             <Input
+              css={{ "--error-color": "ui.error" }} //css color for future error 
               placeholder="Email"
               border="0.5px solid #3A3A3A"
               borderRadius="0"
@@ -66,37 +72,45 @@ const Footer = () => {
             gap={{ base: "16px", sm: "12px", md: "12px" }}
           >
             <RouterLink to="/">
-              <Text
+              <Text 
+                className="main-footer-link"
                 fontSize="16px"
                 fontWeight="400"
                 lineHeight="20px"
+                textAlign="right"
               >
                 Політика Конфіденційності
               </Text>
             </RouterLink>
             <RouterLink to="/">
-              <Text
+              <Text 
+                className="main-footer-link"
                 fontSize="16px"
                 fontWeight="400"
                 lineHeight="20px"
+                textAlign="right"
               >
                 Оплата і доставка
               </Text>
             </RouterLink>
             <RouterLink to="/">
-              <Text
+              <Text 
+                className="main-footer-link"
                 fontSize="16px"
                 fontWeight="400"
                 lineHeight="20px"
+                textAlign="right"
               >
                 Повернення та обмін
               </Text>
             </RouterLink>
             <RouterLink to="/">
-              <Text
+              <Text 
+                className="main-footer-link"
                 fontSize="16px"
                 fontWeight="400"
                 lineHeight="20px"
+                textAlign="right"
               >
                 Чат
               </Text>
@@ -116,12 +130,19 @@ const Footer = () => {
                 UA/UAH
               </Text>
             </RouterLink>
-            <RouterLink to="/">
+            <RouterLink 
+              to="/"
+            >
               <Text
                 fontSize="20px"
                 fontWeight="500"
                 lineHeight={["21px", "25px", "25px", "25px"]}
                 textDecoration="underline"
+                transition=".1s"
+                _hover={{ 
+                  color: "ui.grey", 
+                  textDecoration: "none" 
+                }}
               >
                 INSTAGRAM
               </Text>

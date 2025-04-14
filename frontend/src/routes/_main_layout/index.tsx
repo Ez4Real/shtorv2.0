@@ -50,6 +50,7 @@ function Main() {
         <RouterLink
           to="/about-us"
           from="/"
+          hash="root"
         >
           <Box
             className="underline-link"

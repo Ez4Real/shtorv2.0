@@ -31,11 +31,11 @@ const BurgerMenu = ({
     // `;
 
     const barProps = {
-        width: '18px',
-        height: '2px',
-        backgroundColor: isWhiteTheme ? 'white' : 'black',
-        display: 'block',
-        mb: '4px',
+      width: '18px',
+      height: '2px',
+      backgroundColor: isWhiteTheme ? 'ui.white' : 'ui.main',
+      display: 'block',
+      mb: '4px',
     };
 
     return (

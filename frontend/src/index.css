@@ -8,6 +8,12 @@ body {
     overflow-x: hidden;
 }
 
+.dot {
+    scale: unset;
+    width: 6px;
+    height: 6px;
+  
+  
 ::-webkit-scrollbar {
     width: 0.5rem;
     height: 0.5rem;
