@@ -4,6 +4,7 @@ import {
   EmptyState,
   Flex,
   Heading,
+  Image,
   Table,
   VStack,
 } from "@chakra-ui/react"
@@ -12,10 +13,11 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router"
 import { FiSearch } from "react-icons/fi"
 import { z } from "zod"
 
-import { ProductsService } from "@/client"
-import { ProductActionsMenu } from "@/components/Common/Actions/ProductActionsMenu"
-import AddProduct from "@/components/Products/AddProduct"
-import PendingProducts from "@/components/Pending/PendingProducts"
+import { CollectionsService, OpenAPI } from "@/client"
+import { CollectionActionsMenu } from '@/components/Common/Actions/CollectionActionsMenu'
+import AddCollection from "@/components/Collections/AddCollection"
+
+import PendingCollection from "@/components/Pending/PendingCollections"
 import {
   PaginationItems,
   PaginationNextTrigger,
@@ -25,43 +27,42 @@ import {
 import { setupHorizontalScrollOnOverflow } from "@/utils"
 import { useColorModeValue } from "@/components/ui/color-mode"
 
-const productsSearchSchema = z.object({
+const collectionsSearchSchema = z.object({
   page: z.number().catch(1),
 })
 
 const PER_PAGE = 5
 
-function getProductsQueryOptions({ page }: { page: number }) {
+function getCollectionQueryOptions({ page }: { page: number }) {
   return {
     queryFn: () =>
-      ProductsService.readProducts({ skip: (page - 1) * PER_PAGE, limit: PER_PAGE }),
-    queryKey: ["products", { page }],
+      CollectionsService.readCollections({ skip: (page - 1) * PER_PAGE, limit: PER_PAGE }),
+    queryKey: ["collections", { page }],
   }
 }
 
-export const Route = createFileRoute("/_layout/admin/products")({
-  component: Products,
-  validateSearch: (search) => productsSearchSchema.parse(search),
+export const Route = createFileRoute("/_layout/admin/collections")({
+  component: Collections,
+  validateSearch: (search) => collectionsSearchSchema.parse(search),
 })
 
-function ProductsTable() {
+function CollectionsTable() {
   const navigate = useNavigate({ from: Route.fullPath })
   const { page } = Route.useSearch()
   const scrollContainerRef = useRef<HTMLTableElement | null>(null)
   const scrollbarColor = useColorModeValue("ui.main", "ui.dim")
 
   const { data, isLoading, isPlaceholderData } = useQuery({
-    ...getProductsQueryOptions({ page }),
+    ...getCollectionQueryOptions({ page }),
     placeholderData: (prevData) => prevData,
   })
 
   const setPage = (page: number) =>
     navigate({
-      // search: (prev: { [key: string]: string }) => ({ ...prev, page }),
       search: (prev: { [key: string]: number }) => ({ ...prev, page }),
     })
 
-  const products = data?.data.slice(0, PER_PAGE) ?? []
+  const collections = data?.data.slice(0, PER_PAGE) ?? []
   const count = data?.count ?? 0
 
   useEffect(() => {
@@ -69,10 +70,10 @@ function ProductsTable() {
   }, [isLoading])
 
   if (isLoading) {
-    return <PendingProducts />
+    return <PendingCollection />
   }
 
-  if (products.length === 0) {
+  if (collections.length === 0) {
     return (
       <EmptyState.Root>
         <EmptyState.Content>
@@ -80,9 +81,9 @@ function ProductsTable() {
             <FiSearch />
           </EmptyState.Indicator>
           <VStack textAlign="center">
-            <EmptyState.Title>You don't have any products yet</EmptyState.Title>
+            <EmptyState.Title>You don't have any collections yet</EmptyState.Title>
             <EmptyState.Description>
-              Add a new product to get started
+              Add a new collection to get started
             </EmptyState.Description>
           </VStack>
         </EmptyState.Content>
@@ -109,30 +110,41 @@ function ProductsTable() {
         >
           <Table.Header>
             <Table.Row>
+              <Table.ColumnHeader></Table.ColumnHeader>
               <Table.ColumnHeader w="sm">ID</Table.ColumnHeader>
               <Table.ColumnHeader w="sm">Title</Table.ColumnHeader>
-              <Table.ColumnHeader w="sm">Description</Table.ColumnHeader>
-              <Table.ColumnHeader w="sm">Actions</Table.ColumnHeader>
+              <Table.ColumnHeader w="sm">Date | Time</Table.ColumnHeader>
+              <Table.ColumnHeader
+                w="sm"
+                textAlign="center"
+              >Banner</Table.ColumnHeader>
             </Table.Row>
           </Table.Header>
           <Table.Body>
-            {products?.map((product) => (
-              <Table.Row key={product.id} opacity={isPlaceholderData ? 0.5 : 1}>
-                <Table.Cell truncate maxW="sm">
-                  {product.id}
+            {collections?.map((collection) => (
+              <Table.Row key={collection.id} opacity={isPlaceholderData ? 0.5 : 1}>
+                <Table.Cell p="1rem .25rem !important">
+                  <CollectionActionsMenu collection={collection} />
                 </Table.Cell>
                 <Table.Cell truncate maxW="sm">
-                  {product.title}
+                  {collection.id}
                 </Table.Cell>
-                <Table.Cell
-                  color={!product.description ? "gray" : "inherit"}
-                  truncate
-                  maxW="30%"
-                >
-                  {product.description || "N/A"}
+                <Table.Cell truncate maxW="sm">
+                  {collection.title}
                 </Table.Cell>
-                <Table.Cell>
-                  <ProductActionsMenu product={product} />
+                <Table.Cell truncate maxWidth="50%">
+                  {new Date(collection.created_at as string).toLocaleString()}
+                </Table.Cell>
+                
+                <Table.Cell px="1.5rem">
+                  <Image
+                    src={`${OpenAPI.BASE}/media/${collection.banner.url}`}
+                    fit="cover"
+                    justifySelf="center"
+                    rounded={"4px"}
+                    maxH={["100px", "140px", "140px", "140px"]}
+                    minW={["150px", "205px", "205px", "205px"]}
+                  />
                 </Table.Cell>
               </Table.Row>
             ))}
@@ -156,18 +168,17 @@ function ProductsTable() {
   )
 }
 
-function Products() {
+function Collections() {
   return (
     <Container maxW="full">
       <Heading
         size="lg"
         pt={2}
         textAlign={["center", "center", "start", "start"]}
-      >
-        Products Management
+      >Collections Management
       </Heading>
-      <AddProduct />
-      <ProductsTable />
+      <AddCollection />
+      <CollectionsTable />
     </Container>
   )
 }

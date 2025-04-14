@@ -44,7 +44,7 @@ const Sidebar = () => {
             <FaBars />
           </IconButton>
         </DrawerTrigger>
-        <DrawerContent maxW="xs">
+        <DrawerContent maxW="xs" >
           <DrawerCloseTrigger />
           <DrawerBody>
             <Flex flexDir="column" justify="space-between">
@@ -76,13 +76,12 @@ const Sidebar = () => {
       </DrawerRoot>
 
       {/* Desktop */}
-
       <Box
         display={{ base: "none", md: "flex" }}
         position="sticky"
         bg="bg.subtle"
         top={0}
-        minW="xs"
+        minW={60}
         h="100vh"
         p={4}
       >

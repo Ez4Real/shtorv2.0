@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react"
 import { Badge, Container, Flex, Heading, Table } from "@chakra-ui/react"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { createFileRoute, useNavigate } from "@tanstack/react-router"
@@ -13,6 +14,7 @@ import {
   PaginationPrevTrigger,
   PaginationRoot,
 } from "@/components/ui/pagination.tsx"
+import { setupHorizontalScrollOnOverflow } from "@/utils"
 
 const usersSearchSchema = z.object({
   page: z.number().catch(1),
@@ -38,6 +40,7 @@ function UsersTable() {
   const currentUser = queryClient.getQueryData<UserPublic>(["currentUser"])
   const navigate = useNavigate({ from: Route.fullPath })
   const { page } = Route.useSearch()
+  // const scrollContainerRef = useRef<HTMLTableElement | null>(null)
 
   const { data, isLoading, isPlaceholderData } = useQuery({
     ...getUsersQueryOptions({ page }),
@@ -53,13 +56,24 @@ function UsersTable() {
   const users = data?.data.slice(0, PER_PAGE) ?? []
   const count = data?.count ?? 0
 
+  // useEffect(() => {
+  //   return setupHorizontalScrollOnOverflow(scrollContainerRef.current)
+  // }, [isLoading])
+
   if (isLoading) {
     return <PendingUsers />
   }
 
   return (
     <>
-      <Table.Root size={{ base: "sm", md: "md" }}>
+      <Table.Root 
+        // ref={scrollContainerRef}
+        // size={{ base: "sm", md: "md" }}
+        // overflow="auto hidden"
+        // maxW="100%"
+        // whiteSpace="nowrap"
+        // display="block"
+      >
         <Table.Header>
           <Table.Row>
             <Table.ColumnHeader w="sm">Full name</Table.ColumnHeader>
@@ -117,7 +131,11 @@ function UsersTable() {
 function Users() {
   return (
     <Container maxW="full">
-      <Heading size="lg" pt={12}>
+      <Heading
+        size="lg"
+        pt={2}
+        textAlign="center"
+      >
         Users Management
       </Heading>
 

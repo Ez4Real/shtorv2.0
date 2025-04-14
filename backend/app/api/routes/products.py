@@ -5,7 +5,7 @@ from fastapi import APIRouter, HTTPException, UploadFile, File
 from sqlmodel import func, select
 
 from app.core.config import settings
-from app.api.deps import CurrentUser, UserOrNone, SessionDep
+from app.api.deps import CurrentUser, SessionDep
 from app.models import Product, ProductCreate, ProductUpdate, ProductPublic, ProductsPublic, Message
 from app.utils import save_image_to_local, delete_image_from_local
 
@@ -118,56 +118,56 @@ async def upload_images(
     return { "urls": image_urls }
 
 
-@router.put("/{id}", response_model=ProductPublic)
-def update_product(
-    *,
-    session: SessionDep,
-    current_user: CurrentUser,
-    id: UUID,
-    product_in: ProductUpdate,
-) -> Any:
-    """
-    Update an product.
-    """
-    product = session.get(Product, id)
-    if not product:
-        raise HTTPException(status_code=404, detail="Product not found")
-    if not current_user.is_superuser and (product.owner_id != current_user.id):
-        raise HTTPException(status_code=400, detail="Not enough permissions")
-    update_dict = product_in.model_dump(exclude_unset=True)
-    product.sqlmodel_update(update_dict)
+# @router.put("/{id}", response_model=ProductPublic)
+# def update_product(
+#     *,
+#     session: SessionDep,
+#     current_user: CurrentUser,
+#     id: UUID,
+#     product_in: ProductUpdate,
+# ) -> Any:
+#     """
+#     Update an product.
+#     """
+#     product = session.get(Product, id)
+#     if not product:
+#         raise HTTPException(status_code=404, detail="Product not found")
+#     if not current_user.is_superuser and (product.owner_id != current_user.id):
+#         raise HTTPException(status_code=400, detail="Not enough permissions")
+#     update_dict = product_in.model_dump(exclude_unset=True)
+#     product.sqlmodel_update(update_dict)
     # if product_in.images:
     #     session.exec(ProductImage).filter(ProductImage.product_id == id).delete()
     #     for image_in in product_in.images:
     #         image = ProductImage.model_validate(image_in, update={"product_id": product.id})
     #         session.add(image)
-    session.add(product)
-    session.commit()
-    session.refresh(product)
-    return product
+    # session.add(product)
+    # session.commit()
+    # session.refresh(product)
+    # return product
 
 
-@router.delete("/{id}")
-def delete_product(
-    session: SessionDep, current_user: CurrentUser, id: UUID
-) -> Message:
-    """
-    Delete an product.
-    """
-    product = session.get(Product, id)
-    if not product:
-        raise HTTPException(status_code=404, detail="Product not found")
-    if not current_user.is_superuser and (product.owner_id != current_user.id):
-        raise HTTPException(status_code=400, detail="Not enough permissions")
-    # product_images = session.exec(
-    #     select(ProductImage).filter(ProductImage.product_id == product.id)
-    # ).all()
-    # for image in product_images:
-    #     deleted = delete_image_from_local(
-    #         image.url,
-    #         settings.UPLOAD_DIR
-    #     )
-    #     if deleted: session.delete(image)
-    session.delete(product)
-    session.commit()
-    return Message(message="Product deleted successfully")
+# @router.delete("/{id}")
+# def delete_product(
+#     session: SessionDep, current_user: CurrentUser, id: UUID
+# ) -> Message:
+#     """
+#     Delete an product.
+#     """
+#     product = session.get(Product, id)
+#     if not product:
+#         raise HTTPException(status_code=404, detail="Product not found")
+#     if not current_user.is_superuser and (product.owner_id != current_user.id):
+#         raise HTTPException(status_code=400, detail="Not enough permissions")
+#     product_images = session.exec(
+#         select(ProductImage).filter(ProductImage.product_id == product.id)
+#     ).all()
+#     for image in product_images:
+#         deleted = delete_image_from_local(
+#             image.url,
+#             settings.UPLOAD_DIR
+#         )
+#         if deleted: session.delete(image)
+#     session.delete(product)
+#     session.commit()
+#     return Message(message="Product deleted successfully")

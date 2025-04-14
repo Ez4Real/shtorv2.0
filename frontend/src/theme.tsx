@@ -17,6 +17,8 @@ export const system = createSystem(defaultConfig, {
       colors: {
         ui: {
           main: { value: "#009688" },
+          danger: { value: "#ef4444" },
+          dim: { value: "#A0AEC0" }
         },
       },
     },
