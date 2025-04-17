@@ -268,6 +268,7 @@ const Header = () => {
               hash="root"
             >
               <Image
+                w={["100px", "100px", "180px", "180px"]}
                 src={`/assets/images/${
                   isHomepage ? "logo-white.svg" : "logo-black.svg"
                 }`}

@@ -8,14 +8,14 @@ const Footer = () => {
     <Box 
       display={isHomepage ? "none" : "block" }
       as="footer" 
-      pb={["92px", "92px", "112px", "112px"]}>
+      pb={["78px", "78px", "112px", "112px"]}>
       <Flex justifyContent="center">
         <RouterLink to="/">
           <Image
             src="/assets/images/logo-footer.svg"
             textAlign="center"
-            h={["75px", "67px", "150px", "225px", "245px"]}
-            mb={["24px", "24px", "59px", "59px"]}
+            h={["70px", "67px", "150px", "225px", "231px"]}
+            mb={["36px", "36px", "66px", "66px"]}
           />
         </RouterLink>
       </Flex>
@@ -23,16 +23,18 @@ const Footer = () => {
         justifyContent="space-between"
         alignItems="start"
         flexDirection={{ base: "column", sm: "unset", md: "unset" }}
-        gap={{ base: "42px", sm: "20px", md: "unset" }}
-        p={["0 8px", "0 16px", "0 46px", " 0 46px"]}
+        gap={{ base: "32px", sm: "20px", md: "unset" }}
+        p={["0 16px", "0 16px", "0 46px", " 0 46px"]}
       >
         <Flex
           flexDirection="column"
           gap="16px"
+          w={["100%", "100%", "unset", "unset"]}
         >
           <Text
             fontSize="16px"
             fontWeight="400"
+            mb={["14px", "14px", "0", "0"]}
           >
             Будь в курсі випусків і спеціальних подій
           </Text>
@@ -40,7 +42,7 @@ const Footer = () => {
             <Input
               css={{ "--error-color": "ui.error" }} //css color for future error 
               placeholder="Email"
-              border="0.5px solid #3A3A3A"
+              border="0.5px solid #B3B3B3"
               borderRadius="0"
               opacity="80%"
               fontFamily="'Lexend', sans-serif"
@@ -56,7 +58,10 @@ const Footer = () => {
               position="absolute"
               right="13px"
             >
-              <Image src="/assets/icons/arrow-right.svg" />
+              <Image 
+                opacity="60%" 
+                src="/assets/icons/arrow-right.svg" 
+              />
             </Button>
           </Group>
         </Flex>
@@ -69,7 +74,7 @@ const Footer = () => {
           <Flex
             flexDirection="column"
             alignItems={{ base: "flex-start", sm: "flex-end", md: "flex-end" }}
-            gap={{ base: "16px", sm: "12px", md: "12px" }}
+            gap={["8px", "8px", "12px", "12px"]}
           >
             <RouterLink to="/">
               <Text 
@@ -118,13 +123,13 @@ const Footer = () => {
           </Flex>
           <Flex
             flexDirection={{ base: "column-reverse", sm: "column", md: "column", lg: "column" }}
-            gap={{ base: "16px", sm: "24px", md: "24px" }}
+            gap={{ base: "12px", sm: "24px", md: "24px" }}
             alignItems="flex-end"
           >
             <RouterLink to="/">
               <Text
-                fontSize={["12px", "20px", "20px", "20px"]}
-                fontWeight={["500", "400", "400", "400"]}
+                fontSize={["14px", "14px", "20px", "20px"]}
+                fontWeight={["300", "300", "400", "400"]}
                 lineHeight={["15px", "25px", "25px", "25px"]}
               >
                 UA/UAH
@@ -134,10 +139,10 @@ const Footer = () => {
               to="/"
             >
               <Text
-                fontSize="20px"
-                fontWeight="500"
+                fontSize={["16px", "16px", "20px", "20px"]}
+                fontWeight={["300", "300", "500", "500"]}
                 lineHeight={["21px", "25px", "25px", "25px"]}
-                textDecoration="underline"
+                textDecoration={["unset", "underline"]}
                 transition=".1s"
                 _hover={{ 
                   color: "ui.grey", 
