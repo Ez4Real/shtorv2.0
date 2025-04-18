@@ -43,6 +43,7 @@ const Footer = () => {
               css={{ "--error-color": "ui.error" }} //css color for future error 
               placeholder="Email"
               border="0.5px solid #B3B3B3"
+              borderColor={["#B3B3B3", "#B3B3B3", "#3A3A3A", "#3A3A3A"]}
               borderRadius="0"
               opacity="80%"
               fontFamily="'Lexend', sans-serif"
@@ -59,7 +60,7 @@ const Footer = () => {
               right="13px"
             >
               <Image 
-                opacity="60%" 
+                opacity={["60%", "#60%", "unset", "unset"]}
                 src="/assets/icons/arrow-right.svg" 
               />
             </Button>
