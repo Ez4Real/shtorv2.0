@@ -34,13 +34,10 @@ function Cart() {
             Cart
         </Flex>
         <Flex
-          gap="24px"
+          justifyContent="space-between"
         >
-            <Flex
-              
-            >
-                <Image src="/assets/images/test-category.svg"/>
-            </Flex>
+            <Image src="/assets/images/test-category.svg" mr="-10px"/>
+
             <Flex 
               flexDirection="column"
               w="40%"
