@@ -80,16 +80,25 @@ def get_current_active_superuser(current_user: CurrentUser) -> User:
 
 def parse_collection_create(
     collection: CollectionBase = Form(...),
-    banner: UploadFile = File()
+    banner_desktop: UploadFile = File(),
+    banner_mobile: UploadFile = File()
 ) -> CollectionCreate:
     collection_data = collection.model_dump()
-    collection = CollectionCreate(banner=banner, **collection_data)
+    collection = CollectionCreate(
+        banner_desktop=banner_desktop,
+        banner_mobile=banner_mobile,
+        **collection_data
+    )
     return collection
 
 def parse_collection_update(
     collection: CollectionBase = Form(...),
-    banner: UploadFile | None = File(default=None)
+    banner_desktop: UploadFile | None = File(default=None),
+    banner_mobile: UploadFile | None = File(default=None)
 ) -> CollectionUpdate:
     collection_data = collection.model_dump()
-    collection = CollectionUpdate(banner=banner, **collection_data)
+    collection = CollectionUpdate(
+        banner_desktop=banner_desktop, 
+        banner_mobile=banner_mobile,
+        **collection_data)
     return collection

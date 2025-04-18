@@ -5,6 +5,7 @@ from datetime import datetime, timezone
 from pydantic import EmailStr, BaseModel, model_validator
 from sqlmodel import Field, Relationship, SQLModel
 from fastapi import UploadFile, File, Form
+from enum import Enum
 
 
 # Shared properties
@@ -65,6 +66,10 @@ class ImageUpdate(ImageBase):
     id: uuid.UUID
 
 
+class DeviceType(str, Enum):
+    desktop = "desktop"
+    mobile = "mobile"
+
 class CollectionBase(SQLModel):
     title: str = Field(unique=True, index=True, min_length=1, max_length=255)
     
@@ -75,17 +80,28 @@ class CollectionBase(SQLModel):
         return value
     
 class CollectionCreate(CollectionBase):
-    banner: UploadFile
+    banner_desktop: UploadFile
+    banner_mobile: UploadFile
 
 class CollectionUpdate(SQLModel):
     title: str | None = Field(default=None, min_length=1, max_length=255) 
-    banner: UploadFile | None = File(default=None)
+    banner_desktop: UploadFile | None = File(default=None)
+    banner_mobile: UploadFile | None = File(default=None)
 
 
 class Collection(CollectionBase, table=True):
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
-    banner: "CollectionBanner" = Relationship(back_populates="collection", cascade_delete=True)
+
+    banners: list["CollectionBanner"] = Relationship(back_populates="collection", sa_relationship_kwargs={"cascade": "all, delete-orphan"})
+
+    @property
+    def banner_desktop(self) -> "CollectionBanner":
+        return next((b for b in self.banners if b.device_type == DeviceType.desktop), None)
+    @property
+    def banner_mobile(self) -> "CollectionBanner":
+        return next((b for b in self.banners if b.device_type == DeviceType.mobile), None)
+    
 
 class CollectionBanner(ImageBase, table=True):
     __tablename__ = "collection_banner"
@@ -94,15 +110,18 @@ class CollectionBanner(ImageBase, table=True):
     collection_id: uuid.UUID = Field(
         foreign_key="collection.id", nullable=False, ondelete="CASCADE"
     )
-    collection: Collection = Relationship(back_populates="banner")
+    device_type: DeviceType = Field(index=True)
+    collection: Collection = Relationship(back_populates="banners")
 
 class CollectionBannerPublic(ImageBase):
     id: uuid.UUID
+    device_type: DeviceType
 
 class CollectionPublic(CollectionBase):
     id: uuid.UUID
     created_at: datetime
-    banner: CollectionBannerPublic
+    banner_desktop: CollectionBannerPublic
+    banner_mobile: CollectionBannerPublic
 
 class CollectionsPublic(SQLModel):
     data: list[CollectionPublic]

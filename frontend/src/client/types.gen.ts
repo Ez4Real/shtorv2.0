@@ -2,12 +2,14 @@
 
 export type Body_collections_create_collection = {
   collection: CollectionBase
-  banner: Blob | File
+  banner_desktop: Blob | File
+  banner_mobile: Blob | File
 }
 
 export type Body_collections_update_collection = {
   collection: CollectionBase
-  banner?: (Blob | File) | null
+  banner_desktop?: (Blob | File) | null
+  banner_mobile?: (Blob | File) | null
 }
 
 export type Body_login_login_access_token = {
@@ -27,6 +29,7 @@ export type CollectionBannerPublic = {
   url: string
   alt_text: string
   id: string
+  device_type: DeviceType
 }
 
 export type CollectionBase = {
@@ -37,13 +40,16 @@ export type CollectionPublic = {
   title: string
   id: string
   created_at: string
-  banner: CollectionBannerPublic
+  banner_desktop: CollectionBannerPublic
+  banner_mobile: CollectionBannerPublic
 }
 
 export type CollectionsPublic = {
   data: Array<CollectionPublic>
   count: number
 }
+
+export type DeviceType = "desktop" | "mobile"
 
 export type HTTPValidationError = {
   detail?: Array<ValidationError>
@@ -80,11 +86,6 @@ export type ProductPublic = {
 export type ProductsPublic = {
   data: Array<ProductPublic>
   count: number
-}
-
-export type ProductUpdate = {
-  title?: string | null
-  description?: string | null
 }
 
 export type Token = {
@@ -231,19 +232,6 @@ export type ProductsReadProductData = {
 }
 
 export type ProductsReadProductResponse = ProductPublic
-
-export type ProductsUpdateProductData = {
-  id: string
-  requestBody: ProductUpdate
-}
-
-export type ProductsUpdateProductResponse = ProductPublic
-
-export type ProductsDeleteProductData = {
-  id: string
-}
-
-export type ProductsDeleteProductResponse = Message
 
 export type ProductsUploadImagesData = {
   formData: Body_products_upload_images

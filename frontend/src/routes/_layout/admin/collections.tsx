@@ -4,6 +4,7 @@ import {
   EmptyState,
   Flex,
   Heading,
+  HStack,
   Image,
   Table,
   VStack,
@@ -104,6 +105,7 @@ function CollectionsTable() {
         maxW="100%"
         whiteSpace="nowrap"
         display="block"
+        paddingInline={0}
       >
         <Table.Root
           size={{ base: "sm", md: "md" }}
@@ -117,7 +119,7 @@ function CollectionsTable() {
               <Table.ColumnHeader
                 w="sm"
                 textAlign="center"
-              >Banner</Table.ColumnHeader>
+              >Banners</Table.ColumnHeader>
             </Table.Row>
           </Table.Header>
           <Table.Body>
@@ -137,14 +139,24 @@ function CollectionsTable() {
                 </Table.Cell>
                 
                 <Table.Cell px="1.5rem">
-                  <Image
-                    src={`${OpenAPI.BASE}/media/${collection.banner.url}`}
-                    fit="cover"
-                    justifySelf="center"
-                    rounded={"4px"}
-                    maxH={["100px", "140px", "140px", "140px"]}
-                    minW={["150px", "205px", "205px", "205px"]}
-                  />
+                  <HStack>
+                    <Image
+                      src={`${OpenAPI.BASE}/media/${collection.banner_desktop.url}`}
+                      fit="cover"
+                      justifySelf="center"
+                      rounded={"4px"}
+                      h={["100px", "140px", "140px", "140px"]}
+                      minW={["150px", "215px", "215px", "215px"]}
+                    />
+                    <Image
+                      src={`${OpenAPI.BASE}/media/${collection.banner_mobile.url}`}
+                      fit="cover"
+                      justifySelf="center"
+                      rounded={"4px"}
+                      h={["100px", "140px", "140px", "140px"]}
+                      minW={["60px", "75px", "75px", "75px"]}
+                    />
+                  </HStack>
                 </Table.Cell>
               </Table.Row>
             ))}

@@ -33,10 +33,6 @@ import type {
   ProductsReadProductsByCategoryResponse,
   ProductsReadProductData,
   ProductsReadProductResponse,
-  ProductsUpdateProductData,
-  ProductsUpdateProductResponse,
-  ProductsDeleteProductData,
-  ProductsDeleteProductResponse,
   ProductsUploadImagesData,
   ProductsUploadImagesResponse,
   UsersReadUsersData,
@@ -396,55 +392,6 @@ export class ProductsService {
   ): CancelablePromise<ProductsReadProductResponse> {
     return __request(OpenAPI, {
       method: "GET",
-      url: "/api/v1/products/{id}",
-      path: {
-        id: data.id,
-      },
-      errors: {
-        422: "Validation Error",
-      },
-    })
-  }
-
-  /**
-   * Update Product
-   * Update an product.
-   * @param data The data for the request.
-   * @param data.id
-   * @param data.requestBody
-   * @returns ProductPublic Successful Response
-   * @throws ApiError
-   */
-  public static updateProduct(
-    data: ProductsUpdateProductData,
-  ): CancelablePromise<ProductsUpdateProductResponse> {
-    return __request(OpenAPI, {
-      method: "PUT",
-      url: "/api/v1/products/{id}",
-      path: {
-        id: data.id,
-      },
-      body: data.requestBody,
-      mediaType: "application/json",
-      errors: {
-        422: "Validation Error",
-      },
-    })
-  }
-
-  /**
-   * Delete Product
-   * Delete an product.
-   * @param data The data for the request.
-   * @param data.id
-   * @returns Message Successful Response
-   * @throws ApiError
-   */
-  public static deleteProduct(
-    data: ProductsDeleteProductData,
-  ): CancelablePromise<ProductsDeleteProductResponse> {
-    return __request(OpenAPI, {
-      method: "DELETE",
       url: "/api/v1/products/{id}",
       path: {
         id: data.id,

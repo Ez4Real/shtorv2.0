@@ -21,15 +21,18 @@ function getCollectionsQueryOptions() {
 
 function Main() {
   const mainBanner = useBreakpointValue({
-    base: "url(/assets/images/banner-mobile.svg)",  // mobile
-    lg: "url(/assets/images/main-banner.svg)",  // desktop
+    base: "url(/assets/images/banner-mobile.svg)", 
+    lg: "url(/assets/images/main-banner.svg)",  
   });
 
   const { data: collections, isPending } = useQuery({
     ...getCollectionsQueryOptions(),
   })
 
-  console.log(collections)
+  const bannerBreakpoint = useBreakpointValue<"banner_mobile" | "banner_desktop">({
+    base: "banner_mobile",
+    lg: "banner_desktop",
+  });
 
 
   return (
@@ -64,12 +67,17 @@ function Main() {
         </RouterLink>
       </Box>
 
-      {collections?.data.map((collection) => (
-        <Collection
-          title={collection.title}
-          bannerImagePath={`${OpenAPI.BASE}/media/${collection.banner.url}`}
-        />
-      ))}
+      {collections?.data.map((collection) => {
+        const banner = collection[bannerBreakpoint ?? "banner_mobile"]
+
+        return (
+          <Collection
+            key={collection.id}
+            title={collection.title}
+            bannerImagePath={`${OpenAPI.BASE}/media/${banner.url}`}
+          />
+        );
+      })}
       
     </Container>
   )
