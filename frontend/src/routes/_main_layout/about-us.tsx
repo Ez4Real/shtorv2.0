@@ -1,5 +1,5 @@
 
-import { Box, Breadcrumb, Flex, Image, Text } from "@chakra-ui/react"
+import { Box, Breadcrumb, Flex, Image, Text, useBreakpointValue } from "@chakra-ui/react"
 import { createFileRoute } from "@tanstack/react-router"
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -10,14 +10,19 @@ export const Route = createFileRoute("/_main_layout/about-us")({
 
 
 function AboutUs() {
+  const bannerSrc = useBreakpointValue({
+    base: "assets/images/main-banner-mobile.svg",
+    md: "assets/images/main-banner.svg",
+  });
 
   return (
     <Box
       pt="126px"
     >
       <Breadcrumb.Root
-        pb="46px"
-        pl="46px"
+        pb={["32px", "32px", "77px", "77px"]}
+        pr={["16px", "16px", "46px", "46px"]}
+        pl={["16px", "16px", "46px", "46px"]}
       >
         <Breadcrumb.List>
           <Breadcrumb.Item>
@@ -39,39 +44,44 @@ function AboutUs() {
       </Breadcrumb.Root>
 
         <Box 
-          position="relative" 
+          position="relative"
+          pl={["16px", "16px", "48px", "48px"]}
+          pr={["16px", "16px", "48px", "48px"]}
         >
           <Image
             w="100vw"
             h="100%" 
-            src="assets/images/main-banner.svg"
+            src={bannerSrc}
             backgroundSize="cover"
             backgroundPosition="center top"
             backgroundRepeat="no-repeat"
           />
           <Text 
-            position="absolute" 
+            position="absolute"
+            w="100%" 
             color="ui.white" 
-            bottom="36px"
+            bottom={["14px", "14px", "5px", "5px"]}
             left="50%"
             transform="translateX(-50%)"
-            fontSize="24px"
-            fontWeight="400"
+            fontSize={["18px", "18px", "24px", "24px"]}
+            fontWeight={["300", "300", "400", "400"]}
+            textAlign={["center"]}
             textTransform="uppercase"
-            whiteSpace="nowrap"
-            >AN ODE TO MY MOM & MY HOME BY THE BLACK SEA SHORES
+            >
+            ОДА МОЇЙ МАМІ І МОЄМУ ДОМУ 
+            НА БЕРЕГАХ ЧОРНОГО МОРЯ
           </Text>
         </Box>
         <Box 
-          mt="24px" 
-          mb="60px"
-          pl="46px"
-          pr="46px"
+          mt={["16px", "16px", "24px", "24px"]} 
+          mb={["16px", "16px", "60px", "60px"]} 
+          pr={["16px", "16px", "46px", "46px"]}
+          pl={["16px", "16px", "46px", "46px"]}
         >
           <Text
             color="ui.main"
             fontWeight="300"
-            fontSize="16px"
+            fontSize={["14px", "14px", "16px", "16px"]}
           >
             На фото молода Людмила, моя мати. Мама займає вагоме місце у моєму житті: вона навчила мене бачити цей світ
             прекрасним, познайомила з мистецтвом й підтримувала у всіх починаннях та найшаленіших бажаннях.
@@ -79,111 +89,132 @@ function AboutUs() {
 
           <Flex
             alignItems="flex-end"
-            pt="60px"
-            pb="72px"
-            gap="60px"
+            flexDirection={["column", "column", "unset", "unset"]}
+            pt={["46px", "46px", "60px", "60px"]}
+            pb={["46px", "46px", "72px", "72px"]}
+            gap={["16px", "16px", "60px", "60px"]}
           >
             <Image src="assets/images/about-us1.svg"/>
             <Text
               color="ui.main" 
               fontWeight="300" 
-              fontSize="16px"
-              mb="40px"
+              fontSize={["14px", "14px", "16px", "16px"]}
+              mb={["0", "0", "40px", "40px"]}
             >
               Одним з цих бажань було створити щось власне, яке б говорило про мої внутрішні сенси й відгукувалось моїм думкам.
             </Text>
           </Flex>
 
-          <Flex>
+          <Flex
+            flexDirection={["column", "column", "unset", "unset"]}
+          >
             <Flex
               flexDirection="column"
-              gap="78px"
-              w="50%"
+              gap={["46px", "46px", "78px", "78px"]}
+              w={["100%", "100%", "50%", "50%"]}
             >
               <Flex
                 flexDirection="column"
-                gap="12px"
+                gap={["8px", "8px", "12px", "12px"]}
               >
+                <Image
+                  display={["block", "block", "none", "none"]}
+                  src="assets/images/about-us3.svg"
+                  mb="4px"
+                />
                 <Text 
                   color="ui.main" 
                   fontWeight="300" 
-                  fontSize="16px"
+                  fontSize={["14px", "14px", "16px", "16px"]}
                 >
                   Ще на початкових етапах створення продукту і сторінки в інстаграм, я замислилась над тим, що могло б якнайкраще ілюструвати головну ідею і сенси бренду. І я зупинилась на прізвищі - симбіозі моїх батьків і цін-ностей, які вони заклали у мене.
                 </Text>
                 <Text 
                   color="ui.main" 
                   fontWeight="300" 
-                  fontSize="16px"
+                  fontSize={["14px", "14px", "16px", "16px"]}
                 >
                   Батько дав мені тверде розуміння того, що я завжди є сама у себе, не дивлячись ні на що. Він також казав: «Ніколи не бреши собі, і інші не будуть. Правда - гарний шлях до реального себе, без ілюзій і гарних слів.» Це не завжди легко збагнути. Але що б ми робили, якби у нашому житті не було одночасно і чорного і білого.
                 </Text>
                 <Text
                   color="ui.main"  
                   fontWeight="300" 
-                  fontSize="16px"
+                  fontSize={["14px", "14px", "16px", "16px"]}
                 >
                   Саме тому, чорний і білий - основні кольори, які використовуються у позиціонуванні.
                 </Text>
               </Flex>
 
-              <Image src="assets/images/about-us2.svg"/>
+              <Image 
+                src="assets/images/about-us2.svg"
+                mb={["16px", "16px", "0", "0"]}
+              />
             </Flex>
 
             <Flex
               flexDirection="column"
-              w="50%"
+              w={["100%", "100%", "50%", "50%"]}
               gap="60px"
             >
-              <Image ml="59px" src="assets/images/about-us3.svg"/>
+              <Image
+                display={["none", "none", "block", "block"]}
+                ml="59px" 
+                src="assets/images/about-us3.svg"
+              />
               <Image src="assets/images/about-us4.svg"/>
             </Flex>
           </Flex>
         </Box>
 
-        <Image
-          w="100vw"
-          h="100%" 
-          src="assets/images/about-us5.svg"
-          backgroundSize="cover"
-          backgroundPosition="center top"
-          backgroundRepeat="no-repeat"
-          mb="60px"
-        />
-
-        <Box
-          pl="46px"
-          pr="46px"
-          pb="60px"
+        <Flex
+          flexDirection={["column-reverse", "column-reverse", "column", "column"]}
         >
-          <Flex
-            flexDirection="column"
-            gap="12px"
-            w="50%"
+          <Image
+            w="100vw"
+            h="100%" 
+            src="assets/images/about-us5.svg"
+            backgroundSize="cover"
+            backgroundPosition="center top"
+            backgroundRepeat="no-repeat"
+            mb={["46px", "46px", "60px", "60px"]}
+            pr={["16px", "16px", "0", "0"]}
+            pl={["16px", "16px", "0", "0"]}
+          />
+
+          <Box
+            pr={["16px", "16px", "46px", "46px"]}
+            pl={["16px", "16px", "46px", "46px"]}
+            pb={["46px", "46px", "60px", "60px"]}
           >
-            <Text 
-              color="ui.main" 
-              fontWeight="300" 
-              fontSize="16px"
+            <Flex
+              flexDirection="column"
+              gap="12px"
+              w={["100%", "100%", "50%", "50%"]}
             >
-              Зображення логотипу повертає мене до початку моєї історії - до мого дому.            
-            </Text>
-            <Text 
-              color="ui.main" 
-              fontWeight="300" 
-              fontSize="16px"
-            >
-              Саме в символі мушлі живе образ дому, спокійного моря, ранкового сходу чи вечірнього заходу сонця, мушель на пляжі та буремних хвиль.            
-            </Text>
-            <Text
-              color="ui.main"  
-              fontWeight="300" 
-              fontSize="16px"
-            >
-              При тому, не даремно нагадує золоте січення, яке каже про досконалість форми, поки бренд транслює думку про те, що кожна жінка є досконалою завдяки власній унікальності. Мʼяке поєднання ідеї моря - символу народження та початку життя, яке дає жінка, образу матері (що є ключо-вою фігурою в житті бренду), ідеального критерію золотого січення та маніфестації краси кожної жінки в єдиному символі мушлі з перлиною несе в собі глубокі сенси.
-            </Text>
-          </Flex>      
-        </Box>
+              <Text 
+                color="ui.main" 
+                fontWeight="300" 
+                fontSize={["14px", "14px", "16px", "16px"]}
+              >
+                Зображення логотипу повертає мене до початку моєї історії - до мого дому.            
+              </Text>
+              <Text 
+                color="ui.main" 
+                fontWeight="300" 
+                fontSize={["14px", "14px", "16px", "16px"]}
+              >
+                Саме в символі мушлі живе образ дому, спокійного моря, ранкового сходу чи вечірнього заходу сонця, мушель на пляжі та буремних хвиль.            
+              </Text>
+              <Text
+                color="ui.main"  
+                fontWeight="300" 
+                fontSize={["14px", "14px", "16px", "16px"]}
+              >
+                При тому, не даремно нагадує золоте січення, яке каже про досконалість форми, поки бренд транслює думку про те, що кожна жінка є досконалою завдяки власній унікальності. Мʼяке поєднання ідеї моря - символу народження та початку життя, яке дає жінка, образу матері (що є ключо-вою фігурою в житті бренду), ідеального критерію золотого січення та маніфестації краси кожної жінки в єдиному символі мушлі з перлиною несе в собі глубокі сенси.
+              </Text>
+            </Flex>      
+          </Box>
+        </Flex>
 
         <Box 
           position="relative" 
@@ -195,43 +226,65 @@ function AboutUs() {
             backgroundSize="cover"
             backgroundPosition="center top"
             backgroundRepeat="no-repeat"
+            pr={["16px", "16px", "0", "0"]}
+            pl={["16px", "16px", "0", "0"]}
+            pt={["62px", "62px", "0", "0"]}
           />
           <Text 
-            position="absolute" 
-            color="ui.white" 
-            top="36px"
+            position="absolute"
+            w="100%"
+            color={["ui.main", "ui.main", "ui.white", "ui.white"]}
+            top={["0", "0", "36px", "36px"]}
             left="50%"
             transform="translateX(-50%)"
-            fontSize="24px"
-            fontWeight="400"
+            fontSize={["18px", "18px", "24px", "24px"]}
+            fontWeight={["300", "300", "400", "400"]}
             textTransform="uppercase"
+            textAlign={["left", "left", "center", "center"]}
+            pl={["16px", "16px", "0", "0"]}
             >SHTOR - це маніфест справжньості жінки
           </Text>
         </Box>
 
         <Box 
-          pl="46px"
-          pr="46px"
-          pt="60px"
-          pb="60px"
+          pr={["16px", "16px", "46px", "46px"]}
+          pl={["16px", "16px", "46px", "46px"]}
+          pt={["16px", "16px", "60px", "60px"]}
+          pb={["46px", "46px", "60px", "60px"]}
         >
-          <Flex gap="60px">
+          <Flex 
+            gap={["16px", "16px", "60px", "60px"]}
+            flexDirection={["column", "column", "unset", "unset"]}
+          >
             <Flex
-              w="50%"
+              w={["100%", "100%", "50%", "50%"]}
             >
               <Image h="419px" src="assets/images/about-us7.svg"/>
             </Flex>
 
             <Flex
               flexDirection="column"
-              w="50%"
-              gap="60px"
+              w={["100%", "100%", "50%", "50%"]}
+              gap={["16px", "16px", "60px", "60px"]}
             >
               <Image src="assets/images/about-us8.svg"/>
               <Image src="assets/images/about-us9.svg"/>
             </Flex>
           </Flex>
         </Box>
+
+        <Text
+          display={["block", "block", "none", "none"]}
+          fontSize="18px"
+          fontWeight="300"
+          textTransform="uppercase"
+          lineHeight="30px"
+          mb="46px"
+          pl="16px"
+          pr="16px"
+        >
+          SHTOR цінує жіночу красу та силу в усіх їх проявах, та сублімує це в унікальний продукт.
+        </Text>
 
         <Image
           w="100vw"
@@ -240,16 +293,21 @@ function AboutUs() {
           backgroundSize="cover"
           backgroundPosition="center top"
           backgroundRepeat="no-repeat"
-          mb="103px"
+          mb={["16px", "16px", "103px", "103px"]}
+          pr={["16px", "16px", "0", "0"]}
+          pl={["16px", "16px", "0", "0"]}
         />
 
         <Box 
-          pl="46px"
-          pr="46px"
-          pb="120px"
+          pr={["16px", "16px", "46px", "46px"]}
+          pl={["16px", "16px", "46px", "46px"]}
+          pb={["74px", "74px", "120px", "120px"]}
         >
           <Flex gap="60px">
-            <Image src="assets/images/about-us11.svg"/>
+            <Image 
+              src="assets/images/about-us11.svg"
+              mb={["16px", "16px", "0", "0"]}
+            />
             <Flex
               flexDirection="column"
               w="50%"
@@ -258,6 +316,7 @@ function AboutUs() {
               fontWeight="400"
             >
               <Text
+                display={["none", "none", "block", "block"]}
                 fontSize="24px"
                 fontWeight="400"
                 textTransform="uppercase"
@@ -275,16 +334,16 @@ function AboutUs() {
           </Flex>
 
           <Flex
-            pt="60px"
+            pt={["46px", "46px", "60px", "60px"]}
             flexDirection="column"
             justifyContent="center"
-            alignItems="center"
+            alignItems={["right", "right", "center", "center"]}
           >
             <Text
               color="ui.main"  
-              fontWeight="400" 
-              fontSize="24px"
-              mb="24px"
+              fontWeight={["300", "300", "400", "400"]}
+              fontSize={["18px", "18px", "24px", "24px"]}
+              mb={["46px", "46px", "24px", "24px"]}
               textTransform="uppercase"
             >
               А сімейні цінності стають важливим досвідом, який живе в сенсах SHTOR
@@ -292,13 +351,25 @@ function AboutUs() {
             <Image src="assets/images/about-us13.svg"/>
             <Text
               color="ui.main"  
-              fontWeight="400" 
-              fontSize="24px"
-              mt="24px"
+              fontWeight={["300", "300", "400", "400"]}
+              fontSize={["18px", "18px", "24px", "24px"]}
+              mt={["16px", "16px", "24px", "24px"]}
               textTransform="uppercase"
             >
               SHTOR - це дослідження себе і своєї природи.
             </Text>
+            <Text
+              display={["block", "block", "none", "none"]}
+              color="ui.main"  
+              fontWeight={["300", "300", "400", "400"]}
+              fontSize={["18px", "18px", "24px", "24px"]}
+              mt="46px"
+              textTransform="uppercase"
+              textAlign="right"
+            >
+              перейти до колекцій
+            </Text>
+
           </Flex>
         </Box>
         

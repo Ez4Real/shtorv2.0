@@ -16,6 +16,7 @@ import { Route as LayoutImport } from './routes/_layout'
 import { Route as AuthlayoutImport } from './routes/_auth_layout'
 import { Route as MainlayoutIndexImport } from './routes/_main_layout/index'
 import { Route as MainlayoutProductImport } from './routes/_main_layout/product'
+import { Route as MainlayoutCartImport } from './routes/_main_layout/cart'
 import { Route as MainlayoutAboutUsImport } from './routes/_main_layout/about-us'
 import { Route as AuthlayoutSignupImport } from './routes/_auth_layout/signup'
 import { Route as AuthlayoutResetPasswordImport } from './routes/_auth_layout/reset-password'
@@ -51,6 +52,11 @@ const MainlayoutIndexRoute = MainlayoutIndexImport.update({
 
 const MainlayoutProductRoute = MainlayoutProductImport.update({
   path: '/product',
+  getParentRoute: () => MainlayoutRoute,
+} as any)
+
+const MainlayoutCartRoute = MainlayoutCartImport.update({
+  path: '/cart',
   getParentRoute: () => MainlayoutRoute,
 } as any)
 
@@ -140,6 +146,10 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MainlayoutAboutUsImport
       parentRoute: typeof MainlayoutImport
     }
+    '/_main_layout/cart': {
+      preLoaderRoute: typeof MainlayoutCartImport
+      parentRoute: typeof MainlayoutImport
+    }
     '/_main_layout/product': {
       preLoaderRoute: typeof MainlayoutProductImport
       parentRoute: typeof MainlayoutImport
@@ -189,6 +199,7 @@ export const routeTree = rootRoute.addChildren([
   ]),
   MainlayoutRoute.addChildren([
     MainlayoutAboutUsRoute,
+    MainlayoutCartRoute,
     MainlayoutProductRoute,
     MainlayoutIndexRoute,
   ]),
