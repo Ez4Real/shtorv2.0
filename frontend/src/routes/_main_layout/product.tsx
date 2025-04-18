@@ -34,30 +34,30 @@ function Product() {
         <Breadcrumb.Root
             pb="32px"
         >
-            <Breadcrumb.List>
-                <Breadcrumb.Item>
-                    <Breadcrumb.Link
-                      href="/#root"
-                      fontSize="16px"
-                    >Home
-                    </Breadcrumb.Link>
-                </Breadcrumb.Item>
-                <Breadcrumb.Item>
-                    <Breadcrumb.Link
-                      href="#"
-                      fontSize="16px"
-                    >/GOLDEN RATIO
-                    </Breadcrumb.Link>
-                </Breadcrumb.Item>
-                <Breadcrumb.Item>
-                    <Breadcrumb.Link
-                      href="#"
-                      fontWeight="500"
-                      fontSize="16px"
-                    >/Spiral earrings
-                    </Breadcrumb.Link>
-                </Breadcrumb.Item>
-            </Breadcrumb.List>
+          <Breadcrumb.List>
+              <Breadcrumb.Item>
+                  <Breadcrumb.Link
+                    href="/#root"
+                    fontSize="16px"
+                  >Home
+                  </Breadcrumb.Link>
+              </Breadcrumb.Item>
+              <Breadcrumb.Item>
+                  <Breadcrumb.Link
+                    href="#"
+                    fontSize="16px"
+                  >/GOLDEN RATIO
+                  </Breadcrumb.Link>
+              </Breadcrumb.Item>
+              <Breadcrumb.Item>
+                  <Breadcrumb.Link
+                    href="#"
+                    fontWeight="500"
+                    fontSize="16px"
+                  >/Spiral earrings
+                  </Breadcrumb.Link>
+              </Breadcrumb.Item>
+          </Breadcrumb.List>
         </Breadcrumb.Root>
         <Flex
           justifyContent="space-between"
