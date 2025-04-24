@@ -85,6 +85,7 @@ class CollectionCreate(CollectionBase):
 
 class CollectionUpdate(SQLModel):
     title: str | None = Field(default=None, min_length=1, max_length=255) 
+    order: int | None = Field(default=None)
     banner_desktop: UploadFile | None = File(default=None)
     banner_mobile: UploadFile | None = File(default=None)
 
@@ -92,7 +93,8 @@ class CollectionUpdate(SQLModel):
 class Collection(CollectionBase, table=True):
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
-
+    order: int = Field(index=True, unique=True, gt=0) 
+    
     banners: list["CollectionBanner"] = Relationship(back_populates="collection", sa_relationship_kwargs={"cascade": "all, delete-orphan"})
 
     @property
@@ -120,6 +122,7 @@ class CollectionBannerPublic(ImageBase):
 class CollectionPublic(CollectionBase):
     id: uuid.UUID
     created_at: datetime
+    order: int
     banner_desktop: CollectionBannerPublic
     banner_mobile: CollectionBannerPublic
 

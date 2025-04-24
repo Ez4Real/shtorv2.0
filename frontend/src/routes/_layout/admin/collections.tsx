@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react"
 import {
+  Box,
   Container,
   EmptyState,
   Flex,
@@ -7,11 +8,12 @@ import {
   HStack,
   Image,
   Table,
+  Text,
   VStack,
 } from "@chakra-ui/react"
 import { useQuery } from "@tanstack/react-query"
 import { createFileRoute, useNavigate } from "@tanstack/react-router"
-import { FiSearch } from "react-icons/fi"
+import { FiChevronDown, FiChevronUp, FiSearch } from "react-icons/fi"
 import { z } from "zod"
 
 import { CollectionsService, OpenAPI } from "@/client"
@@ -27,6 +29,7 @@ import {
 } from "@/components/ui/pagination.tsx"
 import { setupHorizontalScrollOnOverflow } from "@/utils"
 import { useColorModeValue } from "@/components/ui/color-mode"
+import { IconButton } from "@/components/ui/icon-button"
 
 const collectionsSearchSchema = z.object({
   page: z.number().catch(1),
@@ -120,13 +123,26 @@ function CollectionsTable() {
                 w="sm"
                 textAlign="center"
               >Banners</Table.ColumnHeader>
+              <Table.ColumnHeader w="sm"></Table.ColumnHeader>
             </Table.Row>
           </Table.Header>
           <Table.Body>
             {collections?.map((collection) => (
               <Table.Row key={collection.id} opacity={isPlaceholderData ? 0.5 : 1}>
-                <Table.Cell p="1rem .25rem !important">
-                  <CollectionActionsMenu collection={collection} />
+                <Table.Cell
+                  truncate
+                  p={0}
+                  maxW="sm"
+                  fontWeight="bold"
+                  placeItems="center"
+                >
+                  <IconButton>
+                    <FiChevronUp/>
+                  </IconButton>
+                  <Text p=".75rem .5rem">{collection.order}</Text>
+                  <IconButton>
+                    <FiChevronDown/>
+                  </IconButton>
                 </Table.Cell>
                 <Table.Cell truncate maxW="sm">
                   {collection.id}
@@ -137,8 +153,10 @@ function CollectionsTable() {
                 <Table.Cell truncate maxWidth="50%">
                   {new Date(collection.created_at as string).toLocaleString()}
                 </Table.Cell>
-                
-                <Table.Cell px="1.5rem">
+
+                <Table.Cell
+                  px={["1.5rem", ".75rem", ".75rem", ".75rem"]}
+                >
                   <HStack>
                     <Image
                       src={`${OpenAPI.BASE}/media/${collection.banner_desktop.url}`}
@@ -157,6 +175,10 @@ function CollectionsTable() {
                       minW={["60px", "75px", "75px", "75px"]}
                     />
                   </HStack>
+                </Table.Cell>
+
+                <Table.Cell p="1rem .25rem !important">
+                  <CollectionActionsMenu collection={collection} />
                 </Table.Cell>
               </Table.Row>
             ))}
@@ -182,14 +204,21 @@ function CollectionsTable() {
 
 function Collections() {
   return (
-    <Container maxW="full">
-      <Heading
-        size="lg"
-        pt={2}
-        textAlign={["center", "center", "start", "start"]}
-      >Collections Management
-      </Heading>
-      <AddCollection />
+    <Container
+      p={0}
+      maxW="full"
+    >
+      <Box
+        paddingInline="2rem"
+      >
+        <Heading
+          size="lg"
+          pt={2}
+          textAlign={["center", "center", "start", "start"]}
+        >Collections Management
+        </Heading>
+        <AddCollection />
+      </Box>
       <CollectionsTable />
     </Container>
   )

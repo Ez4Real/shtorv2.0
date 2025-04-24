@@ -40,6 +40,7 @@ export type CollectionPublic = {
   title: string
   id: string
   created_at: string
+  order: number
   banner_desktop: CollectionBannerPublic
   banner_mobile: CollectionBannerPublic
 }
