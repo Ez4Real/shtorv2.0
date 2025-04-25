@@ -129,6 +129,8 @@ class CollectionPublic(CollectionBase):
 class CollectionsPublic(SQLModel):
     data: list[CollectionPublic]
     count: int
+    min_order: int
+    max_order: int
 
 
 # Shared properties

@@ -14,6 +14,8 @@ import type {
   CollectionsUpdateCollectionResponse,
   CollectionsDeleteCollectionData,
   CollectionsDeleteCollectionResponse,
+  CollectionsUpdateCollectionOrderData,
+  CollectionsUpdateCollectionOrderResponse,
   LoginLoginAccessTokenData,
   LoginLoginAccessTokenResponse,
   LoginTestTokenResponse,
@@ -172,6 +174,32 @@ export class CollectionsService {
       path: {
         id: data.id,
       },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Update Collection Order
+   * Update a collection order with nearest one (-1 or +1).
+   * @param data The data for the request.
+   * @param data.id
+   * @param data.formData
+   * @returns CollectionPublic Successful Response
+   * @throws ApiError
+   */
+  public static updateCollectionOrder(
+    data: CollectionsUpdateCollectionOrderData,
+  ): CancelablePromise<CollectionsUpdateCollectionOrderResponse> {
+    return __request(OpenAPI, {
+      method: "PUT",
+      url: "/api/v1/collections/update-order/{id}",
+      path: {
+        id: data.id,
+      },
+      formData: data.formData,
+      mediaType: "application/x-www-form-urlencoded",
       errors: {
         422: "Validation Error",
       },

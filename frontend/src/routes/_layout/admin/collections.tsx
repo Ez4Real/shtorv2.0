@@ -11,12 +11,12 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react"
-import { useQuery } from "@tanstack/react-query"
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { createFileRoute, useNavigate } from "@tanstack/react-router"
 import { FiChevronDown, FiChevronUp, FiSearch } from "react-icons/fi"
 import { z } from "zod"
 
-import { CollectionsService, OpenAPI } from "@/client"
+import { ApiError, CollectionsService, CollectionsUpdateCollectionOrderData, OpenAPI } from "@/client"
 import { CollectionActionsMenu } from '@/components/Common/Actions/CollectionActionsMenu'
 import AddCollection from "@/components/Collections/AddCollection"
 
@@ -27,9 +27,10 @@ import {
   PaginationPrevTrigger,
   PaginationRoot,
 } from "@/components/ui/pagination.tsx"
-import { setupHorizontalScrollOnOverflow } from "@/utils"
+import { handleError, setupHorizontalScrollOnOverflow } from "@/utils"
 import { useColorModeValue } from "@/components/ui/color-mode"
 import { IconButton } from "@/components/ui/icon-button"
+import { SubmitHandler, useForm } from "react-hook-form"
 
 const collectionsSearchSchema = z.object({
   page: z.number().catch(1),
@@ -52,6 +53,7 @@ export const Route = createFileRoute("/_layout/admin/collections")({
 
 function CollectionsTable() {
   const navigate = useNavigate({ from: Route.fullPath })
+  const queryClient = useQueryClient()
   const { page } = Route.useSearch()
   const scrollContainerRef = useRef<HTMLTableElement | null>(null)
   const scrollbarColor = useColorModeValue("ui.main", "ui.dim")
@@ -61,6 +63,15 @@ function CollectionsTable() {
     placeholderData: (prevData) => prevData,
   })
 
+  const methods = useForm<CollectionsUpdateCollectionOrderData>({
+    mode: "onBlur",
+    criteriaMode: "all",
+    defaultValues: {
+      id: "",
+      formData: { order_shift: 0 }
+    }
+  })
+
   const setPage = (page: number) =>
     navigate({
       search: (prev: { [key: string]: number }) => ({ ...prev, page }),
@@ -68,6 +79,26 @@ function CollectionsTable() {
 
   const collections = data?.data.slice(0, PER_PAGE) ?? []
   const count = data?.count ?? 0
+  const minOrder = data?.min_order ?? 0
+  const maxOrder = data?.max_order ?? 0
+
+  const { reset } = methods
+
+  const mutation = useMutation({
+    mutationFn: (data: CollectionsUpdateCollectionOrderData) =>
+      CollectionsService.updateCollectionOrder(data),
+    onSuccess: () => {
+      reset()
+    },
+    onError: (err: ApiError) => handleError(err),
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ["collections"] })
+    },
+  })
+
+  const onUpdateOrder: SubmitHandler<CollectionsUpdateCollectionOrderData> = (data) => {
+    mutation.mutate(data)
+  }
 
   useEffect(() => {
     return setupHorizontalScrollOnOverflow(scrollContainerRef.current)
@@ -115,7 +146,7 @@ function CollectionsTable() {
         >
           <Table.Header>
             <Table.Row>
-              <Table.ColumnHeader></Table.ColumnHeader>
+              <Table.ColumnHeader>№</Table.ColumnHeader>
               <Table.ColumnHeader w="sm">ID</Table.ColumnHeader>
               <Table.ColumnHeader w="sm">Title</Table.ColumnHeader>
               <Table.ColumnHeader w="sm">Date | Time</Table.ColumnHeader>
@@ -136,13 +167,25 @@ function CollectionsTable() {
                   fontWeight="bold"
                   placeItems="center"
                 >
-                  <IconButton>
+                  {collection.order > minOrder && (
+                    <IconButton
+                      onClick={() => onUpdateOrder({
+                        id: collection.id,
+                        formData: { order_shift: -1 },
+                      })}>
                     <FiChevronUp/>
-                  </IconButton>
+                    </IconButton>
+                  )}
                   <Text p=".75rem .5rem">{collection.order}</Text>
-                  <IconButton>
-                    <FiChevronDown/>
-                  </IconButton>
+                  {collection.order < maxOrder && (
+                    <IconButton
+                      onClick={() => onUpdateOrder({
+                        id: collection.id,
+                        formData: { order_shift: 1 },
+                      })}>
+                      <FiChevronDown/>
+                    </IconButton>
+                  )}
                 </Table.Cell>
                 <Table.Cell truncate maxW="sm">
                   {collection.id}

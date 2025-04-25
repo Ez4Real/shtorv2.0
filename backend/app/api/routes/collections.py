@@ -24,10 +24,22 @@ def read_collections(
   """
   count_statement = select(func.count()).select_from(Collection)
   count = session.exec(count_statement).one()
+  
+  collections_order_bounds = select(
+    func.min(Collection.order), func.max(Collection.order)
+  )
+  min_order, max_order = session.exec(collections_order_bounds).one()
+
+  
   statement = select(Collection).offset(skip).limit(limit).order_by(Collection.order)
   collections = session.exec(statement).all()
     
-  return CollectionsPublic(data=collections, count=count)
+  return CollectionsPublic(
+    data=collections,
+    count=count,
+    min_order=min_order,
+    max_order=max_order
+  )
 
 
 @router.get("/{id}", response_model=CollectionPublic)

@@ -12,6 +12,10 @@ export type Body_collections_update_collection = {
   banner_mobile?: (Blob | File) | null
 }
 
+export type Body_collections_update_collection_order = {
+  order_shift: number
+}
+
 export type Body_login_login_access_token = {
   grant_type?: string | null
   username: string
@@ -48,6 +52,8 @@ export type CollectionPublic = {
 export type CollectionsPublic = {
   data: Array<CollectionPublic>
   count: number
+  min_order: number
+  max_order: number
 }
 
 export type DeviceType = "desktop" | "mobile"
@@ -176,6 +182,13 @@ export type CollectionsDeleteCollectionData = {
 }
 
 export type CollectionsDeleteCollectionResponse = Message
+
+export type CollectionsUpdateCollectionOrderData = {
+  formData: Body_collections_update_collection_order
+  id: string
+}
+
+export type CollectionsUpdateCollectionOrderResponse = CollectionPublic
 
 export type LoginLoginAccessTokenData = {
   formData: Body_login_login_access_token
