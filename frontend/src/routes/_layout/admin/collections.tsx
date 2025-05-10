@@ -8,12 +8,11 @@ import {
   HStack,
   Image,
   Table,
-  Text,
   VStack,
 } from "@chakra-ui/react"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { createFileRoute, useNavigate } from "@tanstack/react-router"
-import { FiChevronDown, FiChevronUp, FiSearch } from "react-icons/fi"
+import { FiSearch } from "react-icons/fi"
 import { z } from "zod"
 
 import { ApiError, CollectionsService, CollectionsUpdateCollectionOrderData, OpenAPI } from "@/client"
@@ -29,8 +28,8 @@ import {
 } from "@/components/ui/pagination.tsx"
 import { handleError, setupHorizontalScrollOnOverflow } from "@/utils"
 import { useColorModeValue } from "@/components/ui/color-mode"
-import { IconButton } from "@/components/ui/icon-button"
 import { SubmitHandler, useForm } from "react-hook-form"
+import ItemOrderControls from "@/components/Common/ItemOrderControls"
 
 const collectionsSearchSchema = z.object({
   page: z.number().catch(1),
@@ -165,27 +164,17 @@ function CollectionsTable() {
                   p={0}
                   maxW="sm"
                   fontWeight="bold"
-                  placeItems="center"
                 >
-                  {collection.order > minOrder && (
-                    <IconButton
-                      onClick={() => onUpdateOrder({
-                        id: collection.id,
-                        formData: { order_shift: -1 },
-                      })}>
-                    <FiChevronUp/>
-                    </IconButton>
-                  )}
-                  <Text p=".75rem .5rem">{collection.order}</Text>
-                  {collection.order < maxOrder && (
-                    <IconButton
-                      onClick={() => onUpdateOrder({
-                        id: collection.id,
-                        formData: { order_shift: 1 },
-                      })}>
-                      <FiChevronDown/>
-                    </IconButton>
-                  )}
+                  <ItemOrderControls
+                    item={collection}
+                    minOrder={minOrder}
+                    maxOrder={maxOrder}
+                    onUpdateOrder={onUpdateOrder}
+                    getPayload={(item, direction) => ({
+                      id: item.id,
+                      formData: { order_shift: direction },
+                    })}
+                  />
                 </Table.Cell>
                 <Table.Cell truncate maxW="sm">
                   {collection.id}
