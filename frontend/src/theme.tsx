@@ -122,9 +122,9 @@ export const main = createSystem(defaultConfig, {
       },
       colors: {
         ui: {
-          main: { value: "#1E1E1E" },
-          white: {value: "#FFFFFF" },
-          grey: {value: "#BABABA" },
+          main: { value: "#1E1E1E"},
+          white: {value: "#FFFFFF"},
+          grey: {value: "#BABABA"},
           border: {value: "#3A3A3A"},
           error: {value: "#A50000"},
           success: {value: "#017D18"}

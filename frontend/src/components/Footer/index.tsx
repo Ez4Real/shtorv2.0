@@ -33,10 +33,12 @@ const Footer = () => {
         <Flex
           flexDirection="column"
           gap="16px"
+          w={["100%", "100%", "unset", "unset"]}
         >
           <Text
             fontSize="16px"
             fontWeight="400"
+            mb={["14px", "14px", "0", "0"]}
           >
             {t("Footer.newsletterLabel")}
           </Text>
@@ -44,7 +46,8 @@ const Footer = () => {
             <Input
               css={{ "--error-color": "ui.error" }} //css color for future error 
               placeholder="Email"
-              border="0.5px solid #3A3A3A"
+              border="0.5px solid #B3B3B3"
+              borderColor={["#B3B3B3", "#B3B3B3", "#3A3A3A", "#3A3A3A"]}
               borderRadius="0"
               opacity="80%"
               fontFamily="'Lexend', sans-serif"
@@ -60,7 +63,10 @@ const Footer = () => {
               position="absolute"
               right="13px"
             >
-              <Image src="/assets/icons/arrow-right.svg" />
+              <Image 
+                opacity={["60%", "#60%", "unset", "unset"]}
+                src="/assets/icons/arrow-right.svg" 
+              />
             </Button>
           </Group>
         </Flex>
@@ -74,7 +80,7 @@ const Footer = () => {
             flexDirection="column"
             w="200px"
             alignItems={{ base: "flex-start", sm: "flex-end", md: "flex-end" }}
-            gap={{ base: "16px", sm: "12px", md: "12px" }}
+            gap={["8px", "8px", "12px", "12px"]}
           >
             <RouterLink to="/">
               <Text 
@@ -109,6 +115,19 @@ const Footer = () => {
                 {t("Footer.returns")}
               </Text>
             </RouterLink>
+
+            <RouterLink to="/">
+              <Text 
+                className="main-footer-link"
+                fontSize="16px"
+                fontWeight="400"
+                lineHeight="20px"
+                textAlign="right"
+              > 
+                Договір публічної оферти
+              </Text>
+            </RouterLink>
+
             <RouterLink to="/">
               <Text 
                 className="main-footer-link"
@@ -120,10 +139,22 @@ const Footer = () => {
                 {t("Footer.chat")}
               </Text>
             </RouterLink>
+
+            <RouterLink to="/">
+              <Text 
+                className="main-footer-link"
+                fontSize="16px"
+                fontWeight="400"
+                lineHeight="20px"
+                textAlign="right"
+              >
+                Розмірна сітка
+              </Text>
+            </RouterLink>
           </Flex>
           <Flex
             flexDirection={{ base: "column-reverse", sm: "column", md: "column", lg: "column" }}
-            gap={{ base: "16px", sm: "24px", md: "24px" }}
+            gap={{ base: "12px", sm: "24px", md: "24px" }}
             alignItems="flex-end"
           >
             <SwitchLocalizationSlash />
@@ -134,10 +165,10 @@ const Footer = () => {
               outline="none"
             >
               <Text
-                fontSize="20px"
-                fontWeight="500"
+                fontSize={["16px", "16px", "20px", "20px"]}
+                fontWeight={["300", "300", "500", "500"]}
                 lineHeight={["21px", "25px", "25px", "25px"]}
-                textDecoration="underline"
+                textDecoration={["unset", "underline"]}
                 transition=".1s"
                 _hover={{ 
                   color: "ui.grey", 
