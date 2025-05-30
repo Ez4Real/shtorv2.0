@@ -1,24 +1,27 @@
-import { Accordion, Box, Button, CloseButton, Drawer, Flex, HStack, Image, Portal, Text } from "@chakra-ui/react"
-import BurgerMenu from "../Common/BurgerMenu"
+import { Box, Flex, HStack, Image } from "@chakra-ui/react"
+
 import { Link as RouterLink, useRouterState } from "@tanstack/react-router"
+import SwitchLocalizationMini from "../Common/SwitchLocalization/LanguageMini"
+import MenuDialog from "../MenuDialog"
 
 const Header = () => {
     const { location } = useRouterState()
-    const isHomepage = location.pathname === "/"
 
+    const absoluteHeaderPaths = ['/', '/collections/']
+    const isHeaderAbsolute = absoluteHeaderPaths.includes(location.pathname)
     return (
       <>
         <Box
           as="header"
-          position="relative"
-          top={["61px", "61px", "46px", "46px"]}
-          p={["0 16px", "0 16px", "0 46px", "0 46px"]}
-          zIndex="1"
+          position={isHeaderAbsolute ? "absolute" : "relative"}
+          zIndex={isHeaderAbsolute ? "1" : "0" }
+          w="full"
+          p={["46px 16px", "46px", "46px", "46px"]}
         >
           <Flex
-            h="35px"
-            justifyContent="space-between"
+            h={["24px", "24px", "35px", "35px"]}
             alignItems="center"
+            justifyContent="space-between"
           >
             <HStack>
               <Drawer.Root
@@ -405,36 +408,34 @@ const Header = () => {
 
                 </Portal>
               </Drawer.Root>
+              
+              <MenuDialog />
+              
             </HStack>
 
-            <RouterLink 
-              to="/"
-              hash="root"
+            <Box
+              position="absolute"
+              left="50%"
+              top="50%"
+              transform="translate(-50%, -50%)"
+              w={["100px", "100px", "180px", "180px"]}
             >
-              <Image
-                w={["100px", "100px", "180px", "180px"]}
-                src={`/assets/images/${
-                  isHomepage ? "logo-white.svg" : "logo-black.svg"
-                }`}
-              />
-            </RouterLink>
+              <RouterLink to="/" hash="root">
+                <Image
+                  src="/assets/images/logo-black.svg"
+                  w="100%"
+                  h="100%"
+                />
+              </RouterLink>
+            </Box>
 
             <Flex
               alignItems="center"
               gap="16px"
               fontWeight="300"
             >
-              <Box
-                fontSize="20px"
-                fontWeight="300"
-                lineHeight="25px"
-                display={["none", "none", "block", "block"]}
-                color={isHomepage ? "ui.white": "ui.black"}
-              >EN
-              </Box>
-              <Image src={`/assets/icons/${
-                isHomepage ? "cart-header-white.svg" : "cart-header-black.svg"
-                }`} />
+              <SwitchLocalizationMini />
+              <Image src="/assets/icons/cart-header-black.svg"/>
             </Flex>
           </Flex>
         </Box>

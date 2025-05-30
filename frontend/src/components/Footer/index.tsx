@@ -1,21 +1,25 @@
-import { Box, Button, Flex, Group, Image, Input, Text } from "@chakra-ui/react";
-import { Link as RouterLink, useRouterState } from "@tanstack/react-router";
+import { Box, Button, Flex, Group, Image, Input, Text, Link } from "@chakra-ui/react"
+import { Link as RouterLink } from "@tanstack/react-router"
+import SwitchLocalizationSlash from "../Common/SwitchLocalization/LanguageCurrencyViaSlash"
+import { useTranslation } from "react-i18next"
 
 const Footer = () => {
-  const { location } = useRouterState()
-  const isHomepage = location.pathname === "/"
+  const { t } = useTranslation()
+
+  // !!!!!
   return (
     <Box 
-      display={isHomepage ? "none" : "block" }
       as="footer" 
-      pb={["78px", "78px", "112px", "112px"]}>
+      pb={["92px", "92px", "82px", "82px"]}
+      px="46px"
+      >
       <Flex justifyContent="center">
         <RouterLink to="/">
           <Image
             src="/assets/images/logo-footer.svg"
             textAlign="center"
-            h={["70px", "67px", "150px", "225px", "231px"]}
-            mb={["36px", "36px", "66px", "66px"]}
+            h={["75px", "67px", "150px", "225px", "235px"]}
+            mb={["24px", "24px", "59px", "59px"]}
           />
         </RouterLink>
       </Flex>
@@ -23,8 +27,8 @@ const Footer = () => {
         justifyContent="space-between"
         alignItems="start"
         flexDirection={{ base: "column", sm: "unset", md: "unset" }}
-        gap={{ base: "32px", sm: "20px", md: "unset" }}
-        p={["0 16px", "0 16px", "0 46px", " 0 46px"]}
+        gap={{ base: "42px", sm: "20px", md: "unset" }}
+        // p={["0 8px", "0 16px", "0 46px", " 0 46px"]}
       >
         <Flex
           flexDirection="column"
@@ -36,7 +40,7 @@ const Footer = () => {
             fontWeight="400"
             mb={["14px", "14px", "0", "0"]}
           >
-            Будь в курсі випусків і спеціальних подій
+            {t("Footer.newsletterLabel")}
           </Text>
           <Group attached w={["100%", "100%", "373px", "373px"]}>
             <Input
@@ -74,6 +78,7 @@ const Footer = () => {
         >
           <Flex
             flexDirection="column"
+            w="200px"
             alignItems={{ base: "flex-start", sm: "flex-end", md: "flex-end" }}
             gap={["8px", "8px", "12px", "12px"]}
           >
@@ -85,7 +90,7 @@ const Footer = () => {
                 lineHeight="20px"
                 textAlign="right"
               >
-                Політика Конфіденційності
+                {t("Footer.privacyPolicy")}
               </Text>
             </RouterLink>
             <RouterLink to="/">
@@ -96,7 +101,7 @@ const Footer = () => {
                 lineHeight="20px"
                 textAlign="right"
               >
-                Оплата і доставка
+                {t("Footer.paymentAndDelivery")}
               </Text>
             </RouterLink>
             <RouterLink to="/">
@@ -107,7 +112,7 @@ const Footer = () => {
                 lineHeight="20px"
                 textAlign="right"
               >
-                Повернення та обмін
+                {t("Footer.returns")}
               </Text>
             </RouterLink>
 
@@ -131,7 +136,7 @@ const Footer = () => {
                 lineHeight="20px"
                 textAlign="right"
               >
-                Чат
+                {t("Footer.chat")}
               </Text>
             </RouterLink>
 
@@ -152,17 +157,12 @@ const Footer = () => {
             gap={{ base: "12px", sm: "24px", md: "24px" }}
             alignItems="flex-end"
           >
-            <RouterLink to="/">
-              <Text
-                fontSize={["14px", "14px", "20px", "20px"]}
-                fontWeight={["300", "300", "400", "400"]}
-                lineHeight={["15px", "25px", "25px", "25px"]}
-              >
-                UA/UAH
-              </Text>
-            </RouterLink>
-            <RouterLink 
-              to="/"
+            <SwitchLocalizationSlash />
+            <Link 
+              href="https://www.instagram.com/shtorsstore/"
+              target="_blank"
+              rel="noopener noreferrer"
+              outline="none"
             >
               <Text
                 fontSize={["16px", "16px", "20px", "20px"]}
@@ -177,12 +177,12 @@ const Footer = () => {
               >
                 INSTAGRAM
               </Text>
-            </RouterLink>
+            </Link>
           </Flex>
         </Flex>
       </Flex>
     </Box>
-  );
-};
+  )
+}
 
-export default Footer;
+export default Footer

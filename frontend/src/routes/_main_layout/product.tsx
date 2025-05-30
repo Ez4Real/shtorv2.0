@@ -5,11 +5,12 @@ import type { Swiper as SwiperCore } from "swiper";
 import { useRef } from "react";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { FreeMode, Navigation, Thumbs, Pagination } from 'swiper/modules';
+
 import type { Swiper as SwiperType } from 'swiper'
 
-import 'swiper/css';
-import 'swiper/css/free-mode';
-import 'swiper/css/thumbs';
+import 'swiper/css'
+import 'swiper/css/free-mode'
+import 'swiper/css/thumbs'
 
 export const Route = createFileRoute("/_main_layout/product")({
   component: Product,
@@ -25,7 +26,7 @@ function Product() {
         { label: "Large", value: "3" },
     ]
     const aboutUsImg = "/assets/images/test-category.svg"
-    const swiperRef = useRef<SwiperCore | null>(null);
+    const swiperRef = useRef<SwiperCore | null>(null)
   return (
     <Container
       pt="120px"

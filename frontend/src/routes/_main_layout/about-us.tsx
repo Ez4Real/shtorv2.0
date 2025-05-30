@@ -1,8 +1,8 @@
 
 import { Box, Breadcrumb, Flex, Image, Text, useBreakpointValue } from "@chakra-ui/react"
 import { createFileRoute } from "@tanstack/react-router"
-import 'swiper/css';
-import 'swiper/css/navigation';
+import 'swiper/css'
+import 'swiper/css/navigation'
 
 export const Route = createFileRoute("/_main_layout/about-us")({
   component: AboutUs,

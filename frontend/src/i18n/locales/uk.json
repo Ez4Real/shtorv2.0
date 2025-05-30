@@ -1,0 +1,17 @@
+{
+  "Locale": {
+    "language": "UA",
+    "currency": "UAH"
+  },
+  "Homepage": {
+    "allCollections": "УСІ КОЛЕКЦІЇ"
+  },
+  "Footer": {
+    "newsletterLabel": "Будь в курсі випусків і спеціальних подій",
+
+    "privacyPolicy": "Політика Конфіденційності",
+    "paymentAndDelivery": "Оплата і доставка",
+    "returns": "Повернення та обмін",
+    "chat": "Чат"
+  }
+}

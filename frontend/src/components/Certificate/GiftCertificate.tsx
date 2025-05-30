@@ -1,7 +1,7 @@
 import { Button, CloseButton, Dialog, Field, Input, Portal } from "@chakra-ui/react"
 
 
-const Certificate = () => {
+const GiftCertificate = () => {
     return (
         <>
             <Dialog.Root
@@ -103,4 +103,4 @@ const Certificate = () => {
     )
 }
 
-export default Certificate
+export default GiftCertificate

@@ -1,20 +1,17 @@
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { useForm, type SubmitHandler } from "react-hook-form"
+import { FormProvider, useForm, type SubmitHandler } from "react-hook-form"
 
 import {
     Button,
     DialogActionTrigger,
     DialogTitle,
-    FileUpload,
     Input,
     Text,
     VStack,
-    FileUploadRootProvider,
-    useFileUpload
+    Flex
   } from "@chakra-ui/react"
 import { FaPlus } from "react-icons/fa"
-import { LuFileImage, LuTrash2 } from "react-icons/lu"
 
 import { 
   CollectionsService,
@@ -34,41 +31,32 @@ import {
     DialogTrigger,
   } from "../ui/dialog"
   import { Field } from "../ui/field"
+import CreateBannerUploadField from "../Common/BannerUploadField/Create"
 
 
 const AddCollection = () => {
   const [isOpen, setIsOpen] = useState(false)
   const queryClient = useQueryClient()
   const { showSuccessToast } = useCustomToast()
-  
-  const fileUpload = useFileUpload({
-    maxFiles: 1,
-    maxFileSize: 5242880,
-  })
 
-  const {
-    register,
-    handleSubmit,
-    reset,
-    setValue,
-    formState: { errors, isValid, isSubmitting },
-  } = useForm<Body_collections_create_collection>({
+  const methods = useForm<Body_collections_create_collection>({
     mode: "onBlur",
     criteriaMode: "all",
     defaultValues: {
       collection: {
         title: ""
       },
-      banner: undefined,
-    },
-  })
-    
-  useEffect(() => {
-    if (fileUpload.acceptedFiles.length > 0) {
-      setValue("banner", fileUpload.acceptedFiles[0], { shouldValidate: true })
+      banner_desktop: undefined,
+      banner_mobile: undefined,
     }
-  }, [fileUpload.acceptedFiles])
-
+  })
+  
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isValid, isSubmitting },
+  } = methods
     
   const mutation = useMutation({
     mutationFn: (data: Body_collections_create_collection) =>
@@ -88,15 +76,6 @@ const AddCollection = () => {
     mutation.mutate(data)
   }
 
-  const handleRemoveImg = () => {
-    fileUpload.clearFiles()
-    setValue(
-      "banner",
-      undefined as unknown as File,
-      { shouldValidate: true }
-    )
-  }
-
   return (
       <DialogRoot
         size={{ base: "xs", md: "md" }}
@@ -110,101 +89,76 @@ const AddCollection = () => {
             Add Collection
           </Button>
         </DialogTrigger>
-        <DialogContent>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <DialogHeader>
-              <DialogTitle>Add Collection</DialogTitle>
-            </DialogHeader>
-            <DialogBody>
-              <Text mb={4}>Fill in the details to add a new collection.</Text>
-              <VStack gap={4}>
-                <Field
-                  required
-                  invalid={!!errors.collection?.title}
-                  errorText={errors.collection?.title?.message}
-                  label="Title"
-                >
-                  <Input
-                    id="title"
-                    {...register("collection.title", {
-                      required: "Title is required.",
-                    })}
-                    placeholder="Title"
-                    type="text"
-                  />
-                </Field>
-                
-                <Field
-                  label="Banner"
-                  required
-                  errorText={errors.banner?.message}
-                  invalid={!!errors.banner}
-                >
-                  <FileUploadRootProvider
-                    value={fileUpload}
-                    flexDirection={["column", "row", "row", "row"]}
+        <DialogContent
+          w="auto"
+          maxW="46rem"
+        >
+          <FormProvider {...methods}>
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <DialogHeader>
+                <DialogTitle>Add Collection</DialogTitle>
+              </DialogHeader>
+              <DialogBody pb={0}>
+                <Text mb={4}>Fill in the details to add a new collection.</Text>
+                <VStack gap={4}>
+                  <Field
+                    required
+                    invalid={!!errors.collection?.title}
+                    errorText={errors.collection?.title?.message}
+                    label="Title"
                   >
-                    <FileUpload.HiddenInput />
-                    <FileUpload.Trigger asChild>
-                      <Button variant="outline" size="sm">
-                        <LuFileImage />
-                        Upload Image
-                      </Button>
-                    </FileUpload.Trigger>
-
-                    {fileUpload.acceptedFiles.length > 0 && (
-                      <FileUpload.Item
-                        file={fileUpload.acceptedFiles[0]}
-                        p={0}
-                        rounded="md"
-                      >
-                        <FileUpload.ItemPreviewImage
-                          w="100%"
-                          h="auto"
-                          rounded="md"
-                        />
-                        <FileUpload.ItemDeleteTrigger
-                          onClick={handleRemoveImg}
-                          p=".25rem"
-                          position="absolute"
-                          right={0}
-                          boxSize={10}
-                          display="flex"
-                          justifyContent="center"
-                          alignItems="center"
-                        >
-                          <LuTrash2 
-                            size={20}
-                            color="#ef4444"
-                            cursor="pointer"
-                          />
-                        </FileUpload.ItemDeleteTrigger>
-                      </FileUpload.Item>
-                    )}
-                  </FileUploadRootProvider>
-                </Field>
-              </VStack>
-            </DialogBody>
-  
-            <DialogFooter gap={2}>
-              <DialogActionTrigger asChild>
+                    <Input
+                      id="title"
+                      {...register("collection.title", {
+                        required: "Title is required.",
+                      })}
+                      placeholder="Title"
+                      type="text"
+                      />
+                  </Field>
+                  
+                  <Flex 
+                    gap="1rem"
+                    w="100%"
+                    maxH={["unset", "525px", "525px", "525px"]}
+                    direction={["column", "row", "row", "row"]}
+                  >
+                    <CreateBannerUploadField
+                      field_id="banner_desktop"
+                      label="Desktop Banner"
+                      error={errors.banner_desktop?.message}
+                      invalid={!!errors.banner_desktop}
+                    />
+                    <CreateBannerUploadField
+                      field_id="banner_mobile"
+                      label="Mobile Banner"
+                      error={errors.banner_mobile?.message}
+                      invalid={!!errors.banner_mobile}
+                    />
+                  </Flex>
+                </VStack>
+              </DialogBody>
+    
+              <DialogFooter gap={2} pt={4}>
+                <DialogActionTrigger asChild>
+                  <Button
+                    variant="subtle"
+                    colorPalette="gray"
+                    disabled={isSubmitting}
+                  >
+                    Cancel
+                  </Button>
+                </DialogActionTrigger>
                 <Button
-                  variant="subtle"
-                  colorPalette="gray"
-                  disabled={isSubmitting}
-                >
-                  Cancel
+                  variant="solid"
+                  type="submit"
+                  disabled={!isValid}
+                  loading={isSubmitting}
+                >Save
                 </Button>
-              </DialogActionTrigger>
-              <Button
-                variant="solid"
-                type="submit"
-                disabled={!isValid}
-                loading={isSubmitting}
-              >Save
-              </Button>
-            </DialogFooter>
-          </form>
+              </DialogFooter>
+            </form>
+          </FormProvider>
           <DialogCloseTrigger />
         </DialogContent>
       </DialogRoot>
