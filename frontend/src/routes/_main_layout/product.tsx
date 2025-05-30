@@ -1,10 +1,10 @@
-import { Box, Breadcrumb, Button, Container, Flex, HStack, Image, List, RadioGroup, Tabs, Text } from "@chakra-ui/react"
+import { Box, Breadcrumb, Button, Container, Flex, HStack, Image, List, RadioGroup, Tabs, Text, useBreakpointValue } from "@chakra-ui/react"
 import { createFileRoute } from "@tanstack/react-router"
 import { useState } from 'react';
 import type { Swiper as SwiperCore } from "swiper";
 import { useRef } from "react";
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { FreeMode, Navigation, Thumbs } from 'swiper/modules';
+import { FreeMode, Navigation, Thumbs, Pagination } from 'swiper/modules';
 import type { Swiper as SwiperType } from 'swiper'
 
 import 'swiper/css';
@@ -18,6 +18,7 @@ export const Route = createFileRoute("/_main_layout/product")({
 
 function Product() {
     const [thumbsSwiper, setThumbsSwiper] = useState<SwiperType | null>(null);
+    const isMobile = useBreakpointValue({ base: true, md: false });
     const items = [
         { label: "Small", value: "1" },
         { label: "Medium", value: "2" },
@@ -32,9 +33,12 @@ function Product() {
       pl={["16px", "16px", "48px", "48px"]}
     >
         <Breadcrumb.Root
-            pb="32px"
+          pb={["24px", "24px", "32px", "32px"]}
         >
-          <Breadcrumb.List>
+          <Breadcrumb.List
+            flexWrap="wrap"
+            gap="0"
+          >
               <Breadcrumb.Item>
                   <Breadcrumb.Link
                     href="/#root"
@@ -52,7 +56,6 @@ function Product() {
               <Breadcrumb.Item>
                   <Breadcrumb.Link
                     href="#"
-                    fontWeight="500"
                     fontSize="16px"
                   >/Spiral earrings
                   </Breadcrumb.Link>
@@ -61,47 +64,49 @@ function Product() {
         </Breadcrumb.Root>
         <Flex
           justifyContent="space-between"
+          flexDirection={{ base: "column", sm: "column", md: "column", lg: "unset" }}
         >
-            <Flex>
-                <Box 
-                  min-height="600px" 
-                  w="96px"
+          <Flex direction={{ base: "column", sm: "row", md: "row", lg: "row" }}>
+            {!isMobile && (
+              <Box minHeight="600px" w="96px">
+                <Swiper
+                  onSwiper={setThumbsSwiper}
+                  direction="vertical"
+                  slidesPerView={6}
+                  modules={[FreeMode, Thumbs]}
+                  style={{ height: "100%" }}
                 >
-                    <Swiper
-                      onSwiper={setThumbsSwiper}
-                      direction="vertical"
-                      slidesPerView={6}
-                      modules={[FreeMode, Thumbs]}
-                      style={{ height: "100%" }}
-                    >
-                        <SwiperSlide>
-                            <Image h="85px" src="assets/images/product-test-big.svg" />
-                        </SwiperSlide>
-                        <SwiperSlide>
-                            <Image h="85px" src="assets/images/product-test-big.svg" />
-                        </SwiperSlide>
-                    </Swiper>
-                </Box>
+                  <SwiperSlide>
+                    <Image h="85px" src="assets/images/product-test-big.svg" />
+                  </SwiperSlide>
+                  <SwiperSlide>
+                    <Image h="85px" src="assets/images/product-test-big.svg" />
+                  </SwiperSlide>
+                </Swiper>
+              </Box>
+            )}
 
-                <Box w="412px">
-                    <Swiper
-                      thumbs={{ swiper: thumbsSwiper }}
-                      modules={[FreeMode, Thumbs]}
-                      style={{ height: "100%" }}
-                    >
-                        <SwiperSlide>
-                            <Image src="assets/images/product-test-big.svg" />
-                        </SwiperSlide>
-                        <SwiperSlide>
-                            <Image h="300px" src="assets/images/product-test-big.svg" />
-                        </SwiperSlide>
-                    </Swiper>
-                </Box>
-            </Flex>
+            <Box w={["100%", "100%", "412px", "412px"]} position="relative">
+              <Swiper
+                thumbs={isMobile ? undefined : { swiper: thumbsSwiper }}
+                modules={[FreeMode, Thumbs, Pagination]}
+                pagination={isMobile ? { clickable: true } : false}
+                style={{ height: "100%" }}
+              >
+                <SwiperSlide>
+                  <Image src="assets/images/product-test-big.svg" />
+                </SwiperSlide>
+                <SwiperSlide>
+                  <Image h="300px" src="assets/images/product-test-big.svg" />
+                </SwiperSlide>
+              </Swiper>
+            </Box>
+          </Flex>
 
             <Box
-              w="50%"
-              pl="90px"
+              w={["100%", "100%", "50%", "50%"]}
+              pl={["0", "0", "90px", "90px"]}
+              pt={["24px", "24px", "0", "0"]}
             >
                 <Text
                   fontSize="24px"
@@ -248,7 +253,7 @@ function Product() {
                   backgroundColor="ui.white"
                   borderColor="ui.main"
                   borderRadius="0"
-                  maxW="363px"
+                  maxW={["100%", "100%", "363px", "363px"]}
                   h="32px"
                 >
                     Add to cart
@@ -271,11 +276,11 @@ function Product() {
               slidesPerView={4}
               spaceBetween="24px"
               rewind={true}
-            // breakpoints={{
-            //     0: { slidesPerView: 2 },
-            //     768: { slidesPerView: 4 },
-            //     1024: { slidesPerView: 6 },
-            // }}
+              breakpoints={{
+                  0: { slidesPerView: 2 },
+                  768: { slidesPerView: 4 },
+                  1024: { slidesPerView: 6 },
+              }}
             >
             {Array.from({ length: 6 }).map((_, index) => (
                 <SwiperSlide key={index}>
@@ -293,17 +298,17 @@ function Product() {
                     
                 </SwiperSlide>
             ))}
-                {/* <Box
+                <Box
                 mt="32px"
                 display={["block", "block", "none", "none"]}
                 onClick={() => swiperRef.current?.slideNext()}
                 >
                     <Image 
-                    src="assets/icons/arrow-right.svg" 
-                    alt="Next Slide"
-                    w="46px"
+                      src="assets/icons/arrow-right.svg" 
+                      alt="Next Slide"
+                      w="46px"
                     />
-                </Box> */}
+                </Box>
             </Swiper>
         </Box> 
     </Container>

@@ -25,110 +25,123 @@ function Cart() {
     >
         <Flex
             textAlign="center"
-            fontSize="32px"
+            fontSize={["24px", "24px", "32px", "32px"]}
             fontWeight="400"
             justifyContent="center"
-            mr="25px"
-            mb="56px"
+            mr={["0", "0", "25px", "25px"]}
+            ml={["14px", "14px", "0", "0"]}
+            mb={["32px", "32px", "56px", "56px"]}
         >
             Cart
         </Flex>
         <Flex
           justifyContent="space-between"
+          flexDirection={["column", "column", "column", "unset"]}
         >
-            <Image src="/assets/images/test-category.svg" mr="-10px"/>
-
             <Flex 
-              flexDirection="column"
-              w="40%"
+              justifyContent={["unset", "unset", "unset", "unset"]}
+              gap={["16px", "16px", "24px", "24px"]}
             >
-                <Flex
-                  maxW="360px"
-                  justifyContent="space-between"
-                >
-                    <Text
-                      fontSize="16px"
-                      fontWeight="400"
-                      lineHeight="20px"
-                      mb="16px"
-                    >
-                      GOLDEN RATIO/Spiral earrings
-                    </Text>
+              <Image 
+                src="/assets/images/test-category.svg" 
+                w={["142px", "142px", "280px", "280px"]}
+              />
+              <Flex 
+                flexDirection="column"
+              >
+                  <Flex
+                    w={["100%", "100%", "100%", "360px"]}
+                    justifyContent="space-between"
+                  >
+                      <Text
+                        fontSize="16px"
+                        fontWeight="400"
+                        lineHeight="20px"
+                        mb="16px"
+                      >
+                        GOLDEN RATIO/Spiral earrings
+                      </Text>
 
-                    <Image src="/assets/icons/close-btn.svg" w="24px" h="24px"/>
-                </Flex>
-                <Text
-                  fontSize="16px"
-                  fontWeight="400"
-                  lineHeight="20px"
-                  mb="12px"
-                >
-                  Silver
-                </Text>
-                <Text
-                  fontSize="16px"
-                  fontWeight="400"
-                  lineHeight="20px"
-                  mb="81px"
-                >
-                  Medium/5,5x2,5cm
-                </Text>
-                <Flex
-                  justifyContent="space-between"
-                  maxW="210px"
-                >  
-                    <HStack gap={0} h="20px">
-                        <Button
-                          onClick={handleDecrease}
-                          variant="plain"
-                          fontSize="16px"
-                          fontWeight="400"
-                          pl="0"
-                          pr="10px"
-                          border="none"
-                        >
-                            -
-                        </Button>
-                        <Text
-                          fontSize="16px"
-                          fontWeight="400"
-                          w="20px"
-                        >
-                            {quantity}
-                        </Text>
-                        <Button 
-                          onClick={handleIncrease}
-                          variant="plain"
-                          fontSize="16px"
-                          fontWeight="400"
-                          pl="10px"
-                          border="none"
-                        >
-                            +
-                        </Button>
-                    </HStack>
-                    
-                    <Text
-                      fontSize="18px"
-                      lineHeight="23px"
-                      fontWeight="400"
-                    >
-                        $90
-                    </Text>
-                </Flex>
+                      <Image 
+                        src="/assets/icons/close-btn.svg" 
+                        w="24px" 
+                        h="24px" 
+                      />
+                  </Flex>
+                  <Text
+                    fontSize="16px"
+                    fontWeight="400"
+                    lineHeight="20px"
+                    mb="12px"
+                  >
+                    Silver
+                  </Text>
+                  <Text
+                    fontSize="16px"
+                    fontWeight="400"
+                    lineHeight="20px"
+                    mb="81px"
+                  >
+                    Medium/5,5x2,5cm
+                  </Text>
+                  <Flex
+                    justifyContent="space-between"
+                    maxW={["100%", "210px", "210px", "210px"]}
+                  >  
+                      <HStack gap={0} h="20px">
+                          <Button
+                            onClick={handleDecrease}
+                            variant="plain"
+                            fontSize="16px"
+                            fontWeight="400"
+                            pl="0"
+                            pr="10px"
+                            border="none"
+                          >
+                              -
+                          </Button>
+                          <Text
+                            fontSize="16px"
+                            fontWeight="400"
+                            w="20px"
+                          >
+                              {quantity}
+                          </Text>
+                          <Button 
+                            onClick={handleIncrease}
+                            variant="plain"
+                            fontSize="16px"
+                            fontWeight="400"
+                            pl="10px"
+                            border="none"
+                          >
+                              +
+                          </Button>
+                      </HStack>
+                      
+                      <Text
+                        fontSize="18px"
+                        lineHeight="23px"
+                        fontWeight="400"
+                      >
+                          $90
+                      </Text>
+                  </Flex>
+              </Flex>
             </Flex>
             <Flex
               flexDirection="column"
-              w="363px"
-              pl="40px"
+              w={["100%", "100%", "100%", "363px"]}
+              pl={["0", "0", "0", "40px"]}
+              mt={["60px", "60px", "60px", "0"]}
             >
                 <Text
                   fontSize="16px"
                   fontWeight="400"
                   lineHeight="20px"
-                  mb="145px"
+                  mb={["24px", "24px", "24px", "145px"]}
                 >
-                    Subtotal
+                  Subtotal
                 </Text>
                 <Flex justifyContent="space-between" w="100%">
                     <Text
@@ -136,14 +149,14 @@ function Cart() {
                       fontWeight="400"
                       lineHeight="20px"
                     >
-                        Total
+                      Total
                     </Text>
                     <Text
                       fontSize="18px"
                       lineHeight="23px"
                       fontWeight="400"
                     >
-                        $90
+                      $90
                     </Text>
                 </Flex>
                 <Button

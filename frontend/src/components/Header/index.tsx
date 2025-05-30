@@ -44,8 +44,8 @@ const Header = () => {
                     <Drawer.Content
                     >
                       <Drawer.Body
-                        pt="152px"
-                        pl="49px"
+                        pt="100px"
+                        pl="24px"
                         pr="45px"
                       >
                         <Flex
@@ -59,7 +59,7 @@ const Header = () => {
                             <Text
                               fontSize="24px"
                               lineHeight="30px"
-                              fontWeight="400"
+                              fontWeight="300"
                             >HOME
                             </Text>
                           </RouterLink>
@@ -70,7 +70,7 @@ const Header = () => {
                             <Text
                               fontSize="24px"
                               lineHeight="30px"
-                              fontWeight="400"
+                              fontWeight="300"
                             >ABOUT US
                             </Text>
                           </RouterLink>
@@ -78,11 +78,13 @@ const Header = () => {
                           <Accordion.Root collapsible>
                             <Accordion.Item value="plain" border="none">
 
-                                <Accordion.ItemTrigger p="0">
+                                <Accordion.ItemTrigger 
+                                  p="0"
+                                >
                                   <Text
                                     fontSize="24px"
                                     lineHeight="30px"
-                                    fontWeight="400"
+                                    fontWeight="300"
                                     cursor="pointer"
                                   >SHOP
                                   </Text>
@@ -95,7 +97,86 @@ const Header = () => {
                                     fontSize="20px"
                                     lineHeight="25px"
                                     fontWeight="300"
-                                  > By Collections
+                                  > All products
+                                  </Accordion.ItemBody>
+                                </Accordion.ItemContent>
+
+                                <Accordion.ItemContent>
+                                  <Accordion.ItemBody pt="16px" pb="0">
+                                    <Accordion.Root collapsible>
+                                      <Accordion.Item 
+                                        value="collections" 
+                                        border="none"
+                                      >
+                                        <Accordion.ItemTrigger 
+                                          pt="0" 
+                                          pb="0"
+                                          css={{
+                                            borderRadius: '0',
+                                            borderBottom: '1px solid transparent',
+                                            maxWidth: '133px',
+                                            _expanded: {
+                                              borderBottom: '1px solid',
+                                              borderColor: 'ui.border',
+                                            },
+                                          }}
+                                        >
+                                          <Text
+                                            fontSize="20px"
+                                            lineHeight="25px" 
+                                            fontWeight="300" 
+                                            cursor="pointer"
+                                            
+                                          >
+                                            By Collections
+                                          </Text>
+                                        </Accordion.ItemTrigger>
+                                        <Accordion.ItemContent>
+                                          <Accordion.ItemBody 
+                                            pt="10px" 
+                                            pb="4px"
+                                            textTransform="uppercase"
+                                          >
+                                            <Text
+                                              pt="10px" 
+                                              fontSize="16px"
+                                              fontWeight="300" 
+                                              cursor="pointer">
+                                                Metamorphosi
+                                            </Text>
+                                            <Text
+                                              pt="10px" 
+                                              fontSize="16px"
+                                              fontWeight="300" 
+                                              cursor="pointer">
+                                                Cenc x shtor
+                                            </Text>
+                                            <Text
+                                              pt="10px" 
+                                              fontSize="16px"
+                                              fontWeight="300" 
+                                              cursor="pointer">
+                                                The opposite
+                                            </Text>
+                                            <Text
+                                              pt="10px" 
+                                              fontSize="16px"
+                                              fontWeight="300" 
+                                              cursor="pointer">
+                                                Oberih
+                                            </Text>
+                                            <Text
+                                              pt="10px"
+                                              pb="4px"
+                                              fontSize="16px"
+                                              fontWeight="300" 
+                                              cursor="pointer">
+                                                Nature
+                                            </Text>
+                                          </Accordion.ItemBody>
+                                        </Accordion.ItemContent>
+                                      </Accordion.Item>
+                                    </Accordion.Root>
                                   </Accordion.ItemBody>
                                 </Accordion.ItemContent>
 
@@ -169,12 +250,54 @@ const Header = () => {
                                   <Accordion.ItemBody 
                                     pt="16px" 
                                     pb="0"
+                                    fontSize="20px"
+                                    lineHeight="25px"
+                                    fontWeight="300"
+                                  > Bags
+                                  </Accordion.ItemBody>
+                                </Accordion.ItemContent>
+
+                                <Box>
+                                  <Accordion.ItemContent>
+                                    <Accordion.ItemBody 
+                                      pt="16px" 
+                                      pb="0"
+                                      fontSize="20px"
+                                      lineHeight="25px"
+                                      fontWeight="300"
+                                    > Clothes
+                                    </Accordion.ItemBody>
+                                  </Accordion.ItemContent>
+                                  <Accordion.ItemContent>
+                                    <Accordion.ItemBody 
+                                      pt="8px" 
+                                      pb="0"
+                                      fontSize="20px"
+                                      lineHeight="25px"
+                                      fontWeight="300"
+                                    > Hats
+                                    </Accordion.ItemBody>
+                                  </Accordion.ItemContent>
+                                  <Accordion.ItemContent>
+                                    <Accordion.ItemBody 
+                                      pt="8px" 
+                                      pb="0"
+                                      fontSize="20px"
+                                      lineHeight="25px"
+                                      fontWeight="300"
+                                    > Gifts
+                                    </Accordion.ItemBody>
+                                  </Accordion.ItemContent>
+                                </Box>
+
+                                <Accordion.ItemContent>
+                                  <Accordion.ItemBody 
+                                    pt="16px" 
+                                    pb="0"
                                     fontSize="24px"
                                     lineHeight="30px"
-                                    fontWeight="400"
-                                    position="absolute"
-                                    left="46px"
-                                  > Cart
+                                    fontWeight="300"
+                                  > Bag
                                   </Accordion.ItemBody>
                                 </Accordion.ItemContent>
 
@@ -184,9 +307,9 @@ const Header = () => {
                       </Drawer.Body>
 
                       <Drawer.Footer
-                        pl="46px"
-                        pr="45px"
-                        pb="43px"
+                        pl="24px"
+                        pr="46px"
+                        pb="24px"
                       >
                         <Flex
                           w="100%"
@@ -217,6 +340,27 @@ const Header = () => {
                               hash="root"
                             >
                               Returns
+                            </RouterLink>
+                            <RouterLink
+                              className="menu-underline-link"  
+                              to="/"
+                              hash="root"
+                            >
+                              Public offer agreement 
+                            </RouterLink>
+                            <RouterLink
+                              className="menu-underline-link"  
+                              to="/"
+                              hash="root"
+                            >
+                              Caht
+                            </RouterLink>
+                            <RouterLink
+                              className="menu-underline-link"  
+                              to="/"
+                              hash="root"
+                            >
+                              Size Guide
                             </RouterLink>
                           </Flex>
                           <Flex

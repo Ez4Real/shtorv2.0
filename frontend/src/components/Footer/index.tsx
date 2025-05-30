@@ -110,6 +110,19 @@ const Footer = () => {
                 Повернення та обмін
               </Text>
             </RouterLink>
+
+            <RouterLink to="/">
+              <Text 
+                className="main-footer-link"
+                fontSize="16px"
+                fontWeight="400"
+                lineHeight="20px"
+                textAlign="right"
+              > 
+                Договір публічної оферти
+              </Text>
+            </RouterLink>
+
             <RouterLink to="/">
               <Text 
                 className="main-footer-link"
@@ -119,6 +132,18 @@ const Footer = () => {
                 textAlign="right"
               >
                 Чат
+              </Text>
+            </RouterLink>
+
+            <RouterLink to="/">
+              <Text 
+                className="main-footer-link"
+                fontSize="16px"
+                fontWeight="400"
+                lineHeight="20px"
+                textAlign="right"
+              >
+                Розмірна сітка
               </Text>
             </RouterLink>
           </Flex>
