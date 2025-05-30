@@ -73,8 +73,6 @@ const EditCollection = ({ collection }: EditCollectionProps) => {
   })
 
   const onSubmit: SubmitHandler<Body_collections_update_collection> = async (data) => {
-    console.log("Data: ", data);
-    
     mutation.mutate(data)
   }
 
@@ -101,7 +99,7 @@ const EditCollection = ({ collection }: EditCollectionProps) => {
               <DialogTitle>Edit Collection</DialogTitle>
             </DialogHeader>
             <DialogBody>
-              <Text mb={4}>Fill in the details to add a new collection.</Text>
+              <Text mb={4}>Fill in the details to edit collection.</Text>
               <VStack gap={4}>
                 <Field
                   required

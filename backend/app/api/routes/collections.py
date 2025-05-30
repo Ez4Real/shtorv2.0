@@ -1,6 +1,6 @@
 from uuid import UUID
 
-from fastapi import APIRouter, HTTPException, Depends, Form
+from fastapi import APIRouter, HTTPException, Depends, Form, Query
 from sqlmodel import func, select
 
 from app.core.config import settings
@@ -43,11 +43,25 @@ def read_collections(
 
 
 @router.get("/{id}", response_model=CollectionPublic)
-def read_collection(session: SessionDep, id: UUID) -> CollectionPublic:
+def read_collection_by_id(session: SessionDep, id: UUID) -> CollectionPublic:
   """
   Get collection by ID.
   """
   collection = session.get(Collection, id)
+  if not collection:
+    raise HTTPException(status_code=404, detail="Collection not found")
+  return collection
+
+@router.get("/order/", response_model=CollectionPublic)
+def read_collection_by_order(
+  session: SessionDep,
+  order: int = Query(..., gt=0)
+) -> CollectionPublic:
+  """
+  Get collection by order.
+  """
+  statement = select(Collection).where(Collection.order == order)
+  collection = session.exec(statement).one_or_none()
   if not collection:
     raise HTTPException(status_code=404, detail="Collection not found")
   return collection

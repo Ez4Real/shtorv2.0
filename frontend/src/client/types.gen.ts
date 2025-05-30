@@ -164,11 +164,11 @@ export type CollectionsCreateCollectionData = {
 
 export type CollectionsCreateCollectionResponse = CollectionPublic
 
-export type CollectionsReadCollectionData = {
+export type CollectionsReadCollectionByIdData = {
   id: string
 }
 
-export type CollectionsReadCollectionResponse = CollectionPublic
+export type CollectionsReadCollectionByIdResponse = CollectionPublic
 
 export type CollectionsUpdateCollectionData = {
   formData: Body_collections_update_collection
@@ -182,6 +182,12 @@ export type CollectionsDeleteCollectionData = {
 }
 
 export type CollectionsDeleteCollectionResponse = Message
+
+export type CollectionsReadCollectionByOrderData = {
+  order: number
+}
+
+export type CollectionsReadCollectionByOrderResponse = CollectionPublic
 
 export type CollectionsUpdateCollectionOrderData = {
   formData: Body_collections_update_collection_order

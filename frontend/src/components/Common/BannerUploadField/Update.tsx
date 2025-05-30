@@ -112,4 +112,4 @@ const UpdateBannerUploadField = ({
     </Field>
 )}
   
-export default UpdateBannerUploadField;
+export default UpdateBannerUploadField

@@ -1,44 +1,51 @@
-import { CollectionsService, OpenAPI } from "@/client";
+import { CollectionsService } from "@/client"
 import Collection from "@/components/Collection"
-import { Box, Container, useBreakpointValue } from "@chakra-ui/react"
-import { useQuery } from "@tanstack/react-query";
-import { createFileRoute } from "@tanstack/react-router";
+import ProductCard from "@/components/Product/Card"
+import { Box, Container, Flex, Grid, Spinner, Text, useBreakpointValue } from "@chakra-ui/react"
+import { useQuery } from "@tanstack/react-query"
+import { createFileRoute } from "@tanstack/react-router"
 import { Link as RouterLink } from "@tanstack/react-router"
+import { useTranslation } from "react-i18next"
 
 
 export const Route = createFileRoute("/_main_layout/")({
   component: Main,
 })
 
-
-function getCollectionsQueryOptions() {
+function getCollectionQueryOptions({ order }: { order: number }) {
   return {
-    queryFn: () => CollectionsService.readCollections(),
-    queryKey: ["collections"],
+    queryFn: () => CollectionsService.readCollectionByOrder({ order }),
+    queryKey: ["collections", { order }]
   }
 }
 
 
 function Main() {
+  const { t } = useTranslation()
+  const collectionOrder = 1
+  
+  // !!!!!
+  const { data: collection, isPending } = useQuery({
+    ...getCollectionQueryOptions({ order: collectionOrder }),
+  })
+  
   const mainBanner = useBreakpointValue({
     base: "url(/assets/images/banner-mobile.svg)", 
     lg: "url(/assets/images/main-banner.svg)",  
-  });
-
-  const { data: collections, isPending } = useQuery({
-    ...getCollectionsQueryOptions(),
   })
+
 
   const bannerBreakpoint = useBreakpointValue<"banner_mobile" | "banner_desktop">({
     base: "banner_mobile",
     lg: "banner_desktop",
-  });
+  })
 
 
   return (
     <Container
       p={0}
       maxW="100vw"
+      mb="238px"
     >
       <Box
         w="100vw"
@@ -67,17 +74,58 @@ function Main() {
         </RouterLink>
       </Box>
 
-      {collections?.data.map((collection) => {
-        const banner = collection[bannerBreakpoint ?? "banner_mobile"]
+      <Container
+        mt="110px"
+        mb="110px"
+        p="0 46px"
+      >
+        <Grid
+          templateColumns="repeat(3, 1fr)"
+          gap="54px"
+        >
+          <ProductCard title="Bracelet-pendant" price="$125" />
+          <ProductCard title="Bracelet-pendant" price="$125" />
+          <ProductCard title="Bracelet-pendant" price="$125" />
+          <ProductCard title="Bracelet-pendant" price="$125" />
+          <ProductCard title="Bracelet-pendant" price="$125" />
+          <ProductCard title="Bracelet-pendant" price="$125" />
+        </Grid>
 
-        return (
-          <Collection
-            key={collection.id}
-            title={collection.title}
-            bannerImagePath={`${OpenAPI.BASE}/media/${banner.url}`}
-          />
-        );
-      })}
+        <Box mt="60px">
+          <RouterLink
+            from="/"
+            to="/collections/"
+            hash="root"
+          >
+            <Text
+              textDecoration="underline"
+              fontWeight="300"
+              fontSize="18px"
+              lineHeight="22px"
+              transition=".1s"
+              textAlign="end"
+              _hover={{
+                color: "ui.grey",
+                textDecoration: "none",
+              }}
+            >
+              {t("Homepage.allCollections")}
+            </Text>
+          </RouterLink>
+        </Box>
+      </Container>
+
+      {isPending ? (
+        <Flex justify="center" align="center" height="100vh">
+          <Spinner size="xl" saturate="1s" color="ui.main" />
+        </Flex>
+      ) : (
+        <Collection
+          collection={collection!}
+          bannerBreakpoint={bannerBreakpoint ?? "banner_mobile"}
+        />
+      )}
+
       
     </Container>
   )

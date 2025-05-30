@@ -8,12 +8,14 @@ import type {
   CollectionsReadCollectionsResponse,
   CollectionsCreateCollectionData,
   CollectionsCreateCollectionResponse,
-  CollectionsReadCollectionData,
-  CollectionsReadCollectionResponse,
+  CollectionsReadCollectionByIdData,
+  CollectionsReadCollectionByIdResponse,
   CollectionsUpdateCollectionData,
   CollectionsUpdateCollectionResponse,
   CollectionsDeleteCollectionData,
   CollectionsDeleteCollectionResponse,
+  CollectionsReadCollectionByOrderData,
+  CollectionsReadCollectionByOrderResponse,
   CollectionsUpdateCollectionOrderData,
   CollectionsUpdateCollectionOrderResponse,
   LoginLoginAccessTokenData,
@@ -109,16 +111,16 @@ export class CollectionsService {
   }
 
   /**
-   * Read Collection
+   * Read Collection By Id
    * Get collection by ID.
    * @param data The data for the request.
    * @param data.id
    * @returns CollectionPublic Successful Response
    * @throws ApiError
    */
-  public static readCollection(
-    data: CollectionsReadCollectionData,
-  ): CancelablePromise<CollectionsReadCollectionResponse> {
+  public static readCollectionById(
+    data: CollectionsReadCollectionByIdData,
+  ): CancelablePromise<CollectionsReadCollectionByIdResponse> {
     return __request(OpenAPI, {
       method: "GET",
       url: "/api/v1/collections/{id}",
@@ -173,6 +175,29 @@ export class CollectionsService {
       url: "/api/v1/collections/{id}",
       path: {
         id: data.id,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Read Collection By Order
+   * Get collection by order.
+   * @param data The data for the request.
+   * @param data.order
+   * @returns CollectionPublic Successful Response
+   * @throws ApiError
+   */
+  public static readCollectionByOrder(
+    data: CollectionsReadCollectionByOrderData,
+  ): CancelablePromise<CollectionsReadCollectionByOrderResponse> {
+    return __request(OpenAPI, {
+      method: "GET",
+      url: "/api/v1/collections/order/",
+      query: {
+        order: data.order,
       },
       errors: {
         422: "Validation Error",

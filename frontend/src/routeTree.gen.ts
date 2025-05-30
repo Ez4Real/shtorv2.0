@@ -16,12 +16,15 @@ import { Route as LayoutImport } from './routes/_layout'
 import { Route as AuthlayoutImport } from './routes/_auth_layout'
 import { Route as MainlayoutIndexImport } from './routes/_main_layout/index'
 import { Route as MainlayoutProductImport } from './routes/_main_layout/product'
+import { Route as MainlayoutPrivacyPolicyImport } from './routes/_main_layout/privacy-policy'
 import { Route as MainlayoutAboutUsImport } from './routes/_main_layout/about-us'
 import { Route as AuthlayoutSignupImport } from './routes/_auth_layout/signup'
 import { Route as AuthlayoutResetPasswordImport } from './routes/_auth_layout/reset-password'
 import { Route as AuthlayoutRecoverPasswordImport } from './routes/_auth_layout/recover-password'
 import { Route as AuthlayoutLoginImport } from './routes/_auth_layout/login'
+import { Route as MainlayoutCollectionsIndexImport } from './routes/_main_layout/collections/index'
 import { Route as LayoutAdminIndexImport } from './routes/_layout/admin/index'
+import { Route as MainlayoutCollectionsIdImport } from './routes/_main_layout/collections/$id'
 import { Route as LayoutAdminUsersImport } from './routes/_layout/admin/users'
 import { Route as LayoutAdminSettingsImport } from './routes/_layout/admin/settings'
 import { Route as LayoutAdminProductsImport } from './routes/_layout/admin/products'
@@ -54,6 +57,11 @@ const MainlayoutProductRoute = MainlayoutProductImport.update({
   getParentRoute: () => MainlayoutRoute,
 } as any)
 
+const MainlayoutPrivacyPolicyRoute = MainlayoutPrivacyPolicyImport.update({
+  path: '/privacy-policy',
+  getParentRoute: () => MainlayoutRoute,
+} as any)
+
 const MainlayoutAboutUsRoute = MainlayoutAboutUsImport.update({
   path: '/about-us',
   getParentRoute: () => MainlayoutRoute,
@@ -79,9 +87,21 @@ const AuthlayoutLoginRoute = AuthlayoutLoginImport.update({
   getParentRoute: () => AuthlayoutRoute,
 } as any)
 
+const MainlayoutCollectionsIndexRoute = MainlayoutCollectionsIndexImport.update(
+  {
+    path: '/collections/',
+    getParentRoute: () => MainlayoutRoute,
+  } as any,
+)
+
 const LayoutAdminIndexRoute = LayoutAdminIndexImport.update({
   path: '/admin/',
   getParentRoute: () => LayoutRoute,
+} as any)
+
+const MainlayoutCollectionsIdRoute = MainlayoutCollectionsIdImport.update({
+  path: '/collections/$id',
+  getParentRoute: () => MainlayoutRoute,
 } as any)
 
 const LayoutAdminUsersRoute = LayoutAdminUsersImport.update({
@@ -140,6 +160,10 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MainlayoutAboutUsImport
       parentRoute: typeof MainlayoutImport
     }
+    '/_main_layout/privacy-policy': {
+      preLoaderRoute: typeof MainlayoutPrivacyPolicyImport
+      parentRoute: typeof MainlayoutImport
+    }
     '/_main_layout/product': {
       preLoaderRoute: typeof MainlayoutProductImport
       parentRoute: typeof MainlayoutImport
@@ -164,9 +188,17 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutAdminUsersImport
       parentRoute: typeof LayoutImport
     }
+    '/_main_layout/collections/$id': {
+      preLoaderRoute: typeof MainlayoutCollectionsIdImport
+      parentRoute: typeof MainlayoutImport
+    }
     '/_layout/admin/': {
       preLoaderRoute: typeof LayoutAdminIndexImport
       parentRoute: typeof LayoutImport
+    }
+    '/_main_layout/collections/': {
+      preLoaderRoute: typeof MainlayoutCollectionsIndexImport
+      parentRoute: typeof MainlayoutImport
     }
   }
 }
@@ -189,8 +221,11 @@ export const routeTree = rootRoute.addChildren([
   ]),
   MainlayoutRoute.addChildren([
     MainlayoutAboutUsRoute,
+    MainlayoutPrivacyPolicyRoute,
     MainlayoutProductRoute,
     MainlayoutIndexRoute,
+    MainlayoutCollectionsIdRoute,
+    MainlayoutCollectionsIndexRoute,
   ]),
 ])
 

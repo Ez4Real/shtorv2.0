@@ -1,0 +1,17 @@
+{
+  "Locale": {
+    "language": "EN",
+    "currency": "USD"
+  },
+  "Homepage": {
+    "allCollections": "ALL COLLECTIONS"
+  },
+  "Footer": {
+    "newsletterLabel": "Stay informed about releases and special events",
+
+    "privacyPolicy": "Privacy Policy",
+    "paymentAndDelivery": "Payment and delivery",
+    "returns": "Returns",
+    "chat": "Chat"
+  }
+}

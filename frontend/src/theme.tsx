@@ -87,7 +87,39 @@ export const main = createSystem(defaultConfig, {
     },
   },
   theme: {
+    keyframes: {
+      translateTopToBottom: {
+        "0%": { transform: "translateY(0)" },
+        "100%": { transform: "translateY(9.5px)" },
+      },
+      translateTopToBasic: {
+        "0%": { transform: "translateY(9.5px)" },
+        "100%": { transform: "translateY(0)" },
+      },
+      translateBottomToTop: {
+        "0%": { transform: "translateY(0)" },
+        "100%": { transform: "translateY(-9.5px)" },
+      },
+      translateBottomToBasic: {
+        "0%": { transform: "translateY(-9.5px)" },
+        "100%": { transform: "translateY(0)" },
+      },
+    },
     tokens: {
+      animations: {
+        translateTopToBottom: {
+          value: "translateTopToBottom 0.3s forwards",
+        },
+        translateTopToBasic: {
+          value: "translateTopToBasic 0.3s forwards",
+        },
+        translateBottomToTop: {
+          value: "translateBottomToTop 0.3s forwards",
+        },
+        translateBottomToBasic: {
+          value: "translateBottomToBasic 0.3s forwards",
+        },
+      },
       colors: {
         ui: {
           main: { value: "#1E1E1E" },

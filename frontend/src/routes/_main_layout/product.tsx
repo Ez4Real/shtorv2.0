@@ -1,15 +1,15 @@
 import { Box, Breadcrumb, Button, Container, Flex, HStack, Image, List, RadioGroup, Tabs, Text } from "@chakra-ui/react"
 import { createFileRoute } from "@tanstack/react-router"
-import { useState } from 'react';
-import type { Swiper as SwiperCore } from "swiper";
-import { useRef } from "react";
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { FreeMode, Navigation, Thumbs } from 'swiper/modules';
+import { useState } from 'react'
+import type { Swiper as SwiperCore } from "swiper"
+import { useRef } from "react"
+import { Swiper, SwiperSlide } from 'swiper/react'
+import { FreeMode, Navigation, Thumbs } from 'swiper/modules'
 import type { Swiper as SwiperType } from 'swiper'
 
-import 'swiper/css';
-import 'swiper/css/free-mode';
-import 'swiper/css/thumbs';
+import 'swiper/css'
+import 'swiper/css/free-mode'
+import 'swiper/css/thumbs'
 
 export const Route = createFileRoute("/_main_layout/product")({
   component: Product,
@@ -17,14 +17,14 @@ export const Route = createFileRoute("/_main_layout/product")({
 
 
 function Product() {
-    const [thumbsSwiper, setThumbsSwiper] = useState<SwiperType | null>(null);
+    const [thumbsSwiper, setThumbsSwiper] = useState<SwiperType | null>(null)
     const items = [
         { label: "Small", value: "1" },
         { label: "Medium", value: "2" },
         { label: "Large", value: "3" },
     ]
     const aboutUsImg = "/assets/images/test-category.svg"
-    const swiperRef = useRef<SwiperCore | null>(null);
+    const swiperRef = useRef<SwiperCore | null>(null)
   return (
     <Container
       pt="120px"

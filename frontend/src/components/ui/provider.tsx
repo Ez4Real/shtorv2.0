@@ -6,7 +6,7 @@ import { ColorModeProvider } from "./color-mode"
 import { Toaster } from "./toaster"
 
 interface CustomProviderProps extends PropsWithChildren {
-  theme: SystemContext;
+  theme: SystemContext
 }
 
 export function CustomProvider({ theme, children }: CustomProviderProps) {
