@@ -3,7 +3,7 @@ name: Latest Changes
 on:
   pull_request_target:
     branches:
-      - master
+      - main
     types:
       - closed
   workflow_dispatch:
@@ -28,7 +28,6 @@ jobs:
         run: echo "$GITHUB_CONTEXT"
       - uses: actions/checkout@v4
         with:
-          # To allow latest-changes to commit to the main branch
           token: ${{ secrets.LATEST_CHANGES }}
       - uses: tiangolo/latest-changes@0.3.2
         with:
