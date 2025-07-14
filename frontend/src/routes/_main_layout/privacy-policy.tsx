@@ -1,8 +1,5 @@
-import { CollectionsService } from "@/client"
-import { Box, Container, Flex, Grid, Spinner, Text, useBreakpointValue, VStack } from "@chakra-ui/react"
-import { useQuery } from "@tanstack/react-query"
+import { Box, Container, Text, VStack } from "@chakra-ui/react"
 import { createFileRoute } from "@tanstack/react-router"
-import { Link as RouterLink } from "@tanstack/react-router"
 import { useTranslation } from "react-i18next"
 
 
@@ -19,15 +16,16 @@ function PrivacyPolicy() {
     <Container
       p={0}
       maxW="100vw"
-      mb="238px"
+      mb={["125px", "125px", "200px", "200px"]}
       padding={["0 16px", "0 16px", "0 16px", "0 200px"]}
     >
       <VStack
         gap={0}
+        // fontWeight={["300", "300", "400", "400"]}
         fontWeight="300"
       >
         <Text
-          fontSize="24px"
+          fontSize={["16px", "16px", "16px", "24px"]}
           lineHeight="30px"
           textTransform="uppercase"
         >
@@ -38,6 +36,7 @@ function PrivacyPolicy() {
           mt={["24px", "24px", "36px", "36px"]}
           alignItems="flex-start"
           lineHeight="20px"
+          gapY={0}
         >
           <Text
             fontSize="16px"
@@ -45,7 +44,7 @@ function PrivacyPolicy() {
             {t("PrivacyPolicy.description")}
           </Text>
           <Text
-            fontWeight="500"
+            fontWeight={["300", "300", "500", "500"]}
             fontSize="16px"
             mt={["16px", "16px", "24px", "24px"]}
             
@@ -54,16 +53,61 @@ function PrivacyPolicy() {
           </Text>
 
 
-          <Text>
-            <Box as="span" >
-              {t("PrivacyPolicy.contactDetails.title")}
+          <Text
+            fontSize="16px"
+            mt={["24px", "24px", "12px", "12px"]}
+          >
+            <Box
+              as="span"
+              fontWeight={["300", "300", "500", "500"]}
+            >
+              {t("PrivacyPolicy.contactDetails.title")} 
             </Box>
             {t("PrivacyPolicy.contactDetails.text")}
           </Text> 
+          <Box
+            as="ul" 
+            listStyleType="disc"
+            _marker={{
+              color: "red",
+              fill: "black",
+            }}
+            fontSize="16px"
+            mt={["16px", "16px", "24px", "24px"]}
+            spaceY="24px"
+            paddingInline="24px"
+        
+          >
+            <li>{t("PrivacyPolicy.contactDetails.1")}</li>
+            <li>{t("PrivacyPolicy.contactDetails.2")}</li>
+          </Box>
+
+          <Text fontSize="16px" mt="24px">
+            <Box
+              as="span"
+              fontWeight={["300", "300", "500", "500"]}
+            >
+              {t("PrivacyPolicy.creditCardDetails.title")} 
+            </Box>
+            {t("PrivacyPolicy.creditCardDetails.text")}
+          </Text> 
+
+          <Box
+            as="li"
+            mt={["24px", "24px", "16px", "16px"]}
+            fontWeight={["300", "300", "500", "500"]}
+            fontSize="16px"
+          >{t("PrivacyPolicy.newsletter.title")} </Box>
+
+          <Text
+            fontSize="16px"
+            mt="16px"
+          >
+            {t("PrivacyPolicy.newsletter.text")}
+          </Text>
+
         </VStack>
-
       </VStack>
-
     </Container>
   )
 }

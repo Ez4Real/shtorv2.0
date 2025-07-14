@@ -1,5 +1,7 @@
-import type { ApiError } from "./client"
+import type { ApiError, GiftPublic, ProductPublic, GiftCartItem, ProductCartItem_Output } from "./client"
 import useCustomToast from "./hooks/useCustomToast"
+import { Currency } from "./contexts/CurrencyContext"
+import { TranslatablePrice } from "./components/Common/SwitchLocalization"
 
 export const emailPattern = {
   value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
@@ -71,3 +73,23 @@ export const setupHorizontalScrollOnOverflow = (container: HTMLElement | null) =
     container.removeEventListener("wheel", handleWheel)
   }
 }
+
+
+export const getItemPrice = (
+  item: ProductPublic | GiftPublic | ProductCartItem_Output | GiftCartItem,
+  currency: Currency,
+  quantity?: number
+) => {
+  const qty = quantity ?? 1
+  const priceKey = `price_${currency.code}` as TranslatablePrice
+  
+  const isProductWithAttachment = (it: any): it is ProductCartItem_Output =>
+    typeof it.attachment === "object" && it.attachment !== null
+
+  const attachmentPrice =
+    isProductWithAttachment(item) && item.attachment?.[priceKey]
+      ? item.attachment[priceKey] * qty
+      : 0
+
+  return item[priceKey] * qty + attachmentPrice
+};

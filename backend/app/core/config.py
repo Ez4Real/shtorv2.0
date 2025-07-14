@@ -145,6 +145,25 @@ class Settings(BaseSettings):
         """Ensure the collection banners upload directory exists."""
         Path(self.UPLOAD_DIR / self.COLLECTION_BANNERS_DIR).mkdir(parents=True, exist_ok=True)
         return self
+    
+    PRODUCT_IMAGES_DIR: Path = Path("product-images")
+    @model_validator(mode="after")
+    def _ensure_product_images_dir_exists(self) -> Self:
+        """Ensure the product images upload directory exists."""
+        Path(self.UPLOAD_DIR / self.PRODUCT_IMAGES_DIR).mkdir(parents=True, exist_ok=True)
+        return self
+    
+    GIFT_IMAGES_DIR: Path = Path("gift-images")
+    @model_validator(mode="after")
+    def _ensure_gift_images_dir_exists(self) -> Self:
+        """Ensure the gift images upload directory exists."""
+        Path(self.UPLOAD_DIR / self.GIFT_IMAGES_DIR).mkdir(parents=True, exist_ok=True)
+        return self
+    
+    MONOBANK_ACQUIRING_API: str = ""
+    MONOBANK_ACQUIRE_TOKEN: str = ""
+    MONOBANK_PUBLIC_KEY: str = ""
+    
 
 
 settings = Settings()  # type: ignore

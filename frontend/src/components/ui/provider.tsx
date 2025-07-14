@@ -6,13 +6,19 @@ import { ColorModeProvider } from "./color-mode"
 import { Toaster } from "./toaster"
 
 interface CustomProviderProps extends PropsWithChildren {
-  theme: SystemContext
+  theme: SystemContext,
+  forcedTheme?: string | undefined
 }
 
-export function CustomProvider({ theme, children }: CustomProviderProps) {
+
+export function CustomProvider({
+  theme,
+  forcedTheme = undefined,
+  children
+}: CustomProviderProps) {
   return (
     <ChakraProvider value={theme}>
-      <ColorModeProvider defaultTheme="light">
+      <ColorModeProvider forcedTheme={forcedTheme}>
         {children}
       </ColorModeProvider>
       <Toaster />

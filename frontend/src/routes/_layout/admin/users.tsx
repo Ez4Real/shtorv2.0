@@ -1,4 +1,3 @@
-import { useEffect, useRef } from "react"
 import { Badge, Container, Flex, Heading, Table } from "@chakra-ui/react"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { createFileRoute, useNavigate } from "@tanstack/react-router"
@@ -14,7 +13,6 @@ import {
   PaginationPrevTrigger,
   PaginationRoot,
 } from "@/components/ui/pagination.tsx"
-import { setupHorizontalScrollOnOverflow } from "@/utils"
 
 const usersSearchSchema = z.object({
   page: z.number().catch(1),

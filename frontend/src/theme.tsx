@@ -1,5 +1,8 @@
 import { createSystem, defaultConfig } from "@chakra-ui/react"
-import { buttonRecipe } from "./theme/button.recipe"
+import { buttonRecipe } from "./theme/button.resipe"
+import { inputRecipe } from "./theme/input.resipe"
+import { adminButtonRecipe } from "./theme/admin-button.resipe"
+
 
 export const system = createSystem(defaultConfig, {
   globalCss: {
@@ -19,12 +22,21 @@ export const system = createSystem(defaultConfig, {
           main: { value: "#009688" },
           white: {value: "#FFFFFF"},
           danger: { value: "#ef4444" },
-          dim: { value: "#A0AEC0" }
+          dim: { value: "#A0AEC0" },
+        },
+        paymentStatus: {
+          created: { value: "yellow" },
+          processing: { value: "#183f90" },
+          hold: { value: "#FF9800" },
+          failure: { value: "#E53E3E" },
+          reversed: { value: "#e1e1e1" },
+          expired: { value: "#E53E3E" },
+          success: { value: "#48BB78" },
         },
       },
     },
     recipes: {
-      button: buttonRecipe,
+      button: adminButtonRecipe,
     },
   },
 })
@@ -33,6 +45,7 @@ export const main = createSystem(defaultConfig, {
   globalCss: {
     html: {
       fontSize: "16px",
+      fontWeight: "300",
     },
     body: {
       fontFamily: "'Lexend', sans-serif",
@@ -119,20 +132,26 @@ export const main = createSystem(defaultConfig, {
         translateBottomToBasic: {
           value: "translateBottomToBasic 0.3s forwards",
         },
+        spin: {
+          value: "spin 1s ease-in-out"
+        }
       },
       colors: {
         ui: {
-          main: { value: "#1E1E1E" },
-          white: {value: "#FFFFFF" },
-          grey: {value: "#BABABA" },
+          main: { value: "#1E1E1E"},
+          white: {value: "#FFFFFF"},
+          grey: {value: "#BABABA"},
           border: {value: "#3A3A3A"},
           error: {value: "#A50000"},
-          success: {value: "#017D18"}
+          success: {value: "#017D18"},
+          lightBlue: {value: "#F6F6F6"},
+          greyBorder: {value: "#A4A2A2"}
         },
       },
     },
     recipes: {
-      // button: buttonRecipe,
+      button: buttonRecipe,
+      input: inputRecipe,
     },
   },
 })

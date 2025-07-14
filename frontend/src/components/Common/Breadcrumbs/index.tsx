@@ -6,34 +6,40 @@ interface breadcrumbItem {
     path: string
 }
 
-interface BreadCrumbsProps {
+interface BreadcrumbsProps {
   items: breadcrumbItem[]
 }
 
 
-const BreadCrumbs = ({
-    items
-}: BreadCrumbsProps) => {
+const Breadcrumbs = ({
+  items
+}: BreadcrumbsProps) => {
   const { t } = useTranslation()
-
   return (
     <Breadcrumb.Root
-      pb="32px"
+      pt={["0", "0", "0", "34px"]}
+      pb={["32px", "32px", "32px", "46px"]}
+      fontWeight="300"
     >
-      <Breadcrumb.List>
+      <Breadcrumb.List
+        flexWrap="wrap"
+        gap="4px"
+      >
         <Breadcrumb.Item>
           <Breadcrumb.Link
             href="/#root"
             fontSize="16px"
-          >Home
+            color="black"
+          >
+            {t("Breadcrumb.homepage")}
           </Breadcrumb.Link>
         </Breadcrumb.Item>
-        {items?.map((item) => (
-          <Breadcrumb.Item>
+        {items?.map((item, index) => (
+          <Breadcrumb.Item key={index}>
             <Breadcrumb.Link
               href={item.path}
-              fontWeight="500"
               fontSize="16px"
+              color="black"
             >/{item.name}
             </Breadcrumb.Link>
           </Breadcrumb.Item>
@@ -43,4 +49,4 @@ const BreadCrumbs = ({
   )
 }
 
-export default BreadCrumbs
+export default Breadcrumbs

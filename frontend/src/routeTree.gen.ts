@@ -15,20 +15,35 @@ import { Route as MainlayoutImport } from './routes/_main_layout'
 import { Route as LayoutImport } from './routes/_layout'
 import { Route as AuthlayoutImport } from './routes/_auth_layout'
 import { Route as MainlayoutIndexImport } from './routes/_main_layout/index'
-import { Route as MainlayoutProductImport } from './routes/_main_layout/product'
+import { Route as MainlayoutThankYouImport } from './routes/_main_layout/thank-you'
+import { Route as MainlayoutSizeGuideImport } from './routes/_main_layout/size-guide'
+import { Route as MainlayoutShopImport } from './routes/_main_layout/shop'
+import { Route as MainlayoutReturnsAndExchangeImport } from './routes/_main_layout/returns-and-exchange'
+import { Route as MainlayoutPublicOfferAgreementImport } from './routes/_main_layout/public-offer-agreement'
 import { Route as MainlayoutPrivacyPolicyImport } from './routes/_main_layout/privacy-policy'
+import { Route as MainlayoutPaymentAndDeliveryImport } from './routes/_main_layout/payment-and-delivery'
+import { Route as MainlayoutCheckoutImport } from './routes/_main_layout/checkout'
+import { Route as MainlayoutCartImport } from './routes/_main_layout/cart'
+import { Route as MainlayoutCareImport } from './routes/_main_layout/care'
 import { Route as MainlayoutAboutUsImport } from './routes/_main_layout/about-us'
 import { Route as AuthlayoutSignupImport } from './routes/_auth_layout/signup'
 import { Route as AuthlayoutResetPasswordImport } from './routes/_auth_layout/reset-password'
 import { Route as AuthlayoutRecoverPasswordImport } from './routes/_auth_layout/recover-password'
 import { Route as AuthlayoutLoginImport } from './routes/_auth_layout/login'
+import { Route as MainlayoutGiftsIndexImport } from './routes/_main_layout/gifts/index'
 import { Route as MainlayoutCollectionsIndexImport } from './routes/_main_layout/collections/index'
 import { Route as LayoutAdminIndexImport } from './routes/_layout/admin/index'
+import { Route as MainlayoutProductsIdImport } from './routes/_main_layout/products/$id'
+import { Route as MainlayoutGiftsIdImport } from './routes/_main_layout/gifts/$id'
 import { Route as MainlayoutCollectionsIdImport } from './routes/_main_layout/collections/$id'
 import { Route as LayoutAdminUsersImport } from './routes/_layout/admin/users'
 import { Route as LayoutAdminSettingsImport } from './routes/_layout/admin/settings'
 import { Route as LayoutAdminProductsImport } from './routes/_layout/admin/products'
+import { Route as LayoutAdminGiftsImport } from './routes/_layout/admin/gifts'
 import { Route as LayoutAdminCollectionsImport } from './routes/_layout/admin/collections'
+import { Route as LayoutAdminCategoriesImport } from './routes/_layout/admin/categories'
+import { Route as LayoutAdminOrdersIndexImport } from './routes/_layout/admin/orders/index'
+import { Route as LayoutAdminOrdersIdImport } from './routes/_layout/admin/orders/$id'
 
 // Create/Update Routes
 
@@ -52,13 +67,56 @@ const MainlayoutIndexRoute = MainlayoutIndexImport.update({
   getParentRoute: () => MainlayoutRoute,
 } as any)
 
-const MainlayoutProductRoute = MainlayoutProductImport.update({
-  path: '/product',
+const MainlayoutThankYouRoute = MainlayoutThankYouImport.update({
+  path: '/thank-you',
   getParentRoute: () => MainlayoutRoute,
 } as any)
 
+const MainlayoutSizeGuideRoute = MainlayoutSizeGuideImport.update({
+  path: '/size-guide',
+  getParentRoute: () => MainlayoutRoute,
+} as any)
+
+const MainlayoutShopRoute = MainlayoutShopImport.update({
+  path: '/shop',
+  getParentRoute: () => MainlayoutRoute,
+} as any)
+
+const MainlayoutReturnsAndExchangeRoute =
+  MainlayoutReturnsAndExchangeImport.update({
+    path: '/returns-and-exchange',
+    getParentRoute: () => MainlayoutRoute,
+  } as any)
+
+const MainlayoutPublicOfferAgreementRoute =
+  MainlayoutPublicOfferAgreementImport.update({
+    path: '/public-offer-agreement',
+    getParentRoute: () => MainlayoutRoute,
+  } as any)
+
 const MainlayoutPrivacyPolicyRoute = MainlayoutPrivacyPolicyImport.update({
   path: '/privacy-policy',
+  getParentRoute: () => MainlayoutRoute,
+} as any)
+
+const MainlayoutPaymentAndDeliveryRoute =
+  MainlayoutPaymentAndDeliveryImport.update({
+    path: '/payment-and-delivery',
+    getParentRoute: () => MainlayoutRoute,
+  } as any)
+
+const MainlayoutCheckoutRoute = MainlayoutCheckoutImport.update({
+  path: '/checkout',
+  getParentRoute: () => MainlayoutRoute,
+} as any)
+
+const MainlayoutCartRoute = MainlayoutCartImport.update({
+  path: '/cart',
+  getParentRoute: () => MainlayoutRoute,
+} as any)
+
+const MainlayoutCareRoute = MainlayoutCareImport.update({
+  path: '/care',
   getParentRoute: () => MainlayoutRoute,
 } as any)
 
@@ -87,6 +145,11 @@ const AuthlayoutLoginRoute = AuthlayoutLoginImport.update({
   getParentRoute: () => AuthlayoutRoute,
 } as any)
 
+const MainlayoutGiftsIndexRoute = MainlayoutGiftsIndexImport.update({
+  path: '/gifts/',
+  getParentRoute: () => MainlayoutRoute,
+} as any)
+
 const MainlayoutCollectionsIndexRoute = MainlayoutCollectionsIndexImport.update(
   {
     path: '/collections/',
@@ -97,6 +160,16 @@ const MainlayoutCollectionsIndexRoute = MainlayoutCollectionsIndexImport.update(
 const LayoutAdminIndexRoute = LayoutAdminIndexImport.update({
   path: '/admin/',
   getParentRoute: () => LayoutRoute,
+} as any)
+
+const MainlayoutProductsIdRoute = MainlayoutProductsIdImport.update({
+  path: '/products/$id',
+  getParentRoute: () => MainlayoutRoute,
+} as any)
+
+const MainlayoutGiftsIdRoute = MainlayoutGiftsIdImport.update({
+  path: '/gifts/$id',
+  getParentRoute: () => MainlayoutRoute,
 } as any)
 
 const MainlayoutCollectionsIdRoute = MainlayoutCollectionsIdImport.update({
@@ -119,8 +192,28 @@ const LayoutAdminProductsRoute = LayoutAdminProductsImport.update({
   getParentRoute: () => LayoutRoute,
 } as any)
 
+const LayoutAdminGiftsRoute = LayoutAdminGiftsImport.update({
+  path: '/admin/gifts',
+  getParentRoute: () => LayoutRoute,
+} as any)
+
 const LayoutAdminCollectionsRoute = LayoutAdminCollectionsImport.update({
   path: '/admin/collections',
+  getParentRoute: () => LayoutRoute,
+} as any)
+
+const LayoutAdminCategoriesRoute = LayoutAdminCategoriesImport.update({
+  path: '/admin/categories',
+  getParentRoute: () => LayoutRoute,
+} as any)
+
+const LayoutAdminOrdersIndexRoute = LayoutAdminOrdersIndexImport.update({
+  path: '/admin/orders/',
+  getParentRoute: () => LayoutRoute,
+} as any)
+
+const LayoutAdminOrdersIdRoute = LayoutAdminOrdersIdImport.update({
+  path: '/admin/orders/$id',
   getParentRoute: () => LayoutRoute,
 } as any)
 
@@ -160,20 +253,60 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MainlayoutAboutUsImport
       parentRoute: typeof MainlayoutImport
     }
+    '/_main_layout/care': {
+      preLoaderRoute: typeof MainlayoutCareImport
+      parentRoute: typeof MainlayoutImport
+    }
+    '/_main_layout/cart': {
+      preLoaderRoute: typeof MainlayoutCartImport
+      parentRoute: typeof MainlayoutImport
+    }
+    '/_main_layout/checkout': {
+      preLoaderRoute: typeof MainlayoutCheckoutImport
+      parentRoute: typeof MainlayoutImport
+    }
+    '/_main_layout/payment-and-delivery': {
+      preLoaderRoute: typeof MainlayoutPaymentAndDeliveryImport
+      parentRoute: typeof MainlayoutImport
+    }
     '/_main_layout/privacy-policy': {
       preLoaderRoute: typeof MainlayoutPrivacyPolicyImport
       parentRoute: typeof MainlayoutImport
     }
-    '/_main_layout/product': {
-      preLoaderRoute: typeof MainlayoutProductImport
+    '/_main_layout/public-offer-agreement': {
+      preLoaderRoute: typeof MainlayoutPublicOfferAgreementImport
+      parentRoute: typeof MainlayoutImport
+    }
+    '/_main_layout/returns-and-exchange': {
+      preLoaderRoute: typeof MainlayoutReturnsAndExchangeImport
+      parentRoute: typeof MainlayoutImport
+    }
+    '/_main_layout/shop': {
+      preLoaderRoute: typeof MainlayoutShopImport
+      parentRoute: typeof MainlayoutImport
+    }
+    '/_main_layout/size-guide': {
+      preLoaderRoute: typeof MainlayoutSizeGuideImport
+      parentRoute: typeof MainlayoutImport
+    }
+    '/_main_layout/thank-you': {
+      preLoaderRoute: typeof MainlayoutThankYouImport
       parentRoute: typeof MainlayoutImport
     }
     '/_main_layout/': {
       preLoaderRoute: typeof MainlayoutIndexImport
       parentRoute: typeof MainlayoutImport
     }
+    '/_layout/admin/categories': {
+      preLoaderRoute: typeof LayoutAdminCategoriesImport
+      parentRoute: typeof LayoutImport
+    }
     '/_layout/admin/collections': {
       preLoaderRoute: typeof LayoutAdminCollectionsImport
+      parentRoute: typeof LayoutImport
+    }
+    '/_layout/admin/gifts': {
+      preLoaderRoute: typeof LayoutAdminGiftsImport
       parentRoute: typeof LayoutImport
     }
     '/_layout/admin/products': {
@@ -192,6 +325,14 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MainlayoutCollectionsIdImport
       parentRoute: typeof MainlayoutImport
     }
+    '/_main_layout/gifts/$id': {
+      preLoaderRoute: typeof MainlayoutGiftsIdImport
+      parentRoute: typeof MainlayoutImport
+    }
+    '/_main_layout/products/$id': {
+      preLoaderRoute: typeof MainlayoutProductsIdImport
+      parentRoute: typeof MainlayoutImport
+    }
     '/_layout/admin/': {
       preLoaderRoute: typeof LayoutAdminIndexImport
       parentRoute: typeof LayoutImport
@@ -199,6 +340,18 @@ declare module '@tanstack/react-router' {
     '/_main_layout/collections/': {
       preLoaderRoute: typeof MainlayoutCollectionsIndexImport
       parentRoute: typeof MainlayoutImport
+    }
+    '/_main_layout/gifts/': {
+      preLoaderRoute: typeof MainlayoutGiftsIndexImport
+      parentRoute: typeof MainlayoutImport
+    }
+    '/_layout/admin/orders/$id': {
+      preLoaderRoute: typeof LayoutAdminOrdersIdImport
+      parentRoute: typeof LayoutImport
+    }
+    '/_layout/admin/orders/': {
+      preLoaderRoute: typeof LayoutAdminOrdersIndexImport
+      parentRoute: typeof LayoutImport
     }
   }
 }
@@ -213,19 +366,34 @@ export const routeTree = rootRoute.addChildren([
     AuthlayoutSignupRoute,
   ]),
   LayoutRoute.addChildren([
+    LayoutAdminCategoriesRoute,
     LayoutAdminCollectionsRoute,
+    LayoutAdminGiftsRoute,
     LayoutAdminProductsRoute,
     LayoutAdminSettingsRoute,
     LayoutAdminUsersRoute,
     LayoutAdminIndexRoute,
+    LayoutAdminOrdersIdRoute,
+    LayoutAdminOrdersIndexRoute,
   ]),
   MainlayoutRoute.addChildren([
     MainlayoutAboutUsRoute,
+    MainlayoutCareRoute,
+    MainlayoutCartRoute,
+    MainlayoutCheckoutRoute,
+    MainlayoutPaymentAndDeliveryRoute,
     MainlayoutPrivacyPolicyRoute,
-    MainlayoutProductRoute,
+    MainlayoutPublicOfferAgreementRoute,
+    MainlayoutReturnsAndExchangeRoute,
+    MainlayoutShopRoute,
+    MainlayoutSizeGuideRoute,
+    MainlayoutThankYouRoute,
     MainlayoutIndexRoute,
     MainlayoutCollectionsIdRoute,
+    MainlayoutGiftsIdRoute,
+    MainlayoutProductsIdRoute,
     MainlayoutCollectionsIndexRoute,
+    MainlayoutGiftsIndexRoute,
   ]),
 ])
 

@@ -6,37 +6,51 @@ import { useTranslation } from "react-i18next"
 const Footer = () => {
   const { t } = useTranslation()
 
+  const footerLinks = [
+    { to: "/privacy-policy", text: t("Footer.privacyPolicy")},
+    { to: "/payment-and-delivery", text: t("Footer.paymentAndDelivery")},
+    { to: "/returns-and-exchange", text: t("Footer.returns")},
+    { to: "/public-offer-agreement", text: t("Footer.publicOfferAgreement")},
+    { to: "https://t.me/gala_butnotdalis", text: t("Footer.chat")},
+    { to: "/size-guide", text: t("Footer.sizeGuide")},
+  ]
+
   // !!!!!
   return (
     <Box 
       as="footer" 
-      pb={["92px", "92px", "82px", "82px"]}
-      px="46px"
+      pb={["48px", "48px", "82px", "82px"]}
+      px={["16px", "16px", "46px", "46px"]}
       >
       <Flex justifyContent="center">
         <RouterLink to="/">
           <Image
             src="/assets/images/logo-footer.svg"
             textAlign="center"
-            h={["75px", "67px", "150px", "225px", "235px"]}
-            mb={["24px", "24px", "59px", "59px"]}
+            // h={["75px", "67px", "150px", "225px", "235px"]}
+            h="100%"
+            w="100%"
+            objectFit="contain"
+            // mb={["24px", "24px", "59px", "59px"]}
           />
         </RouterLink>
       </Flex>
       <Flex
         justifyContent="space-between"
         alignItems="start"
+        mt={["24px", "24px", "70px", "70px"]}
         flexDirection={{ base: "column", sm: "unset", md: "unset" }}
         gap={{ base: "42px", sm: "20px", md: "unset" }}
         // p={["0 8px", "0 16px", "0 46px", " 0 46px"]}
       >
         <Flex
           flexDirection="column"
-          gap="16px"
+          gap={["16px", "16px", "12px", "12px"]}
+          w={["100%", "100%", "unset", "unset"]}
         >
           <Text
-            fontSize="16px"
-            fontWeight="400"
+            fontSize={["14px", "14px", "16px", "16px"]}
+            fontWeight="300"
           >
             {t("Footer.newsletterLabel")}
           </Text>
@@ -44,7 +58,8 @@ const Footer = () => {
             <Input
               css={{ "--error-color": "ui.error" }} //css color for future error 
               placeholder="Email"
-              border="0.5px solid #3A3A3A"
+              border="0.5px solid #B3B3B3"
+              borderColor={["#B3B3B3", "#B3B3B3", "#3A3A3A", "#3A3A3A"]}
               borderRadius="0"
               opacity="80%"
               fontFamily="'Lexend', sans-serif"
@@ -60,13 +75,16 @@ const Footer = () => {
               position="absolute"
               right="13px"
             >
-              <Image src="/assets/icons/arrow-right.svg" />
+              <Image 
+                opacity={["60%", "#60%", "unset", "unset"]}
+                src="/assets/icons/arrow-right.svg" 
+              />
             </Button>
           </Group>
         </Flex>
         <Flex
           justifyContent="space-between"
-          alignItems="end"
+          alignItems={["flex-start", "flex-start", "flex-end", "flex-end"]}
           w={["100%", "60%", "40%", "40%"]}
           flexDirection={{ base: "row", sm: "column", md: "column", lg: "unset" }}
         >
@@ -74,56 +92,29 @@ const Footer = () => {
             flexDirection="column"
             w="200px"
             alignItems={{ base: "flex-start", sm: "flex-end", md: "flex-end" }}
-            gap={{ base: "16px", sm: "12px", md: "12px" }}
+            gap={["8px", "8px", "12px", "12px"]}
           >
-            <RouterLink to="/">
-              <Text 
-                className="main-footer-link"
-                fontSize="16px"
-                fontWeight="400"
-                lineHeight="20px"
-                textAlign="right"
+            {footerLinks?.map((link, index) => (
+              <RouterLink
+                to={link.to}
+                key={index}
+                hash="root"
               >
-                {t("Footer.privacyPolicy")}
-              </Text>
-            </RouterLink>
-            <RouterLink to="/">
-              <Text 
-                className="main-footer-link"
-                fontSize="16px"
-                fontWeight="400"
-                lineHeight="20px"
-                textAlign="right"
-              >
-                {t("Footer.paymentAndDelivery")}
-              </Text>
-            </RouterLink>
-            <RouterLink to="/">
-              <Text 
-                className="main-footer-link"
-                fontSize="16px"
-                fontWeight="400"
-                lineHeight="20px"
-                textAlign="right"
-              >
-                {t("Footer.returns")}
-              </Text>
-            </RouterLink>
-            <RouterLink to="/">
-              <Text 
-                className="main-footer-link"
-                fontSize="16px"
-                fontWeight="400"
-                lineHeight="20px"
-                textAlign="right"
-              >
-                {t("Footer.chat")}
-              </Text>
-            </RouterLink>
+                <Text 
+                  className="main-footer-link"
+                  fontSize="16px"
+                  fontWeight="300"
+                  lineHeight="20px"
+                  textAlign="right"
+                >
+                  {link.text}
+                </Text>
+              </RouterLink>
+            ))}
           </Flex>
           <Flex
             flexDirection={{ base: "column-reverse", sm: "column", md: "column", lg: "column" }}
-            gap={{ base: "16px", sm: "24px", md: "24px" }}
+            gap={{ base: "12px", sm: "24px", md: "24px" }}
             alignItems="flex-end"
           >
             <SwitchLocalizationSlash />
@@ -134,10 +125,10 @@ const Footer = () => {
               outline="none"
             >
               <Text
-                fontSize="20px"
-                fontWeight="500"
+                fontSize={["16px", "16px", "20px", "20px"]}
+                fontWeight={["300", "300", "500", "500"]}
                 lineHeight={["21px", "25px", "25px", "25px"]}
-                textDecoration="underline"
+                textDecoration={["unset", "underline"]}
                 transition=".1s"
                 _hover={{ 
                   color: "ui.grey", 

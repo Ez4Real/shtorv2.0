@@ -4,6 +4,16 @@ import type { CancelablePromise } from "./core/CancelablePromise"
 import { OpenAPI } from "./core/OpenAPI"
 import { request as __request } from "./core/request"
 import type {
+  CategoriesReadCategoriesData,
+  CategoriesReadCategoriesResponse,
+  CategoriesCreateCategoryData,
+  CategoriesCreateCategoryResponse,
+  CategoriesReadCategoryData,
+  CategoriesReadCategoryResponse,
+  CategoriesUpdateCategoryData,
+  CategoriesUpdateCategoryResponse,
+  CategoriesDeleteCategoryData,
+  CategoriesDeleteCategoryResponse,
   CollectionsReadCollectionsData,
   CollectionsReadCollectionsResponse,
   CollectionsCreateCollectionData,
@@ -18,6 +28,20 @@ import type {
   CollectionsReadCollectionByOrderResponse,
   CollectionsUpdateCollectionOrderData,
   CollectionsUpdateCollectionOrderResponse,
+  GiftsReadGiftsData,
+  GiftsReadGiftsResponse,
+  GiftsCreateGiftData,
+  GiftsCreateGiftResponse,
+  GiftsReadGiftByIdData,
+  GiftsReadGiftByIdResponse,
+  GiftsUpdateGiftData,
+  GiftsUpdateGiftResponse,
+  GiftsDeleteGiftData,
+  GiftsDeleteGiftResponse,
+  GiftsReadGiftByOrderData,
+  GiftsReadGiftByOrderResponse,
+  GiftsUpdateGiftOrderData,
+  GiftsUpdateGiftOrderResponse,
   LoginLoginAccessTokenData,
   LoginLoginAccessTokenResponse,
   LoginTestTokenResponse,
@@ -27,6 +51,22 @@ import type {
   LoginResetPasswordResponse,
   LoginRecoverPasswordHtmlContentData,
   LoginRecoverPasswordHtmlContentResponse,
+  OrdersReadOrdersData,
+  OrdersReadOrdersResponse,
+  OrdersCreateOrderData,
+  OrdersCreateOrderResponse,
+  OrdersReadOrderData,
+  OrdersReadOrderResponse,
+  OrdersDeleteOrderData,
+  OrdersDeleteOrderResponse,
+  PaymentsCreatePaymentData,
+  PaymentsCreatePaymentResponse,
+  PaymentsPersonalWebhookResponse,
+  PaymentsPublicKeyResponse,
+  PaymentsPaymentStatusData,
+  PaymentsPaymentStatusResponse,
+  PaymentsPaymentCallbackData,
+  PaymentsPaymentCallbackResponse,
   PrivateCreateUserData,
   PrivateCreateUserResponse,
   ProductsReadProductsData,
@@ -35,10 +75,16 @@ import type {
   ProductsCreateProductResponse,
   ProductsReadProductsByCategoryData,
   ProductsReadProductsByCategoryResponse,
+  ProductsReadProductsByCollectionData,
+  ProductsReadProductsByCollectionResponse,
   ProductsReadProductData,
   ProductsReadProductResponse,
-  ProductsUploadImagesData,
-  ProductsUploadImagesResponse,
+  ProductsUpdateProductData,
+  ProductsUpdateProductResponse,
+  ProductsDeleteProductData,
+  ProductsDeleteProductResponse,
+  ProductsUpdateProductOrderData,
+  ProductsUpdateProductOrderResponse,
   UsersReadUsersData,
   UsersReadUsersResponse,
   UsersCreateUserData,
@@ -61,6 +107,127 @@ import type {
   UtilsTestEmailResponse,
   UtilsHealthCheckResponse,
 } from "./types.gen"
+
+export class CategoriesService {
+  /**
+   * Read Categories
+   * Retrieve categories.
+   * @param data The data for the request.
+   * @param data.skip
+   * @param data.limit
+   * @returns ProductCategoriesPublic Successful Response
+   * @throws ApiError
+   */
+  public static readCategories(
+    data: CategoriesReadCategoriesData = {},
+  ): CancelablePromise<CategoriesReadCategoriesResponse> {
+    return __request(OpenAPI, {
+      method: "GET",
+      url: "/api/v1/categories/",
+      query: {
+        skip: data.skip,
+        limit: data.limit,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Create Category
+   * Create new product category.
+   * @param data The data for the request.
+   * @param data.requestBody
+   * @returns ProductCategoryPublic Successful Response
+   * @throws ApiError
+   */
+  public static createCategory(
+    data: CategoriesCreateCategoryData,
+  ): CancelablePromise<CategoriesCreateCategoryResponse> {
+    return __request(OpenAPI, {
+      method: "POST",
+      url: "/api/v1/categories/",
+      body: data.requestBody,
+      mediaType: "application/json",
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Read Category
+   * Get product category by ID.
+   * @param data The data for the request.
+   * @param data.id
+   * @returns ProductCategoryPublic Successful Response
+   * @throws ApiError
+   */
+  public static readCategory(
+    data: CategoriesReadCategoryData,
+  ): CancelablePromise<CategoriesReadCategoryResponse> {
+    return __request(OpenAPI, {
+      method: "GET",
+      url: "/api/v1/categories/{id}",
+      path: {
+        id: data.id,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Update Category
+   * Update an category.
+   * @param data The data for the request.
+   * @param data.id
+   * @param data.requestBody
+   * @returns ProductCategoryPublic Successful Response
+   * @throws ApiError
+   */
+  public static updateCategory(
+    data: CategoriesUpdateCategoryData,
+  ): CancelablePromise<CategoriesUpdateCategoryResponse> {
+    return __request(OpenAPI, {
+      method: "PUT",
+      url: "/api/v1/categories/{id}",
+      path: {
+        id: data.id,
+      },
+      body: data.requestBody,
+      mediaType: "application/json",
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Delete Category
+   * Delete a category.
+   * @param data The data for the request.
+   * @param data.id
+   * @returns Message Successful Response
+   * @throws ApiError
+   */
+  public static deleteCategory(
+    data: CategoriesDeleteCategoryData,
+  ): CancelablePromise<CategoriesDeleteCategoryResponse> {
+    return __request(OpenAPI, {
+      method: "DELETE",
+      url: "/api/v1/categories/{id}",
+      path: {
+        id: data.id,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+}
 
 export class CollectionsService {
   /**
@@ -93,7 +260,7 @@ export class CollectionsService {
    * Create new collection.
    * @param data The data for the request.
    * @param data.formData
-   * @returns CollectionPublic Successful Response
+   * @returns CollectionPublic_Output Successful Response
    * @throws ApiError
    */
   public static createCollection(
@@ -115,7 +282,7 @@ export class CollectionsService {
    * Get collection by ID.
    * @param data The data for the request.
    * @param data.id
-   * @returns CollectionPublic Successful Response
+   * @returns CollectionPublic_Output Successful Response
    * @throws ApiError
    */
   public static readCollectionById(
@@ -139,7 +306,7 @@ export class CollectionsService {
    * @param data The data for the request.
    * @param data.id
    * @param data.formData
-   * @returns CollectionPublic Successful Response
+   * @returns CollectionPublic_Output Successful Response
    * @throws ApiError
    */
   public static updateCollection(
@@ -187,7 +354,7 @@ export class CollectionsService {
    * Get collection by order.
    * @param data The data for the request.
    * @param data.order
-   * @returns CollectionPublic Successful Response
+   * @returns CollectionPublic_Output Successful Response
    * @throws ApiError
    */
   public static readCollectionByOrder(
@@ -211,7 +378,7 @@ export class CollectionsService {
    * @param data The data for the request.
    * @param data.id
    * @param data.formData
-   * @returns CollectionPublic Successful Response
+   * @returns CollectionPublic_Output Successful Response
    * @throws ApiError
    */
   public static updateCollectionOrder(
@@ -220,6 +387,176 @@ export class CollectionsService {
     return __request(OpenAPI, {
       method: "PUT",
       url: "/api/v1/collections/update-order/{id}",
+      path: {
+        id: data.id,
+      },
+      formData: data.formData,
+      mediaType: "application/x-www-form-urlencoded",
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+}
+
+export class GiftsService {
+  /**
+   * Read Gifts
+   * Retrieve gifts.
+   * @param data The data for the request.
+   * @param data.skip
+   * @param data.limit
+   * @returns GiftsPublic Successful Response
+   * @throws ApiError
+   */
+  public static readGifts(
+    data: GiftsReadGiftsData = {},
+  ): CancelablePromise<GiftsReadGiftsResponse> {
+    return __request(OpenAPI, {
+      method: "GET",
+      url: "/api/v1/gifts/",
+      query: {
+        skip: data.skip,
+        limit: data.limit,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Create Gift
+   * Create new gift.
+   * @param data The data for the request.
+   * @param data.formData
+   * @returns GiftPublic Successful Response
+   * @throws ApiError
+   */
+  public static createGift(
+    data: GiftsCreateGiftData,
+  ): CancelablePromise<GiftsCreateGiftResponse> {
+    return __request(OpenAPI, {
+      method: "POST",
+      url: "/api/v1/gifts/",
+      formData: data.formData,
+      mediaType: "multipart/form-data",
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Read Gift By Id
+   * Get gift by ID.
+   * @param data The data for the request.
+   * @param data.id
+   * @returns GiftPublic Successful Response
+   * @throws ApiError
+   */
+  public static readGiftById(
+    data: GiftsReadGiftByIdData,
+  ): CancelablePromise<GiftsReadGiftByIdResponse> {
+    return __request(OpenAPI, {
+      method: "GET",
+      url: "/api/v1/gifts/{id}",
+      path: {
+        id: data.id,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Update Gift
+   * Update a gift.
+   * @param data The data for the request.
+   * @param data.id
+   * @param data.formData
+   * @returns GiftPublic Successful Response
+   * @throws ApiError
+   */
+  public static updateGift(
+    data: GiftsUpdateGiftData,
+  ): CancelablePromise<GiftsUpdateGiftResponse> {
+    return __request(OpenAPI, {
+      method: "PUT",
+      url: "/api/v1/gifts/{id}",
+      path: {
+        id: data.id,
+      },
+      formData: data.formData,
+      mediaType: "multipart/form-data",
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Delete Gift
+   * Delete a gift.
+   * @param data The data for the request.
+   * @param data.id
+   * @returns Message Successful Response
+   * @throws ApiError
+   */
+  public static deleteGift(
+    data: GiftsDeleteGiftData,
+  ): CancelablePromise<GiftsDeleteGiftResponse> {
+    return __request(OpenAPI, {
+      method: "DELETE",
+      url: "/api/v1/gifts/{id}",
+      path: {
+        id: data.id,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Read Gift By Order
+   * Get gift by order.
+   * @param data The data for the request.
+   * @param data.order
+   * @returns GiftPublic Successful Response
+   * @throws ApiError
+   */
+  public static readGiftByOrder(
+    data: GiftsReadGiftByOrderData,
+  ): CancelablePromise<GiftsReadGiftByOrderResponse> {
+    return __request(OpenAPI, {
+      method: "GET",
+      url: "/api/v1/gifts/order/",
+      query: {
+        order: data.order,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Update Gift Order
+   * Update a gift order with nearest one (-1 or +1).
+   * @param data The data for the request.
+   * @param data.id
+   * @param data.formData
+   * @returns GiftPublic Successful Response
+   * @throws ApiError
+   */
+  public static updateGiftOrder(
+    data: GiftsUpdateGiftOrderData,
+  ): CancelablePromise<GiftsUpdateGiftOrderResponse> {
+    return __request(OpenAPI, {
+      method: "PUT",
+      url: "/api/v1/gifts/update-order/{id}",
       path: {
         id: data.id,
       },
@@ -337,6 +674,194 @@ export class LoginService {
   }
 }
 
+export class OrdersService {
+  /**
+   * Read Orders
+   * Retrieve orders.
+   * @param data The data for the request.
+   * @param data.skip
+   * @param data.limit
+   * @returns OrdersPublic Successful Response
+   * @throws ApiError
+   */
+  public static readOrders(
+    data: OrdersReadOrdersData = {},
+  ): CancelablePromise<OrdersReadOrdersResponse> {
+    return __request(OpenAPI, {
+      method: "GET",
+      url: "/api/v1/orders/",
+      query: {
+        skip: data.skip,
+        limit: data.limit,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Create Order
+   * Create new order.
+   * @param data The data for the request.
+   * @param data.requestBody
+   * @returns OrderPublic Successful Response
+   * @throws ApiError
+   */
+  public static createOrder(
+    data: OrdersCreateOrderData,
+  ): CancelablePromise<OrdersCreateOrderResponse> {
+    return __request(OpenAPI, {
+      method: "POST",
+      url: "/api/v1/orders/",
+      body: data.requestBody,
+      mediaType: "application/json",
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Read Order
+   * Get order by ID.
+   * @param data The data for the request.
+   * @param data.id
+   * @returns OrderPublic Successful Response
+   * @throws ApiError
+   */
+  public static readOrder(
+    data: OrdersReadOrderData,
+  ): CancelablePromise<OrdersReadOrderResponse> {
+    return __request(OpenAPI, {
+      method: "GET",
+      url: "/api/v1/orders/{id}",
+      path: {
+        id: data.id,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Delete Order
+   * Delete an order.
+   * @param data The data for the request.
+   * @param data.id
+   * @returns Message Successful Response
+   * @throws ApiError
+   */
+  public static deleteOrder(
+    data: OrdersDeleteOrderData,
+  ): CancelablePromise<OrdersDeleteOrderResponse> {
+    return __request(OpenAPI, {
+      method: "DELETE",
+      url: "/api/v1/orders/{id}",
+      path: {
+        id: data.id,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+}
+
+export class PaymentsService {
+  /**
+   * Create Payment
+   * @param data The data for the request.
+   * @param data.requestBody
+   * @returns PaymentResponse Successful Response
+   * @throws ApiError
+   */
+  public static createPayment(
+    data: PaymentsCreatePaymentData,
+  ): CancelablePromise<PaymentsCreatePaymentResponse> {
+    return __request(OpenAPI, {
+      method: "POST",
+      url: "/api/v1/payments/",
+      body: data.requestBody,
+      mediaType: "application/json",
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Personal Webhook
+   * @returns unknown Successful Response
+   * @throws ApiError
+   */
+  public static personalWebhook(): CancelablePromise<PaymentsPersonalWebhookResponse> {
+    return __request(OpenAPI, {
+      method: "POST",
+      url: "/api/v1/payments/personal-webhook",
+    })
+  }
+
+  /**
+   * Public Key
+   * @returns unknown Successful Response
+   * @throws ApiError
+   */
+  public static publicKey(): CancelablePromise<PaymentsPublicKeyResponse> {
+    return __request(OpenAPI, {
+      method: "POST",
+      url: "/api/v1/payments/public-key",
+    })
+  }
+
+  /**
+   * Payment Status
+   * Get product by ID.
+   * @param data The data for the request.
+   * @param data.id
+   * @returns unknown Successful Response
+   * @throws ApiError
+   */
+  public static paymentStatus(
+    data: PaymentsPaymentStatusData,
+  ): CancelablePromise<PaymentsPaymentStatusResponse> {
+    return __request(OpenAPI, {
+      method: "GET",
+      url: "/api/v1/payments/status/{id}",
+      path: {
+        id: data.id,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Payment Callback
+   * Monobank Payment Callback
+   * @param data The data for the request.
+   * @param data.xSign
+   * @returns unknown Successful Response
+   * @throws ApiError
+   */
+  public static paymentCallback(
+    data: PaymentsPaymentCallbackData,
+  ): CancelablePromise<PaymentsPaymentCallbackResponse> {
+    return __request(OpenAPI, {
+      method: "POST",
+      url: "/api/v1/payments/callback",
+      headers: {
+        "x-sign": data.xSign,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+}
+
 export class PrivateService {
   /**
    * Create User
@@ -366,6 +891,9 @@ export class ProductsService {
    * Read Products
    * Retrieve products.
    * @param data The data for the request.
+   * @param data.collectionId
+   * @param data.categoryId
+   * @param data.isGift
    * @param data.skip
    * @param data.limit
    * @returns ProductsPublic Successful Response
@@ -378,6 +906,9 @@ export class ProductsService {
       method: "GET",
       url: "/api/v1/products/",
       query: {
+        collection_id: data.collectionId,
+        category_id: data.categoryId,
+        is_gift: data.isGift,
         skip: data.skip,
         limit: data.limit,
       },
@@ -391,7 +922,7 @@ export class ProductsService {
    * Create Product
    * Create new product.
    * @param data The data for the request.
-   * @param data.requestBody
+   * @param data.formData
    * @returns ProductPublic Successful Response
    * @throws ApiError
    */
@@ -401,8 +932,8 @@ export class ProductsService {
     return __request(OpenAPI, {
       method: "POST",
       url: "/api/v1/products/",
-      body: data.requestBody,
-      mediaType: "application/json",
+      formData: data.formData,
+      mediaType: "multipart/form-data",
       errors: {
         422: "Validation Error",
       },
@@ -413,7 +944,7 @@ export class ProductsService {
    * Read Products By Category
    * Retrieve products by category.
    * @param data The data for the request.
-   * @param data.category
+   * @param data.id
    * @returns ProductsPublic Successful Response
    * @throws ApiError
    */
@@ -422,9 +953,40 @@ export class ProductsService {
   ): CancelablePromise<ProductsReadProductsByCategoryResponse> {
     return __request(OpenAPI, {
       method: "GET",
-      url: "/api/v1/products/category/{category}",
+      url: "/api/v1/products/category/{id}",
       path: {
-        category: data.category,
+        id: data.id,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Read Products By Collection
+   * Retrieve products by collection.
+   * @param data The data for the request.
+   * @param data.id
+   * @param data.skip
+   * @param data.limit
+   * @param data.excludeProductId
+   * @returns ProductsPublic Successful Response
+   * @throws ApiError
+   */
+  public static readProductsByCollection(
+    data: ProductsReadProductsByCollectionData,
+  ): CancelablePromise<ProductsReadProductsByCollectionResponse> {
+    return __request(OpenAPI, {
+      method: "GET",
+      url: "/api/v1/products/collection/{id}",
+      path: {
+        id: data.id,
+      },
+      query: {
+        skip: data.skip,
+        limit: data.limit,
+        exclude_product_id: data.excludeProductId,
       },
       errors: {
         422: "Validation Error",
@@ -456,21 +1018,73 @@ export class ProductsService {
   }
 
   /**
-   * Upload Images
-   * Upload multiple product images and save them to local storage.
+   * Update Product
    * @param data The data for the request.
+   * @param data.id
    * @param data.formData
-   * @returns unknown Successful Response
+   * @returns ProductPublic Successful Response
    * @throws ApiError
    */
-  public static uploadImages(
-    data: ProductsUploadImagesData,
-  ): CancelablePromise<ProductsUploadImagesResponse> {
+  public static updateProduct(
+    data: ProductsUpdateProductData,
+  ): CancelablePromise<ProductsUpdateProductResponse> {
     return __request(OpenAPI, {
-      method: "POST",
-      url: "/api/v1/products/upload-images",
+      method: "PUT",
+      url: "/api/v1/products/{id}",
+      path: {
+        id: data.id,
+      },
       formData: data.formData,
       mediaType: "multipart/form-data",
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Delete Product
+   * Delete an product.
+   * @param data The data for the request.
+   * @param data.id
+   * @returns Message Successful Response
+   * @throws ApiError
+   */
+  public static deleteProduct(
+    data: ProductsDeleteProductData,
+  ): CancelablePromise<ProductsDeleteProductResponse> {
+    return __request(OpenAPI, {
+      method: "DELETE",
+      url: "/api/v1/products/{id}",
+      path: {
+        id: data.id,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Update Product Order
+   * Update a product order with nearest one (-1 or +1).
+   * @param data The data for the request.
+   * @param data.id
+   * @param data.formData
+   * @returns ProductPublic Successful Response
+   * @throws ApiError
+   */
+  public static updateProductOrder(
+    data: ProductsUpdateProductOrderData,
+  ): CancelablePromise<ProductsUpdateProductOrderResponse> {
+    return __request(OpenAPI, {
+      method: "PUT",
+      url: "/api/v1/products/update-order/{id}",
+      path: {
+        id: data.id,
+      },
+      formData: data.formData,
+      mediaType: "application/x-www-form-urlencoded",
       errors: {
         422: "Validation Error",
       },

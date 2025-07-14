@@ -1,7 +1,9 @@
+import base64
+import hashlib
+import ecdsa
+import jwt
 from datetime import datetime, timedelta, timezone
 from typing import Any
-
-import jwt
 from passlib.context import CryptContext
 
 from app.core.config import settings
@@ -31,3 +33,12 @@ def verify_activation_token(token: str) -> str:
     ''' Defined for verify email activation token '''
     decoded_token = jwt.decode(token, settings.SECRET_KEY, algorithms=[ALGORITHM])
     return str(decoded_token["sub"])
+
+def verify_webhook_signature(pubkey_b64: str, x_sign_b64: str, body: bytes) -> bool:
+  try: 
+    pubkey_pem = base64.b64decode(pubkey_b64)
+    vk = ecdsa.VerifyingKey.from_pem(pubkey_pem.decode())
+    signature = base64.b64decode(x_sign_b64)
+    return vk.verify(signature, body, sigdecode=ecdsa.util.sigdecode_der, hashfunc=hashlib.sha256)
+  except Exception as e:
+    print("Signature verification failed:", type(e).__name__, str(e))

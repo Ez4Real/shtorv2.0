@@ -1,14 +1,56 @@
-import { Accordion, Button, CloseButton, Drawer, Flex, Image, Portal, Text } from "@chakra-ui/react"
+import { Accordion, Box, CloseButton, Drawer, Flex, Image, Portal, Text } from "@chakra-ui/react"
 import { Link as RouterLink } from "@tanstack/react-router"
 import BurgerMenu from "../Common/BurgerMenu"
 import SwitchLocalizationDivider from "../Common/SwitchLocalization/LanguageCurrencyViaDivider"
 import { useState } from "react"
+import { useTranslation } from "react-i18next"
+import { useQuery } from "@tanstack/react-query"
+import { CategoriesService, CollectionsService } from "@/client"
+import { TranslatableTitle } from "../Common/SwitchLocalization"
+
+
+function getCollectionsQueryOptions() {
+  return {
+    queryFn: () => CollectionsService.readCollections(),
+    queryKey: ["collections"],
+  }
+}
+
+function getCategoriesQueryOptions() {
+  return {
+    queryFn: () => CategoriesService.readCategories(),
+    queryKey: ["categories"],
+  }
+}
 
 
 const MenuDialog = () => {
+  const { t, i18n } = useTranslation()
   const [open, setOpen] = useState<boolean>(false)
 
+  const { data: collectionsData } = useQuery({
+    ...getCollectionsQueryOptions(),
+  })
+  const collections = collectionsData?.data
+
+  const { data: categoriesData } = useQuery({
+    ...getCategoriesQueryOptions(),
+  })
+  const categories = categoriesData?.data
+  
+  const titleKey = `title_${i18n.language}` as TranslatableTitle;
+  
+  const footerLinks = [
+    { to: "/privacy-policy", text: t("Footer.privacyPolicy")},
+    { to: "/payment-and-delivery", text: t("Footer.paymentAndDelivery")},
+    { to: "/returns-and-exchange", text: t("Footer.returns")},
+    { to: "/public-offer-agreement", text: t("Footer.publicOfferAgreement")},
+    { to: "https://t.me/gala_butnotdalis", text: t("Footer.chat")},
+    { to: "/size-guide", text: t("Footer.sizeGuide")},
+  ]
+
   return (
+
     <Drawer.Root
       placement="start"
       size="sm"
@@ -16,108 +58,237 @@ const MenuDialog = () => {
       open={open} onOpenChange={(e) => setOpen(e.open)}
     >
       <Drawer.Trigger>
-        <Button variant="plain" p="0" display="block">
-          <BurgerMenu isOpen={open} />
-        </Button>
+        <BurgerMenu isOpen={open} />
       </Drawer.Trigger>
 
       <Portal>
         <Drawer.Backdrop />
 
         <Drawer.Positioner>
-          <Drawer.Content>
-            <Drawer.Body pt="152px" pl="49px" pr="45px">
-              <Flex flexDirection="column" gap="16px">
-                <RouterLink to="/" hash="root">
-                  <Text fontSize="24px" lineHeight="30px" fontWeight="400">
-                    HOME
+          <Drawer.Content
+          >
+            <Drawer.Body
+              pt="100px"
+              pl="24px"
+              pr="45px"
+            >
+              <Flex
+                flexDirection="column"
+                gap="16px"
+              >
+                <RouterLink 
+                  to="/"
+                  hash="root"
+                >
+                  <Text
+                    fontSize="24px"
+                    lineHeight="30px"
+                    fontWeight="300"
+                  >{t("MenuDialog.homepage")}
                   </Text>
                 </RouterLink>
-
-                <RouterLink to="/" hash="root">
-                  <Text fontSize="24px" lineHeight="30px" fontWeight="400">
-                    ABOUT US
+                <RouterLink 
+                  to="/"
+                  hash="root"
+                >
+                  <Text
+                    fontSize="24px"
+                    lineHeight="30px"
+                    fontWeight="300"
+                  >{t("MenuDialog.aboutUs")}
                   </Text>
                 </RouterLink>
 
                 <Accordion.Root collapsible>
                   <Accordion.Item value="plain" border="none">
-                    <Accordion.ItemTrigger p="0">
-                      <Text
-                        fontSize="24px"
-                        lineHeight="30px"
-                        fontWeight="400"
-                        cursor="pointer"
-                      >
-                        SHOP
-                      </Text>
-                    </Accordion.ItemTrigger>
 
-                    {[
-                      "By Collections",
-                      "Combs",
-                      "Pendants",
-                      "Necklaces",
-                      "Earrings",
-                      "Rings",
-                      "Bracelets",
-                    ].map((label, index) => (
-                      <Accordion.ItemContent key={index}>
-                        <Accordion.ItemBody
-                          pt="16px"
-                          pb="0"
-                          fontSize="20px"
-                          lineHeight="25px"
+                      <Accordion.ItemTrigger 
+                        p="0"
+                      >
+                        <Text
+                          fontSize="24px"
+                          lineHeight="30px"
                           fontWeight="300"
-                        >
-                          {label}
+                          cursor="pointer"
+                        >{t("MenuDialog.shop.title")}
+                        </Text>
+                      </Accordion.ItemTrigger>
+
+                      <Accordion.ItemContent>
+                        <RouterLink
+                            to="/shop"
+                            search={{ page: 1 }}
+                            hash="root"
+                          >
+                            <Accordion.ItemBody 
+                              pt="16px" 
+                              pb="0"
+                              fontSize="20px"
+                              lineHeight="25px"
+                              fontWeight="300"
+                            >{t("MenuDialog.shop.all")}
+                            </Accordion.ItemBody>
+                          </RouterLink>
+                      </Accordion.ItemContent>
+
+                      <Accordion.ItemContent>
+                        <Accordion.ItemBody pt="16px" pb="0">
+                          <Accordion.Root collapsible>
+                            <Accordion.Item 
+                              value="collections" 
+                              border="none"
+                            >
+                              <Accordion.ItemTrigger 
+                                pt="0" 
+                                pb="0"
+                                css={{
+                                  borderRadius: '0',
+                                  borderBottom: '1px solid transparent',
+                                  maxWidth: '133px',
+                                  _expanded: {
+                                    borderBottom: '1px solid',
+                                    borderColor: 'ui.border',
+                                  },
+                                }}
+                              >
+                                <Text
+                                  fontSize="20px"
+                                  lineHeight="25px" 
+                                  fontWeight="300" 
+                                  cursor="pointer"
+                                  
+                                >
+                                  {t("MenuDialog.shop.collection")}
+                                </Text>
+                              </Accordion.ItemTrigger>
+                              {collections?.map((collection) => (
+                                <Accordion.ItemContent key={collection.id}>
+                                  <RouterLink
+                                    to="/shop"
+                                    search={{ page: 1, collection_id: collection.id }}
+                                    hash="root"
+                                  >
+                                    <Accordion.ItemBody 
+                                      pt="10px" 
+                                      pb="4px"
+                                      textTransform="uppercase"
+                                    >
+                                      <Text
+                                        pt="10px" 
+                                        fontSize="16px"
+                                        fontWeight="300" 
+                                        cursor="pointer">
+                                          {collection.title}
+                                      </Text>
+                                    </Accordion.ItemBody>
+                                  </RouterLink>
+                                </Accordion.ItemContent>
+                              ))}
+                            </Accordion.Item>
+                          </Accordion.Root>
                         </Accordion.ItemBody>
                       </Accordion.ItemContent>
-                    ))}
 
-                    <Accordion.ItemContent>
-                      <Accordion.ItemBody
-                        pt="16px"
-                        pb="0"
-                        fontSize="24px"
-                        lineHeight="30px"
-                        fontWeight="400"
-                        position="absolute"
-                        left="46px"
-                      >
-                        Cart
-                      </Accordion.ItemBody>
-                    </Accordion.ItemContent>
-                  </Accordion.Item>
+                      {categories?.map((category) => (
+                        <Accordion.ItemContent key={category.id}>
+                          <RouterLink
+                            to="/shop"
+                            search={{ page: 1, category_id: category.id }}
+                            hash="root"
+                          >
+                            <Accordion.ItemBody 
+                              pt="16px" 
+                              pb="0"
+                              fontSize="20px"
+                              lineHeight="25px"
+                              fontWeight="300"
+                            >{category[titleKey]}
+                            </Accordion.ItemBody>
+                          </RouterLink>
+                        </Accordion.ItemContent>
+                      ))}
+
+                      <Box>
+                        <Accordion.ItemContent>
+                          <RouterLink
+                            to="/gifts"
+                            hash="root"
+                          >
+                            <Accordion.ItemBody 
+                              pt="16px" 
+                              pb="0"
+                              fontSize="20px"
+                              lineHeight="25px"
+                              fontWeight="300"
+                            >{t("MenuDialog.shop.categories.gifts")}
+                            </Accordion.ItemBody>
+                          </RouterLink>
+                        </Accordion.ItemContent>
+                      </Box>
+
+                      <Accordion.ItemContent>
+                        <Accordion.ItemBody 
+                          pt="16px" 
+                          pb="0"
+                          fontSize="24px"
+                          lineHeight="30px"
+                          fontWeight="300"
+                        >{t("MenuDialog.bag")}
+                        </Accordion.ItemBody>
+                      </Accordion.ItemContent>
+
+                    </Accordion.Item>
                 </Accordion.Root>
               </Flex>
             </Drawer.Body>
 
-            <Drawer.Footer pl="46px" pr="45px" pb="43px">
-              <Flex w="100%" justifyContent="space-between">
-                <Flex flexDirection="column" gap="8px">
-                  <RouterLink className="menu-underline-link" to="/" hash="root">
-                    Privacy Policy
-                  </RouterLink>
-                  <RouterLink className="menu-underline-link" to="/" hash="root">
-                    Payment and Delivery
-                  </RouterLink>
-                  <RouterLink className="menu-underline-link" to="/" hash="root">
-                    Returns
-                  </RouterLink>
+            <Drawer.Footer
+              pl="24px"
+              pr="46px"
+              pb="24px"
+            >
+              <Flex
+                w="100%"
+                justifyContent="space-between"
+              >
+                <Flex
+                  flexDirection="column"
+                  gap="8px"
+                >
+                  {footerLinks?.map((link, index) => (
+                    <RouterLink
+                      key={index}
+                      className="menu-underline-link" 
+                      to={link.to}
+                      hash="root"
+                    >
+                      {link.text}
+                    </RouterLink>
+                  ))}
                 </Flex>
                 
+
                 <SwitchLocalizationDivider />
               </Flex>
             </Drawer.Footer>
-
-            <Drawer.CloseTrigger position="absolute" top="24px" right="24px">
-              <CloseButton w="24px" display="contents">
-                <Image src="assets/icons/menu-remove.svg" />
+            
+            <Drawer.CloseTrigger
+              position="absolute"
+              top="24px"
+              right="24px"
+            >
+              <CloseButton
+                w="24px"
+                display="contents"
+              >
+                <Image src="/assets/icons/menu-remove.svg"/>
               </CloseButton>
+              
             </Drawer.CloseTrigger>
+
           </Drawer.Content>
         </Drawer.Positioner>
+
       </Portal>
     </Drawer.Root>
   )

@@ -39,7 +39,7 @@ const Sidebar = () => {
             aria-label="Open Menu"
             position="absolute"
             zIndex="100"
-            m={4}
+            m={2}
           >
             <FaBars />
           </IconButton>

@@ -51,7 +51,7 @@ test("Log in with valid email and password ", async ({ page }) => {
   await fillForm(page, firstSuperuser, firstSuperuserPassword)
   await page.getByRole("button", { name: "Log In" }).click()
 
-  await page.waitForURL("/")
+  await page.waitForURL("/admin")
 
   await expect(
     page.getByText("Welcome back, nice to see you again!"),
@@ -85,7 +85,7 @@ test("Successful log out", async ({ page }) => {
   await fillForm(page, firstSuperuser, firstSuperuserPassword)
   await page.getByRole("button", { name: "Log In" }).click()
 
-  await page.waitForURL("/")
+  await page.waitForURL("/admin")
 
   await expect(
     page.getByText("Welcome back, nice to see you again!"),
@@ -102,7 +102,7 @@ test("Logged-out user cannot access protected routes", async ({ page }) => {
   await fillForm(page, firstSuperuser, firstSuperuserPassword)
   await page.getByRole("button", { name: "Log In" }).click()
 
-  await page.waitForURL("/")
+  await page.waitForURL("/admin")
 
   await expect(
     page.getByText("Welcome back, nice to see you again!"),
@@ -112,16 +112,16 @@ test("Logged-out user cannot access protected routes", async ({ page }) => {
   await page.getByRole("menuitem", { name: "Log out" }).click()
   await page.waitForURL("/login")
 
-  await page.goto("/settings")
+  await page.goto("/admin/settings")
   await page.waitForURL("/login")
 })
 
 test("Redirects to /login when token is wrong", async ({ page }) => {
-  await page.goto("/settings")
+  await page.goto("/admin/settings")
   await page.evaluate(() => {
     localStorage.setItem("access_token", "invalid_token")
   })
-  await page.goto("/settings")
+  await page.goto("/admin/settings")
   await page.waitForURL("/login")
   await expect(page).toHaveURL("/login")
 })

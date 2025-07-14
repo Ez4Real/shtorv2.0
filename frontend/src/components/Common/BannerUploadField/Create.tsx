@@ -6,7 +6,7 @@ import { useFormContext } from "react-hook-form"
 
 
 interface CreateBannerUploadFieldProps {
-  field_id: "banner_desktop" | "banner_mobile"
+  field_id: "banner_desktop" | "banner_mobile" | "image"
   label: string
   error?: string
   invalid?: boolean
@@ -73,6 +73,7 @@ const CreateBannerUploadField = ({
               rounded="md"
             /></Box>
             <FileUpload.ItemDeleteTrigger
+              right={0}
               onClick={() => handleRemoveImg}
               p=".25rem"
               position="absolute"

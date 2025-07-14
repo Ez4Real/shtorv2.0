@@ -146,23 +146,20 @@ function CollectionsTable() {
           <Table.Header>
             <Table.Row>
               <Table.ColumnHeader>№</Table.ColumnHeader>
-              <Table.ColumnHeader w="sm">ID</Table.ColumnHeader>
-              <Table.ColumnHeader w="sm">Title</Table.ColumnHeader>
-              <Table.ColumnHeader w="sm">Date | Time</Table.ColumnHeader>
-              <Table.ColumnHeader
-                w="sm"
-                textAlign="center"
-              >Banners</Table.ColumnHeader>
-              <Table.ColumnHeader w="sm"></Table.ColumnHeader>
+              <Table.ColumnHeader>ID</Table.ColumnHeader>
+              <Table.ColumnHeader>Title</Table.ColumnHeader>
+              <Table.ColumnHeader>Date | Time</Table.ColumnHeader>
+              <Table.ColumnHeader textAlign="center">
+                Banners
+              </Table.ColumnHeader>
+              <Table.ColumnHeader></Table.ColumnHeader>
             </Table.Row>
           </Table.Header>
           <Table.Body>
             {collections?.map((collection) => (
               <Table.Row key={collection.id} opacity={isPlaceholderData ? 0.5 : 1}>
                 <Table.Cell
-                  truncate
                   p={0}
-                  maxW="sm"
                   fontWeight="bold"
                 >
                   <ItemOrderControls
@@ -176,13 +173,13 @@ function CollectionsTable() {
                     })}
                   />
                 </Table.Cell>
-                <Table.Cell truncate maxW="sm">
+                <Table.Cell>
                   {collection.id}
                 </Table.Cell>
-                <Table.Cell truncate maxW="sm">
+                <Table.Cell>
                   {collection.title}
                 </Table.Cell>
-                <Table.Cell truncate maxWidth="50%">
+                <Table.Cell>
                   {new Date(collection.created_at as string).toLocaleString()}
                 </Table.Cell>
 

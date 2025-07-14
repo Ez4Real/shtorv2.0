@@ -1,5 +1,5 @@
-# import json
-# from functools import partial
+import json
+from functools import partial
 from sqlmodel import Session, create_engine, select
 
 from app import crud
@@ -8,7 +8,7 @@ from app.models import User, UserCreate
 
 engine = create_engine(
     str(settings.SQLALCHEMY_DATABASE_URI),
-    # json_serializer=partial(json.dumps, ensure_ascii=False)
+    json_serializer=partial(json.dumps, ensure_ascii=False)
 )
 
 

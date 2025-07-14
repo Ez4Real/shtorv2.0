@@ -1,6 +1,6 @@
-import { CollectionsService, OpenAPI } from "@/client"
+import { CollectionsService } from "@/client"
 import Collection from "@/components/Collection"
-import { Container, useBreakpointValue } from "@chakra-ui/react"
+import { Container, Flex, Spinner, useBreakpointValue } from "@chakra-ui/react"
 import { useQuery } from "@tanstack/react-query"
 import { createFileRoute } from "@tanstack/react-router"
 
@@ -19,7 +19,6 @@ function getCollectionsQueryOptions() {
 
 
 function Collections() {
-  // !!!!!
   const { data: collections, isPending } = useQuery({
     ...getCollectionsQueryOptions(),
   })
@@ -35,13 +34,19 @@ function Collections() {
       maxW="100vw"
       mb="132px"
     >
-      {collections?.data.map((collection, index) => (
-        <Collection
-          key={index}
-          collection={collection}
-          bannerBreakpoint={bannerBreakpoint ?? "banner_mobile"}
-        />
-      ))}
+      {isPending ? (
+        <Flex justify="center" align="center" height="100vh">
+          <Spinner size="xl" saturate="1s" color="ui.main" />
+        </Flex>
+      ) : (
+        collections?.data.map((collection, index) => (
+          <Collection
+            key={index}
+            collection={collection}
+            bannerBreakpoint={bannerBreakpoint ?? "banner_mobile"}
+          />
+        ))
+      )}
     </Container>
   )
 }

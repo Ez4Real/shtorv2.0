@@ -1,7 +1,9 @@
 import { Box, Flex, Icon, Text } from "@chakra-ui/react"
 import { useQueryClient } from "@tanstack/react-query"
 import { Link as RouterLink } from "@tanstack/react-router"
-import { FiBriefcase, FiHome, FiSettings, FiUsers, FiAirplay, FiLayers } from "react-icons/fi"
+import { FiBriefcase, FiHome, FiSettings, FiUsers, FiAirplay, FiLayers, FiGift } from "react-icons/fi"
+import { LuShoppingCart } from "react-icons/lu";
+import { BiCategory } from "react-icons/bi";
 import type { IconType } from "react-icons/lib"
 import type { UserPublic } from "@/client"
 
@@ -9,8 +11,11 @@ import type { UserPublic } from "@/client"
 const items = [
   { icon: FiAirplay, title: "Go to Website", path: "/" },
   { icon: FiHome, title: "Dashboard", path: "/admin" },
+  { icon: LuShoppingCart, title: "Orders", path: "/admin/orders" },
+  { icon: BiCategory, title: "Categories", path: "/admin/categories" },
   { icon: FiLayers, title: "Collections", path: "/admin/collections" },
   { icon: FiBriefcase, title: "Products", path: "/admin/products" },
+  { icon: FiGift, title: "Gifts", path: "/admin/gifts" },
   { icon: FiSettings, title: "User Settings", path: "/admin/settings" },
 ]
 

@@ -7,7 +7,7 @@ import { useFormContext } from "react-hook-form"
 
 
 interface UpdateBannerUploadFieldProps {
-  field_id: "banner_desktop" | "banner_mobile"
+  field_id: "banner_desktop" | "banner_mobile" | "image"
   label: string
   currentBannerUrl: string
   error?: string

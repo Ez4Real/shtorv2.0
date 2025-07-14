@@ -12,7 +12,7 @@ import { useState } from "react"
 import { FormProvider, type SubmitHandler, useForm } from "react-hook-form"
 import { FaExchangeAlt } from "react-icons/fa"
 
-import { type ApiError, Body_collections_update_collection, type CollectionPublic, CollectionsService } from "@/client"
+import { type ApiError, Body_collections_update_collection, type CollectionPublic_Input, CollectionsService } from "@/client"
 import useCustomToast from "@/hooks/useCustomToast"
 import { handleError } from "@/utils"
 import {
@@ -29,7 +29,7 @@ import { Field } from "../ui/field"
 import UpdateBannerUploadField from "../Common/BannerUploadField/Update"
 
 interface EditCollectionProps {
-  collection: CollectionPublic
+  collection: CollectionPublic_Input
 }
 
 const EditCollection = ({ collection }: EditCollectionProps) => {

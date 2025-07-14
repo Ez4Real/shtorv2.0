@@ -2,12 +2,12 @@ import { IconButton } from "@chakra-ui/react"
 import { BsThreeDotsVertical } from "react-icons/bs"
 import { MenuContent, MenuRoot, MenuTrigger } from "../../ui/menu"
 
-import type { CollectionPublic } from "@/client"
+import type { CollectionPublic_Output } from "@/client"
 import DeleteCollection from "@/components/Collections/DeleteCollection"
 import EditCollection from "@/components/Collections/EditCollection"
 
 interface CollectionActionsMenuProps {
-  collection: CollectionPublic
+  collection: CollectionPublic_Output
 }
 
 export const CollectionActionsMenu = ({ collection }: CollectionActionsMenuProps) => {

@@ -1,10 +1,10 @@
-import { CollectionPublic, OpenAPI } from "@/client"
+import { CollectionPublic_Output, OpenAPI } from "@/client"
 import { Box } from "@chakra-ui/react"
 import { Link as RouterLink } from "@tanstack/react-router"
 
 
 interface CollectionProps {
-  collection: CollectionPublic
+  collection: CollectionPublic_Output
   bannerBreakpoint: "banner_mobile" | "banner_desktop"
 }
 
@@ -36,7 +36,7 @@ const Collection = ({
           position="absolute"
           bottom={["24px", "24px", "46px", "46px"]}
           left={["24px", "24px", "55px", "55px"]}
-          fontSize={["24px", "24px", "28px", "28px"]}
+          fontSize={["16px", "16px", "28px", "28px"]}
           lineHeight={["30px", "30px", "35px", "35px"]}
         >{ collection.title }
         </Box>

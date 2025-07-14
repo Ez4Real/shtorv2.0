@@ -1,5 +1,6 @@
 from collections.abc import Generator
 from typing import Annotated 
+import uuid
 
 import jwt
 from fastapi import Depends, HTTPException, status, UploadFile, Form, File
@@ -11,7 +12,8 @@ from sqlmodel import Session
 from app.core import security
 from app.core.config import settings
 from app.core.db import engine
-from app.models import TokenPayload, User, CollectionBase, CollectionCreate, CollectionUpdate
+from app.models import TokenPayload, User, CollectionBase, CollectionCreate, CollectionUpdate, \
+    ProductBase, ProductCreate, ProductUpdate, UpdateBase, GiftBase, GiftCreate, GiftUpdate, GiftUpdateBase
 
 reusable_oauth2 = OAuth2PasswordBearer(
     tokenUrl=f"{settings.API_V1_STR}/login/access-token"
@@ -102,3 +104,46 @@ def parse_collection_update(
         banner_mobile=banner_mobile,
         **collection_data)
     return collection
+
+def parse_product_create(
+    product: ProductBase = Form(...),
+    images: list[UploadFile] = File(),
+) -> ProductCreate:
+    product_data = product.model_dump()
+    print("Product Data: ", product_data)
+    product = ProductCreate(
+        images=images,
+        **product_data
+    )
+    return product
+    
+def parse_product_update(
+    product: UpdateBase = Form(...),
+    images: list[UploadFile] | None = File(default=None),
+) -> ProductUpdate:
+    return ProductUpdate(
+        **product.model_dump(exclude_unset=True, exclude={"sizes"}),
+        sizes=product.sizes,
+        images=images
+    )
+
+def parse_gift_create(
+    gift: GiftBase = Form(...),
+    image: UploadFile = File(),
+) -> GiftCreate:
+    gift_data = gift.model_dump()
+    gift = GiftCreate(
+        image=image,
+        **gift_data
+    )
+    return gift
+
+def parse_gift_update(
+    gift: GiftUpdateBase = Form(...),
+    image: UploadFile | None = File(default=None),
+) -> GiftUpdate:
+    gift_data = gift.model_dump()
+    gift = GiftUpdate(
+        image=image, 
+        **gift_data)
+    return gift

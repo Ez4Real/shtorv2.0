@@ -1,4 +1,4 @@
-import { CollectionsService } from "@/client"
+import { CollectionsService, ProductPublic, ProductsService } from "@/client"
 import Collection from "@/components/Collection"
 import ProductCard from "@/components/Product/Card"
 import { Box, Container, Flex, Grid, Spinner, Text, useBreakpointValue } from "@chakra-ui/react"
@@ -19,103 +19,147 @@ function getCollectionQueryOptions({ order }: { order: number }) {
   }
 }
 
+const PER_PAGE = 6
+
+function getProductsQueryOptions({ collection_id }: { collection_id: string }) {
+  return {
+    queryFn: () => ProductsService.readProductsByCollection({
+      id: collection_id,
+      skip: 0,
+      limit: PER_PAGE
+    }),
+    queryKey: ["products", { collection_id }]
+  }
+}
+
 
 function Main() {
   const { t } = useTranslation()
-  const collectionOrder = 1
-  
-  // !!!!!
-  const { data: collection, isPending } = useQuery({
-    ...getCollectionQueryOptions({ order: collectionOrder }),
-  })
-  
-  const mainBanner = useBreakpointValue({
-    base: "url(/assets/images/banner-mobile.svg)", 
-    lg: "url(/assets/images/main-banner.svg)",  
-  })
-
-
-  const bannerBreakpoint = useBreakpointValue<"banner_mobile" | "banner_desktop">({
+    const bannerBreakpoint = useBreakpointValue<"banner_mobile" | "banner_desktop">({
     base: "banner_mobile",
     lg: "banner_desktop",
   })
+  const collectionOrder = 1
+  
+  const { data: collection, isPending: isCollectionPending } = useQuery({
+    ...getCollectionQueryOptions({ order: collectionOrder }),
+  })
 
+  const { data: productsData, isPending: isProductsPending } = useQuery({
+    ...getProductsQueryOptions({ collection_id: collection?.id ?? "" }),
+    enabled: !!collection?.id,
+ })
+  
+ const products = productsData?.data
 
   return (
     <Container
-      p={0}
       maxW="100vw"
       mb="238px"
+      p={0}
     >
       <Box
-        w="100vw"
-        h="100vh"
-        backgroundImage={mainBanner}
-        backgroundSize="cover"
-        backgroundPosition="center top"
-        backgroundRepeat="no-repeat"
-        position="relative"
-        mt="-35px"
+        p={["0px 16px", "0px 16px", "0px 16px", "0px"]}
+        m={0}
       >
-        <RouterLink
-          to="/about-us"
-          from="/"
-          hash="root"
+        <Box
+          w={["100%", "100%", "100%", "100vw"]}
+          h={["100%", "100%", "100%", "100vh"]}
+          position={["initial", "initial", "relative", "relative"]}
+          overflow="hidden"
+          mt={["44px", "44px", "44px", 0]}
         >
           <Box
-            className="underline-link"
-            position="absolute"
-            bottom={["24px", "24px", "75px", "75px"]}
-            left={["24px", "24px", "55px", "55px"]}
-            fontSize={["24px", "24px", "28px", "28px"]}
-            lineHeight={["30px", "30px", "35px", "35px"]}
-          >About us
+            as="video"
+            // @ts-ignore !!!!!
+            src="/assets/videos/banner_preview.mov"
+            autoPlay
+            muted
+            loop
+            playsInline
+            objectFit="cover"
+            w="100%"
+            h="100%"
+            position={["static", "static", "static", "absolute"]}
+            top={0}
+            left={0}
+            zIndex={-1}
+          />
+
+          { collection?.id && (
+            <RouterLink
+              to="/collections/$id"
+              params={{ id: collection.id }}
+              from="/"
+              hash="root"
+            >
+              <Box
+                className="underline-link"
+                position={["static", "static", "static", "absolute"]}
+                color={["black", "black", "black", "white"]}
+                mt={["16px", "16px", "16px", "0"]}
+                bottom="46px"
+                left="46px"
+                fontSize="16px"
+                textDecoration="underline"
+                textDecorationThickness="0"
+                textUnderlineOffset="2px"
+              >
+                {collection?.title}
+              </Box>
+            </RouterLink>
+          )}
+        </Box>
+
+        <Container
+          mt={["85px", "85px", "85px", "110px"]}
+          mb={["90px", "90px", "90px", "110px"]}
+          p={["0", "0", "0", "0 46px"]}
+        >
+          
+          {isProductsPending ? (
+            <Flex justify="center" align="center" height="100vh">
+              <Spinner size="xl" saturate="1s" color="ui.main" />
+            </Flex>
+          ) : (
+            <Grid
+              templateColumns={["repeat(1, 1fr)", "repeat(1, 1fr)", "repeat(2, 1fr)", "repeat(3, 1fr)"]}
+              gap={["60px", "60px", "24px", "54px"]}
+            >
+              {products?.map((product: ProductPublic, index: number) => (
+                <ProductCard key={index} product={product}/>
+              ))}
+            </Grid>
+          )}
+
+          <Box
+            mt={["46px", "46px", "46px", "60px"]}
+          >
+            <RouterLink
+              from="/"
+              to="/collections/"
+              hash="root"
+            >
+              <Text
+                textDecoration="underline"
+                fontWeight="300"
+                fontSize={["16px", "16px", "18px", "18px"]}
+                lineHeight="22px"
+                transition=".1s"
+                textAlign="end"
+                _hover={{
+                  color: "ui.grey",
+                  textDecoration: "none",
+                }}
+              >
+                {t("Homepage.allCollections")}
+              </Text>
+            </RouterLink>
           </Box>
-        </RouterLink>
+        </Container>
       </Box>
 
-      <Container
-        mt="110px"
-        mb="110px"
-        p="0 46px"
-      >
-        <Grid
-          templateColumns="repeat(3, 1fr)"
-          gap="54px"
-        >
-          <ProductCard title="Bracelet-pendant" price="$125" />
-          <ProductCard title="Bracelet-pendant" price="$125" />
-          <ProductCard title="Bracelet-pendant" price="$125" />
-          <ProductCard title="Bracelet-pendant" price="$125" />
-          <ProductCard title="Bracelet-pendant" price="$125" />
-          <ProductCard title="Bracelet-pendant" price="$125" />
-        </Grid>
-
-        <Box mt="60px">
-          <RouterLink
-            from="/"
-            to="/collections/"
-            hash="root"
-          >
-            <Text
-              textDecoration="underline"
-              fontWeight="300"
-              fontSize="18px"
-              lineHeight="22px"
-              transition=".1s"
-              textAlign="end"
-              _hover={{
-                color: "ui.grey",
-                textDecoration: "none",
-              }}
-            >
-              {t("Homepage.allCollections")}
-            </Text>
-          </RouterLink>
-        </Box>
-      </Container>
-
-      {isPending ? (
+      {isCollectionPending ? (
         <Flex justify="center" align="center" height="100vh">
           <Spinner size="xl" saturate="1s" color="ui.main" />
         </Flex>
@@ -125,7 +169,6 @@ function Main() {
           bannerBreakpoint={bannerBreakpoint ?? "banner_mobile"}
         />
       )}
-
       
     </Container>
   )

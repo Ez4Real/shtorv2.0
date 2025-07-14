@@ -78,10 +78,10 @@ def create_collection(
     Create new collection.
     """
     existing_collection = session.exec(
-        select(Collection).filter_by(title=collection_in.title)
+      select(Collection).filter_by(title=collection_in.title)
     ).first()
     if existing_collection:
-        raise HTTPException(status_code=400, detail="Collection with this title already exists.")
+      raise HTTPException(status_code=400, detail="Collection with this title already exists.")
     
     next_collection_order = (session.scalar(select(func.max(Collection.order))) or 0) + 1
     collection = Collection.model_validate(

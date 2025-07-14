@@ -3,6 +3,7 @@ import { Box, Flex, HStack, Image } from "@chakra-ui/react"
 import { Link as RouterLink, useRouterState } from "@tanstack/react-router"
 import SwitchLocalizationMini from "../Common/SwitchLocalization/LanguageMini"
 import MenuDialog from "../MenuDialog"
+import CartDialog from "../CartDialog"
 
 const Header = () => {
     const { location } = useRouterState()
@@ -13,7 +14,7 @@ const Header = () => {
       <>
         <Box
           as="header"
-          position={isHeaderAbsolute ? "absolute" : "relative"}
+          position={isHeaderAbsolute ? ["relative", "relative", "relative", "absolute"] : "relative"}
           zIndex={isHeaderAbsolute ? "1" : "0" }
           w="full"
           p={["46px 16px", "46px", "46px", "46px"]}
@@ -49,8 +50,10 @@ const Header = () => {
               fontWeight="300"
             >
               <SwitchLocalizationMini />
-              <Image src="/assets/icons/cart-header-black.svg"/>
+              <CartDialog />
             </Flex>
+
+            
           </Flex>
         </Box>
       </>
