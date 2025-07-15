@@ -32,6 +32,9 @@ jobs:
       POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
       POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
       SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
+      MONOBANK_ACQUIRING_API: ${{ secrets.MONOBANK_ACQUIRING_API }}
+      MONOBANK_ACQUIRE_TOKEN: ${{ secrets.MONOBANK_ACQUIRE_TOKEN }}
+      MONOBANK_PUBLIC_KEY: ${{ secrets.MONOBANK_PUBLIC_KEY }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4

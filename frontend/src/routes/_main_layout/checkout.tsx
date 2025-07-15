@@ -183,7 +183,6 @@ function Checkout() {
   })
 
   const onSubmit: SubmitHandler<OrderCreate> = (data) => {
-    console.log(data)
     mutation.mutate(data)
   }
 

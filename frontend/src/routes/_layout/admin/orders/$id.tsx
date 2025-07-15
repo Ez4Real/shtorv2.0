@@ -57,8 +57,9 @@ function Order() {
               color={`paymentStatus.${order.payment_status}`}
               borderRadius="8px"
               fontSize="1em"
+              textTransform="uppercase"
             >
-              {order.payment_status?.toUpperCase()}
+              {order.payment_status}
             </Badge>
           </Flex>
           <Flex justify="space-between" align="center" mt={2}>

@@ -42,8 +42,6 @@ function Gifts() {
   })
   const gifts = giftsData?.data
   const productGifts = productGiftsData?.data
-  console.log(productGiftsData);
-  
   
 
   return (

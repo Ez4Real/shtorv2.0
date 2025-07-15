@@ -43,8 +43,9 @@ const GiftCard = ({
           mt="16px"
           fontSize="24px"
           lineHeight="30px"
+          textTransform="uppercase"
         >
-          {gift[titleKey].toUpperCase()}
+          {gift[titleKey]}
         </Text>
         {showPrice && (
           <Text

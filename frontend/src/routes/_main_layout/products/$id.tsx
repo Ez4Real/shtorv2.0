@@ -183,7 +183,8 @@ function Product() {
                         fontSize="24px"
                         lineHeight="30px"
                         mb="24px"
-                      >{product[titleKey].toUpperCase()}
+                        textTransform="uppercase"
+                      >{product[titleKey]}
                       </Text>
 
                       <VStack

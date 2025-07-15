@@ -31,9 +31,6 @@ class MonoBankCallback(BaseModel):
 async def create_payment(
   payment_in: PaymentCreate
 ):
-  # print("MONOBANK_ACQUIRING_API: ", settings.MONOBANK_ACQUIRING_API)
-  # print("MONOBANK_ACQUIRE_TOKEN: ", settings.MONOBANK_ACQUIRE_TOKEN)
-  # print("Request URL: ", f"{settings.MONOBANK_ACQUIRING_API}/api/merchant/invoice/create")
   async with httpx.AsyncClient() as client:
     try:
       response = await client.post(
@@ -153,6 +150,7 @@ async def payment_callback(
       order.payment_status = status
       session.commit()
       session.refresh(order)
+      print("Order status updated successfully")
       return Message(message="Order status updated successfully")
 
   except Exception as e:
