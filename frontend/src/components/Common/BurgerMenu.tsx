@@ -16,7 +16,7 @@ const BurgerMenu = ({
     }
 
     return (
-      <Flex>
+      <Flex cursor="pointer">
         <Box>
           <Box
             {...barProps}

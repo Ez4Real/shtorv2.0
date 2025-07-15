@@ -88,7 +88,7 @@ const MenuDialog = () => {
                   </Text>
                 </RouterLink>
                 <RouterLink 
-                  to="/"
+                  to="/about-us"
                   hash="root"
                 >
                   <Text

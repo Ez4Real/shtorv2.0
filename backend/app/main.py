@@ -21,8 +21,6 @@ app = FastAPI(
     generate_unique_id_function=custom_generate_unique_id,
 )
 
-
-print("ALL CORS ORIGINS: ", settings.all_cors_origins)
 # Set all CORS enabled origins
 if settings.all_cors_origins:
     app.add_middleware(
@@ -30,7 +28,7 @@ if settings.all_cors_origins:
         allow_origins=settings.all_cors_origins,
         allow_credentials=True,
         allow_methods=["*"],
-        allow_headers=["*"],
+        allow_headers=["*"]
     )
 
 app.mount("/media", StaticFiles(directory="./uploads"), name="media")

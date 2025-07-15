@@ -154,17 +154,24 @@ function Checkout() {
   const mutation = useMutation({
     mutationFn: async (data: OrderCreate) => {
       try {
+        console.log("Create payment request body: ", serialisePaymentData())
+        
+
         const paymentResponse = await PaymentsService.createPayment({
           requestBody: serialisePaymentData(),
         })
 
+        console.log("Payment response: ", paymentResponse)
+
         const orderData = { ...data, invoiceId: paymentResponse.invoiceId }
+        console.log("Order Data: ", orderData)
         const orderResponse = await OrdersService.createOrder({
           requestBody: orderData,
         })
 
+        console.log("Create Order Response: ", orderResponse)
+
         window.open(paymentResponse.pageUrl, "_blank", "noopener,noreferrer")
-        // window.location.href = paymentResponse.pageUrl;
 
         return orderResponse
       } catch (error) {

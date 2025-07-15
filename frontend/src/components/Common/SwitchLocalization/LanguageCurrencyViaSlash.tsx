@@ -13,11 +13,15 @@ const SwitchLocalizationSlash = () => {
           textAlign="end"
           display="inline-flex"
         >
-          <Text onClick={toggleLanguage}>
+          <Text
+            onClick={toggleLanguage}
+            cursor="pointer"
+          >
             {t("Locale.language")}
           </Text>
           /
           <Text
+            cursor="pointer"
             onClick={toggleCurrency}
             textTransform="uppercase"
           >
