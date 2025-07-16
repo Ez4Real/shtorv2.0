@@ -1,4 +1,4 @@
-import { Button, CloseButton, Drawer, Flex, Image, Portal, Text, VStack } from "@chakra-ui/react"
+import { Button, Drawer, Flex, Image, Portal, Text, VStack } from "@chakra-ui/react"
 import { useTranslation } from "react-i18next"
 import ProductCounter from "../Common/ProductCounter"
 import { useCart } from "@/contexts/CartContext"
@@ -92,12 +92,6 @@ const CartDialog = () => {
                           <Text mt="6px">
                             {t("Checkout.price")}: {currency.symbol}{getItemPrice(item.data, currency, item.qty)}
                           </Text>
-
-                          {/* {item.data.type === "product" && item.data.attachment && (  
-                            <Text mt="6px">
-                              {t(`Product.attachments.${item.data.attachment.name}`)}: {getItemPrice(item.data.attachment, currency, item.qty)}
-                            </Text>
-                          )} */}
                           <Flex>
 
                           </Flex>
@@ -183,13 +177,10 @@ const CartDialog = () => {
               top="24px"
               right="24px"
             >
-              <CloseButton
-                w="24px"
-                display="contents"
+              <Image
                 onClick={() => setIsOpen(!isOpen)}
-              >
-                <Image src="/assets/icons/menu-remove.svg"/>
-              </CloseButton>
+                src="/assets/icons/menu-remove.svg"
+              />
             </Drawer.CloseTrigger>
 
           </Drawer.Content>

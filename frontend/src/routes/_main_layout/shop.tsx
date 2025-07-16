@@ -1,6 +1,6 @@
 import { ProductPublic, ProductsService } from "@/client"
 import ProductCard from "@/components/Product/Card"
-import { Button, Center, Container, Flex, Grid, Image, Spinner } from "@chakra-ui/react"
+import { AspectRatio, Button, Center, Container, Flex, Grid, Image, Spinner } from "@chakra-ui/react"
 import { useQuery } from "@tanstack/react-query"
 import { createFileRoute, useNavigate } from "@tanstack/react-router"
 import { useState } from "react"
@@ -102,7 +102,7 @@ function Shop() {
               <ProductCard key={product.id} product={product} />
             ))}
           </Grid>
-          <Center mt="216px">
+          <Center mt="280px">
             <Button
               variant="ghost"
               onClick={() => setPage(page + 1)}
@@ -114,13 +114,15 @@ function Shop() {
               onAnimationEnd={() => setSeeMoreSpin(false)}
               outline="none"
               bg="none"
-              h="67px"
             >
-              <Image
-                src="/assets/icons/see-more.svg"
-                animation={seeMoreSpin ? "spin 1.5s ease-in-out" : undefined}
-              />
-              See more
+              <AspectRatio ratio={27 / 19}>
+                <Image
+                  src="/assets/icons/see-more.svg"
+                  animation={seeMoreSpin ? "spin 1.5s ease-in-out" : undefined}
+                  alt="See more icon"
+                  objectFit="contain"
+                />
+              </AspectRatio>
             </Button>
           </Center>
         </>

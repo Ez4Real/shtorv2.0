@@ -1,4 +1,4 @@
-import { Accordion, Box, CloseButton, Drawer, Flex, Image, Portal, Text } from "@chakra-ui/react"
+import { Accordion, Box, Drawer, Flex, Image, Portal, Text } from "@chakra-ui/react"
 import { Link as RouterLink } from "@tanstack/react-router"
 import BurgerMenu from "../Common/BurgerMenu"
 import SwitchLocalizationDivider from "../Common/SwitchLocalization/LanguageCurrencyViaDivider"
@@ -277,13 +277,9 @@ const MenuDialog = () => {
               top="24px"
               right="24px"
             >
-              <CloseButton
-                w="24px"
-                display="contents"
-              >
-                <Image src="/assets/icons/menu-remove.svg"/>
-              </CloseButton>
-              
+              <Image
+                src="/assets/icons/menu-remove.svg"
+              />
             </Drawer.CloseTrigger>
 
           </Drawer.Content>

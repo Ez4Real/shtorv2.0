@@ -147,13 +147,15 @@ function Checkout() {
       basketOrder: mapCartItemsToExportStructure(basketOrder),
     },
     webHookUrl: `${OpenAPI.BASE}/api/v1/payments/callback`,
-    redirectUrl: "http://localhost:5173/thank-you",
+    redirectUrl: `${OpenAPI.CLIENT}/thank-you`,
   }) 
 
 
   const mutation = useMutation({
     mutationFn: async (data: OrderCreate) => {
       try {
+        console.log(OpenAPI);
+        
         console.log("Create payment request body: ", serialisePaymentData())
         
 

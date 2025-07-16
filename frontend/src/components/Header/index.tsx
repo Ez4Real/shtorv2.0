@@ -28,21 +28,23 @@ const Header = () => {
               <MenuDialog />
             </HStack>
 
-            <Box
+            <Flex
               position="absolute"
-              left="50%"
-              top="50%"
-              transform="translate(-50%, -50%)"
-              w={["100px", "100px", "180px", "180px"]}
+              inset={0}
+              justify="center"
+              align="center"
             >
-              <RouterLink to="/" hash="root">
-                <Image
-                  src="/assets/images/logo-black.svg"
-                  w="100%"
-                  h="100%"
-                />
-              </RouterLink>
-            </Box>
+              <Box w={["100px", "100px", "180px", "180px"]}>
+                <RouterLink to="/" hash="root">
+                  <Image
+                    src="/assets/images/logo-black.svg"
+                    w="100%"
+                    h="auto"
+                    alt="Shtor Logo"
+                  />
+                </RouterLink>
+              </Box>
+            </Flex>
 
             <Flex
               alignItems="center"
