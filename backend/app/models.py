@@ -167,8 +167,8 @@ class ProductBase(SQLModel):
     sizes: list[str] | None = Field(default=None, sa_type=JSON, min_length=2)
     title_en: str = Field(min_length=1, max_length=255)
     title_uk: str = Field(min_length=1, max_length=255)
-    description_en: str = Field(min_length=1, max_length=255)
-    description_uk: str = Field(min_length=1, max_length=255)
+    description_en: str = Field(min_length=1, max_length=510)
+    description_uk: str = Field(min_length=1, max_length=510)
     category_id: uuid.UUID
     collection_id: uuid.UUID
     price_usd: float = Field(ge=0.9, le=99999.0)
@@ -205,8 +205,8 @@ class UpdateBase(SQLModel):
     sizes: list[str] | None = Field(default=None, sa_type=JSON, min_length=2)
     title_en: str | None = Field(default=None, min_length=1, max_length=255)
     title_uk: str | None = Field(default=None, min_length=1, max_length=255)
-    description_en: str | None = Field(default=None, min_length=1, max_length=255)
-    description_uk: str | None = Field(default=None, min_length=1, max_length=255)
+    description_en: str | None = Field(default=None, min_length=1, max_length=510)
+    description_uk: str | None = Field(default=None, min_length=1, max_length=510)
     category_id: uuid.UUID | None = Field(default=None)
     collection_id: uuid.UUID | None = Field(default=None)
     price_usd: float | None = Field(default=None, ge=0.9, le=99999.0)
@@ -411,8 +411,8 @@ class ProductAttachment(SQLModel):
     
 class ProductCartItem(CartProductBase):
     type: Literal["product"] = "product"
-    description_en: str = Field(min_length=1, max_length=255)
-    description_uk: str = Field(min_length=1, max_length=255)
+    description_en: str = Field(min_length=1, max_length=510)
+    description_uk: str = Field(min_length=1, max_length=510)
     collection: CollectionPublic
     category: ProductCategoryPublic
     images: list[ProductImage]
