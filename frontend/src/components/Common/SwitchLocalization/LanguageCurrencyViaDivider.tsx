@@ -6,7 +6,7 @@ const SwitchLocalizationDivider = () => {
     <BaseSwitchLocalization>
       {({ t, toggleLanguage, currency, toggleCurrency }) => (
         <Box
-          fontSize="16px"
+          fontSize={["14px", "14px", "16px", "16px"]}
           fontWeight="300"
           cursor="pointer"
           textAlign="center"

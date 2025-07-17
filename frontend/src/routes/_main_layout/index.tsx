@@ -1,6 +1,7 @@
 import { CollectionsService, ProductPublic, ProductsService } from "@/client"
 import Collection from "@/components/Collection"
 import ProductCard from "@/components/Product/Card"
+import { chakra } from "@chakra-ui/react"
 import { Box, Container, Flex, Grid, Spinner, Text, useBreakpointValue } from "@chakra-ui/react"
 import { useQuery } from "@tanstack/react-query"
 import { createFileRoute } from "@tanstack/react-router"
@@ -51,6 +52,8 @@ function Main() {
  })
   
  const products = productsData?.data
+ 
+ const Video = chakra("video")
 
   return (
     <Container
@@ -69,9 +72,7 @@ function Main() {
           overflow="hidden"
           mt={["44px", "44px", "44px", 0]}
         >
-          <Box
-            as="video"
-            // @ts-ignore !!!!!
+          <Video
             src="/assets/videos/banner_preview.mov"
             autoPlay
             muted
@@ -112,8 +113,7 @@ function Main() {
         </Box>
 
         <Container
-          mt={["85px", "85px", "85px", "110px"]}
-          mb={["90px", "90px", "90px", "110px"]}
+          my={["90px", "90px", "90px", "110px"]}
           p={["0", "0", "0", "0 46px"]}
         >
           
@@ -123,8 +123,9 @@ function Main() {
             </Flex>
           ) : (
             <Grid
-              templateColumns={["repeat(1, 1fr)", "repeat(1, 1fr)", "repeat(2, 1fr)", "repeat(3, 1fr)"]}
-              gap={["60px", "60px", "24px", "54px"]}
+              templateColumns={["repeat(2, 1fr)", "repeat(2, 1fr)", "repeat(2, 1fr)", "repeat(3, 1fr)"]}
+              gapX={["24px", "24px", "54px", "54px"]}
+              gapY={["32px", "32px", "46px", "46px"]}
             >
               {products?.map((product: ProductPublic, index: number) => (
                 <ProductCard key={index} product={product}/>

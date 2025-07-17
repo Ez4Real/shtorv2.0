@@ -26,7 +26,7 @@ function SizeGuide() {
       p={0}
       maxW="100vw"
       mb={["250px", "250px", "140px", "140px"]}
-      px="46px"
+      px={["16px", "16px", "46px", "46px"]}
     >
       <Breadcrumbs
         items={[
@@ -34,7 +34,7 @@ function SizeGuide() {
         ]}
       />
       <Container
-        padding={["0 16px", "0 16px", "0 225px", "0 225px"]}
+        padding={["0", "0", "0 225px", "0 225px"]}
       >
         <Text
             fontSize={["16px", "16px", "16px", "24px"]}
@@ -47,7 +47,7 @@ function SizeGuide() {
         </Text>
         <Container
             mt={["24px", "24px", "64px", "64px"]}
-            p="23px 28px"
+            p={["0px", "0px", "23px 28px", "23px 28px"]}
             border=".5px solid black"
         >
             <Table.Root
@@ -62,7 +62,7 @@ function SizeGuide() {
               },
             }}
             fontWeight="300"
-            fontSize="18px"
+            fontSize={["14px", "14px", "18px", "18px"]}
             >
             <Table.Header >
                 <Table.Row>

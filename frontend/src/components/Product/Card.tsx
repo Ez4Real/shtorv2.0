@@ -45,18 +45,18 @@ const ProductCard = ({
           />
         </Box>
         <Text
-          mt="16px"
-          fontSize={titleFontSize}
-          lineHeight={titleLineHeight}
+          mt={["9px", "9px", "16px", "16px"]}
+          fontSize={["10px", "10px", titleFontSize, titleFontSize]}
+          lineHeight={["13px", "13px", titleLineHeight, titleLineHeight]}
         >
           {product[titleKey]}
         </Text>
       </RouterLink>
       {displayProductPrice && (
         <Text
-          mt="8px"
-          fontSize="18px"
-          lineHeight="22px"
+          mt={["3px", "3px", "8px", "8px"]}
+          fontSize={["8px", "8px", "18px", "18px"]}
+          lineHeight={["10px", "10px", "22px", "22px"]}
         >
           {currency.symbol}{getItemPrice(product, currency)}
         </Text>

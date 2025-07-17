@@ -1,6 +1,6 @@
-
 import Breadcrumbs from "@/components/Common/Breadcrumbs"
 import { Box, Flex, Image, Text, useBreakpointValue, VStack } from "@chakra-ui/react"
+import { chakra } from "@chakra-ui/react"
 import { Link as RouterLink, createFileRoute } from "@tanstack/react-router"
 import { useTranslation } from "react-i18next"
 import 'swiper/css'
@@ -18,6 +18,8 @@ function AboutUs() {
     base: "assets/images/main-banner-mobile.svg",
     md: "assets/images/main-banner.svg",
   });
+
+  const Video = chakra("video")
 
   return (
     <Box
@@ -148,7 +150,8 @@ function AboutUs() {
               flexDirection="column"
               w={["100%", "100%", "50%", "50%"]}
               gap="60px"
-              ml="59px"
+              ml={[0, 0, "59px", "59px"]}
+              mt={["24px", "24px", 0, 0]}
             >
               <Image
                 display={["none", "none", "block", "block"]}
@@ -162,16 +165,21 @@ function AboutUs() {
         <Flex
           flexDirection={["column-reverse", "column-reverse", "column", "column"]}
         >
-          <Image
-            w="100vw"
-            h="100%" 
-            src="assets/images/about-us5.svg"
-            backgroundSize="cover"
-            backgroundPosition="center top"
-            backgroundRepeat="no-repeat"
-            mb={["46px", "46px", "60px", "60px"]}
-            pr={["16px", "16px", "0", "0"]}
-            pl={["16px", "16px", "0", "0"]}
+          <Video
+            src="/assets/videos/about-us5.mov"
+            autoPlay
+            muted
+            loop
+            playsInline
+            objectFit="cover"
+            w="100%"
+            h={["240px", "240px", "100vh", "100vh"]}
+            top={0}
+            left={0}
+            zIndex={-1}
+            px={["16px", "16px", 0, 0]}
+            mt={["60px", "60px", 0, 0]}
+            mb={[0, 0, "60px", "60px"]}
           />
 
           <Box
@@ -214,13 +222,12 @@ function AboutUs() {
           top={["0", "0", "36px", "36px"]}
           fontSize={["18px", "18px", "24px", "24px"]}
           textTransform="uppercase"
-          textAlign={["left", "left", "center", "center"]}
-          pl={["16px", "16px", "0", "0"]}
+          textAlign="center"
           >{t("AboutUs.manifest")}
         </Text>
 
         <Image
-          mt={["32px", "32px", "46px", "46px"]} 
+          mt={[0, 0, "46px", "46px"]} 
           w="100vw"
           h="100%" 
           src="assets/images/about-us6.svg"
@@ -229,7 +236,7 @@ function AboutUs() {
           backgroundRepeat="no-repeat"
           pr={["16px", "16px", "0", "0"]}
           pl={["16px", "16px", "0", "0"]}
-          pt={["62px", "62px", "0", "0"]}
+          pt={["32px", "32px", "0", "0"]}
         />
 
         <Box 

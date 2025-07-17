@@ -30,14 +30,15 @@ const Header = () => {
 
             <Flex
               position="absolute"
+              zIndex="0"
               inset={0}
               justify="center"
               align="center"
             >
-              <Box w={["100px", "100px", "180px", "180px"]}>
+              <Box w={["100px", "100px", "180px", "180px"]} cursor="pointer">
                 <RouterLink to="/" hash="root">
                   <Image
-                    src="/assets/images/logo-black.svg"
+                    src="/assets/images/logo-black.png"
                     w="100%"
                     h="auto"
                     alt="Shtor Logo"

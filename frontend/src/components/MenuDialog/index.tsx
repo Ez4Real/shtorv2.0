@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next"
 import { useQuery } from "@tanstack/react-query"
 import { CategoriesService, CollectionsService } from "@/client"
 import { TranslatableTitle } from "../Common/SwitchLocalization"
+import { useCart } from "@/contexts/CartContext"
 
 
 function getCollectionsQueryOptions() {
@@ -27,6 +28,7 @@ function getCategoriesQueryOptions() {
 const MenuDialog = () => {
   const { t, i18n } = useTranslation()
   const [open, setOpen] = useState<boolean>(false)
+  const { setIsOpen } = useCart()
 
   const { data: collectionsData } = useQuery({
     ...getCollectionsQueryOptions(),
@@ -57,8 +59,8 @@ const MenuDialog = () => {
       preventScroll={false}
       open={open} onOpenChange={(e) => setOpen(e.open)}
     >
-      <Drawer.Trigger>
-        <BurgerMenu isOpen={open} />
+      <Drawer.Trigger zIndex="1">
+        <BurgerMenu isOpen={open}/>
       </Drawer.Trigger>
 
       <Portal>
@@ -79,10 +81,11 @@ const MenuDialog = () => {
                 <RouterLink 
                   to="/"
                   hash="root"
+                  onClick={() => setOpen(!open)}
                 >
                   <Text
-                    fontSize="24px"
-                    lineHeight="30px"
+                    fontSize={["16px", "16px", "24px", "24px"]}
+                    lineHeight={["20px", "20px", "30px", "30px"]}
                     fontWeight="300"
                   >{t("MenuDialog.homepage")}
                   </Text>
@@ -90,10 +93,11 @@ const MenuDialog = () => {
                 <RouterLink 
                   to="/about-us"
                   hash="root"
+                  onClick={() => setOpen(!open)}
                 >
                   <Text
-                    fontSize="24px"
-                    lineHeight="30px"
+                    fontSize={["16px", "16px", "24px", "24px"]}
+                    lineHeight={["20px", "20px", "30px", "30px"]}
                     fontWeight="300"
                   >{t("MenuDialog.aboutUs")}
                   </Text>
@@ -106,8 +110,8 @@ const MenuDialog = () => {
                         p="0"
                       >
                         <Text
-                          fontSize="24px"
-                          lineHeight="30px"
+                          fontSize={["16px", "16px", "24px", "24px"]}
+                          lineHeight={["20px", "20px", "30px", "30px"]}
                           fontWeight="300"
                           cursor="pointer"
                         >{t("MenuDialog.shop.title")}
@@ -119,11 +123,12 @@ const MenuDialog = () => {
                             to="/shop"
                             search={{ page: 1 }}
                             hash="root"
+                            onClick={() => setOpen(!open)}
                           >
                             <Accordion.ItemBody 
                               pt="16px" 
                               pb="0"
-                              fontSize="20px"
+                              fontSize={["16px", "16px", "20px", "20px"]}
                               lineHeight="25px"
                               fontWeight="300"
                             >{t("MenuDialog.shop.all")}
@@ -132,7 +137,10 @@ const MenuDialog = () => {
                       </Accordion.ItemContent>
 
                       <Accordion.ItemContent>
-                        <Accordion.ItemBody pt="16px" pb="0">
+                        <Accordion.ItemBody
+                          pt={["12px", "12px", "12px", "16px"]}
+                          pb="0"
+                        >
                           <Accordion.Root collapsible>
                             <Accordion.Item 
                               value="collections" 
@@ -141,6 +149,7 @@ const MenuDialog = () => {
                               <Accordion.ItemTrigger 
                                 pt="0" 
                                 pb="0"
+                                w="auto"
                                 css={{
                                   borderRadius: '0',
                                   borderBottom: '1px solid transparent',
@@ -150,13 +159,14 @@ const MenuDialog = () => {
                                     borderColor: 'ui.border',
                                   },
                                 }}
+                                
+                                mb={["2px", "2px", 0, 0]}
                               >
                                 <Text
-                                  fontSize="20px"
-                                  lineHeight="25px" 
+                                  fontSize={["16px", "16px", "20px", "20px"]}
+                                  lineHeight={["20px", "20px", "25px", "25px"]}
                                   fontWeight="300" 
                                   cursor="pointer"
-                                  
                                 >
                                   {t("MenuDialog.shop.collection")}
                                 </Text>
@@ -167,14 +177,14 @@ const MenuDialog = () => {
                                     to="/shop"
                                     search={{ page: 1, collection_id: collection.id }}
                                     hash="root"
+                                    onClick={() => setOpen(!open)}
                                   >
                                     <Accordion.ItemBody 
                                       pt="10px" 
-                                      pb="4px"
+                                      pb="0"
                                       textTransform="uppercase"
                                     >
                                       <Text
-                                        pt="10px" 
                                         fontSize="16px"
                                         fontWeight="300" 
                                         cursor="pointer">
@@ -195,12 +205,13 @@ const MenuDialog = () => {
                             to="/shop"
                             search={{ page: 1, category_id: category.id }}
                             hash="root"
+                            onClick={() => setOpen(!open)}
                           >
                             <Accordion.ItemBody 
-                              pt="16px" 
+                              pt={["12px", "12px", "16px", "16px"]}
                               pb="0"
-                              fontSize="20px"
-                              lineHeight="25px"
+                              fontSize={["16px", "16px", "20px", "20px"]}
+                              lineHeight={["20px", "20px", "25px", "25px"]}
                               fontWeight="300"
                             >{category[titleKey]}
                             </Accordion.ItemBody>
@@ -213,12 +224,13 @@ const MenuDialog = () => {
                           <RouterLink
                             to="/gifts"
                             hash="root"
+                            onClick={() => setOpen(!open)}
                           >
                             <Accordion.ItemBody 
                               pt="16px" 
                               pb="0"
-                              fontSize="20px"
-                              lineHeight="25px"
+                              fontSize={["16px", "16px", "20px", "20px"]}
+                              lineHeight={["20px", "20px", "25px", "25px"]}
                               fontWeight="300"
                             >{t("MenuDialog.shop.categories.gifts")}
                             </Accordion.ItemBody>
@@ -228,10 +240,15 @@ const MenuDialog = () => {
 
                       <Accordion.ItemContent>
                         <Accordion.ItemBody 
+                          onClick={() => {
+                            setOpen(!open)
+                            setIsOpen(true)
+                          }}
                           pt="16px" 
                           pb="0"
-                          fontSize="24px"
-                          lineHeight="30px"
+                          fontSize={["16px", "16px", "24px", "24px"]}
+                          textTransform={["uppercase", "uppercase", "unset", "unset"]}
+                          lineHeight={["20px", "20px", "30px", "30px"]}
                           fontWeight="300"
                         >{t("MenuDialog.bag")}
                         </Accordion.ItemBody>
@@ -261,6 +278,7 @@ const MenuDialog = () => {
                       className="menu-underline-link" 
                       to={link.to}
                       hash="root"
+                      onClick={() => setOpen(!open)}
                     >
                       {link.text}
                     </RouterLink>
@@ -276,6 +294,7 @@ const MenuDialog = () => {
               position="absolute"
               top="24px"
               right="24px"
+              cursor="pointer"
             >
               <Image
                 src="/assets/icons/menu-remove.svg"

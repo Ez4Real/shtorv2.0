@@ -147,7 +147,7 @@ function Checkout() {
       basketOrder: mapCartItemsToExportStructure(basketOrder),
     },
     webHookUrl: `${OpenAPI.BASE}/api/v1/payments/callback`,
-    redirectUrl: `${OpenAPI.CLIENT}/thank-you`,
+    redirectUrl: "https://shtor.com.ua/thank-you",
   }) 
 
 

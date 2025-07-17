@@ -84,7 +84,7 @@ const Footer = () => {
         </Flex>
         <Flex
           justifyContent="space-between"
-          alignItems={["flex-start", "flex-start", "flex-end", "flex-end"]}
+          alignItems="flex-start"
           w={["100%", "60%", "40%", "40%"]}
           flexDirection={{ base: "row", sm: "column", md: "column", lg: "unset" }}
         >
@@ -114,7 +114,7 @@ const Footer = () => {
           </Flex>
           <Flex
             flexDirection={{ base: "column-reverse", sm: "column", md: "column", lg: "column" }}
-            gap={{ base: "12px", sm: "24px", md: "24px" }}
+            gap={{ base: "8px", sm: "12px", md: "12px" }}
             alignItems="flex-end"
           >
             <SwitchLocalizationSlash />
@@ -127,7 +127,7 @@ const Footer = () => {
               <Text
                 fontSize={["16px", "16px", "20px", "20px"]}
                 fontWeight={["300", "300", "500", "500"]}
-                lineHeight={["21px", "25px", "25px", "25px"]}
+                lineHeight={["20px", "25px", "25px", "25px"]}
                 textDecoration={["unset", "underline"]}
                 transition=".1s"
                 _hover={{ 

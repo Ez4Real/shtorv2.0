@@ -26,7 +26,6 @@ export class Interceptors<T> {
 
 export type OpenAPIConfig = {
   BASE: string
-  CLIENT: string
   CREDENTIALS: "include" | "omit" | "same-origin"
   ENCODE_PATH?: ((path: string) => string) | undefined
   HEADERS?: Headers | Resolver<Headers> | undefined
@@ -43,7 +42,6 @@ export type OpenAPIConfig = {
 
 export const OpenAPI: OpenAPIConfig = {
   BASE: "",
-  CLIENT: "",
   CREDENTIALS: "include",
   ENCODE_PATH: undefined,
   HEADERS: undefined,

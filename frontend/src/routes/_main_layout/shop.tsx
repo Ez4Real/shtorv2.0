@@ -1,6 +1,6 @@
 import { ProductPublic, ProductsService } from "@/client"
 import ProductCard from "@/components/Product/Card"
-import { AspectRatio, Button, Center, Container, Flex, Grid, Image, Spinner } from "@chakra-ui/react"
+import { Box, Button, Center, Container, Flex, Grid, Image, Spinner } from "@chakra-ui/react"
 import { useQuery } from "@tanstack/react-query"
 import { createFileRoute, useNavigate } from "@tanstack/react-router"
 import { useState } from "react"
@@ -81,7 +81,7 @@ function Shop() {
     <Container
       maxW="100vw"
       mb="238px"
-      p="0 46px"
+      p={["0 16px", "0 16px", "0 46px", "0 46px"]}
     >
       {isProductsPending ? (
         <Flex justify="center" align="center" height="100vh">
@@ -91,18 +91,21 @@ function Shop() {
         <>
           <Grid
             templateColumns={[
-              "repeat(1, 1fr)",
-              "repeat(1, 1fr)",
+              "repeat(2, 1fr)",
+              "repeat(2, 1fr)",
               "repeat(2, 1fr)",
               "repeat(3, 1fr)",
             ]}
-            gap={["60px", "60px", "24px", "54px"]}
+            gapX={["24px", "24px", "54px", "54px"]}
+            gapY={["32px", "32px", "46px", "46px"]}
           >
             {products.map((product: ProductPublic) => (
               <ProductCard key={product.id} product={product} />
             ))}
           </Grid>
-          <Center mt="280px">
+          <Center
+            mt={["100px", "100px", "280px", "280px"]}
+          >
             <Button
               variant="ghost"
               onClick={() => setPage(page + 1)}
@@ -115,14 +118,17 @@ function Shop() {
               outline="none"
               bg="none"
             >
-              <AspectRatio ratio={27 / 19}>
+              <Box boxSize="54px 38px">
                 <Image
-                  src="/assets/icons/see-more.svg"
+                  src="/assets/icons/see-more.png"
                   animation={seeMoreSpin ? "spin 1.5s ease-in-out" : undefined}
                   alt="See more icon"
                   objectFit="contain"
+                  w="100%"
+                  h="auto"
                 />
-              </AspectRatio>
+              </Box>
+              See More
             </Button>
           </Center>
         </>

@@ -127,6 +127,7 @@ async def payment_callback(
   x_sign: str = Header(...),
 ):
   """ Monobank Payment Callback """
+  print("\nOrder Status Callback")
   body = await request.body()
   verify_webhook_signature(settings.MONOBANK_PUBLIC_KEY, x_sign, body)
 
@@ -135,6 +136,8 @@ async def payment_callback(
     
     invoice_id = data['invoiceId']
     status = data['status']
+    print("InvoiceId: ", invoice_id)
+    print("Status: ", status, "\n")
     modified_date = datetime.strptime(data['modifiedDate'], "%Y-%m-%dT%H:%M:%SZ")
     
     order = session.exec((
