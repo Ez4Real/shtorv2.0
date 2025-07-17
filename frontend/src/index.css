@@ -28,25 +28,19 @@ body {
     background: transparent;
 }
 
-.swiper-pagination {
-    position: absolute;
-    bottom: 24px;
-    right: 50%;
-    z-index: 1;
-    display: flex;
-    justify-content: center;
-    gap: 4px;
+#root .swiper-pagination {
+    bottom: 18px;
 }
 
-.swiper-pagination-bullet {
-    display: block;
+#root .swiper-pagination-bullet {
     width: 6px;
     height: 6px;
     background-color: #757575;
-    border-radius: 100%;
+    margin: 0;
+    margin-right: 4px;
 }
 
-.swiper-pagination-bullet-active {
-    background-color: #FFFFFF;
-    opacity: 80%;
+#root .swiper-pagination-bullet-active {
+    /* background-color: #FFFFFF; */
+    filter: invert(1);
 }

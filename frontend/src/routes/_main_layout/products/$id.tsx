@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import type { Swiper as SwiperCore } from "swiper";
 import { useRef } from "react";
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { FreeMode, Navigation, Thumbs, Pagination } from 'swiper/modules';
+import { FreeMode, Navigation, Thumbs, Pagination, Scrollbar } from 'swiper/modules';
 import { getItemPrice } from "@/utils"
 
 import type { Swiper as SwiperType } from 'swiper'
@@ -13,6 +13,7 @@ import type { Swiper as SwiperType } from 'swiper'
 import 'swiper/css'
 import 'swiper/css/free-mode'
 import 'swiper/css/thumbs'
+import 'swiper/css/pagination'
 import Breadcrumbs from "@/components/Common/Breadcrumbs";
 import { useTranslation } from "react-i18next";
 import { OpenAPI, ProductAttachment, ProductsService } from "@/client";
@@ -131,23 +132,26 @@ function Product() {
               <Flex
                 justifyContent="space-between"
                 flexDirection={{ base: "column", sm: "column", md: "column", lg: "unset" }}
-                gap={["24px", "24px", "176px", "176px",]}
+                gap={["24px", "24px", "176px", "176px"]}
               >
                 <Flex direction={{ base: "column", sm: "row", md: "row", lg: "row" }}>
                   {!isMobile && (
-                    <Box minHeight="600px" w="96px">
+                    <Box h="600px" w="96px" overflow="hidden">
                       <Swiper
                         onSwiper={setThumbsSwiper}
                         direction="vertical"
                         slidesPerView={6}
-                        modules={[FreeMode, Thumbs]}
-                        style={{ height: "100%" }}
+                        modules={[FreeMode, Thumbs, Scrollbar]}
+                        scrollbar={{ draggable: true }}
+                        freeMode={true}
+                        style={{ height: '100%' }}
                       >
                         <>
                           {product.images.map((image, index) => (
                             <SwiperSlide key={index}>
                               <Image
                                 h="85px"
+                                objectFit="cover"
                                 src={`${OpenAPI.BASE}/media/${image.url}`}
                               />
                             </SwiperSlide>
@@ -161,8 +165,7 @@ function Product() {
                     <Swiper
                       thumbs={{ swiper: thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null }}
                       modules={[FreeMode, Thumbs, Pagination]}
-                      pagination={isMobile ? { clickable: true } : false}
-                      style={{ height: "100%" }}
+                      pagination={true}
                     >
                       <>
                         {product.images.map((image, index) => (
