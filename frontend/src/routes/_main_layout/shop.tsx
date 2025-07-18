@@ -1,6 +1,6 @@
 import { ProductPublic, ProductsService } from "@/client"
 import ProductCard from "@/components/Product/Card"
-import { Box, Button, Center, Container, Flex, Grid, Image, Spinner, Text } from "@chakra-ui/react"
+import { Box, Center, Container, Flex, Grid, Image, Spinner, Text } from "@chakra-ui/react"
 import { useQuery } from "@tanstack/react-query"
 import { createFileRoute, useNavigate } from "@tanstack/react-router"
 import { useState } from "react"
@@ -119,7 +119,7 @@ function Shop() {
               onAnimationEnd={() => setSeeMoreSpin(false)}
             >
               <Image
-                src="/assets/icons/see-moreAsia.svg"
+                src="/assets/icons/see-more.svg"
                 animation={seeMoreSpin ? "spin 1.5s ease-in-out" : undefined}
                 alt="See more icon"
                 m="auto"
