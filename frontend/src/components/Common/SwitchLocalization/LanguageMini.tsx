@@ -6,6 +6,7 @@ const SwitchLocalizationMini = () => {
     <BaseSwitchLocalization>
       {({ t, toggleLanguage }) => (
         <Box
+          zIndex="1"
           cursor="pointer"
           fontSize="20px"
           fontWeight="300"

@@ -110,7 +110,6 @@ def parse_product_create(
     images: list[UploadFile] = File(),
 ) -> ProductCreate:
     product_data = product.model_dump()
-    print("Product Data: ", product_data)
     product = ProductCreate(
         images=images,
         **product_data

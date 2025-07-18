@@ -3,7 +3,8 @@ import { BuilderComponent, builder, useIsPreviewing } from "@builder.io/react"
 import NotFound from "../Common/NotFound"
 import { useTranslation } from "react-i18next"
 
-builder.init("0a0d8f05afef4859a159d912e0b84b28")
+
+builder.init(import.meta.env.VITE_BUILDER_API_KEY)
 
 export default function Builder() {
   const { i18n } = useTranslation()

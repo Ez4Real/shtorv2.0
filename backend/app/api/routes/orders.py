@@ -50,7 +50,6 @@ def create_order(
     """
     Create new order.
     """
-    print("\n\nORDER IN: ", order_in)
     order = session.exec(
       select(Order).filter_by(invoiceId=order_in.invoiceId)
     ).first()
@@ -74,13 +73,10 @@ def delete_order(
     Delete an order.
     """
     order = session.get(Order, id)
-    
-    print("\nOrder: ", order)
     if not order:
         raise HTTPException(status_code=404, detail="Order not found")
     if not current_user.is_superuser:
         raise HTTPException(status_code=400, detail="Not enough permissions")
-    print("\n Ok")
     session.delete(order)
     session.commit()
     return Message(message="Order deleted successfully")

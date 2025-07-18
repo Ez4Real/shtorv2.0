@@ -46,6 +46,8 @@ services:
     image: '${DOCKER_IMAGE_BACKEND?Variable not set}:${TAG-latest}'
     build:
       context: ./backend
+    volumes:
+      - uploads-data:/backend/uploads 
     networks:
       - traefik-public
       - default
@@ -77,6 +79,7 @@ services:
       - MONOBANK_ACQUIRING_API=${MONOBANK_ACQUIRING_API}
       - MONOBANK_ACQUIRE_TOKEN=${MONOBANK_ACQUIRE_TOKEN}
       - MONOBANK_PUBLIC_KEY=${MONOBANK_PUBLIC_KEY}
+      - VITE_BUILDER_API_KEY=${VITE_BUILDER_API_KEY}
 
   backend:
     image: '${DOCKER_IMAGE_BACKEND?Variable not set}:${TAG-latest}'
@@ -113,6 +116,7 @@ services:
       - MONOBANK_ACQUIRING_API=${MONOBANK_ACQUIRING_API}
       - MONOBANK_ACQUIRE_TOKEN=${MONOBANK_ACQUIRE_TOKEN}
       - MONOBANK_PUBLIC_KEY=${MONOBANK_PUBLIC_KEY}
+      - VITE_BUILDER_API_KEY=${VITE_BUILDER_API_KEY}
       
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/api/v1/utils/health-check/"]
@@ -122,6 +126,8 @@ services:
 
     build:
       context: ./backend
+    volumes:
+      - uploads-data:/backend/uploads
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
@@ -151,6 +157,7 @@ services:
       args:
         - VITE_API_URL=https://api.${DOMAIN?Variable not set}
         - NODE_ENV=production
+        - VITE_BUILDER_API_KEY=${VITE_BUILDER_API_KEY}
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
@@ -170,6 +177,7 @@ services:
       - traefik.http.routers.${STACK_NAME?Variable not set}-frontend-http.middlewares=https-redirect
 volumes:
   app-db-data:
+  uploads-data:
 
 networks:
   traefik-public:

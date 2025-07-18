@@ -78,7 +78,6 @@ async def create_payment(
 @router.post("/public-key")
 async def public_key() -> Any:
     async with httpx.AsyncClient() as client:
-      print("ACQUIRE TOKEN: ", settings.MONOBANK_ACQUIRE_TOKEN)
       try:
         response = await client.get(
           "https://api.monobank.ua/api/merchant/pubkey",

@@ -165,22 +165,29 @@ function AboutUs() {
         <Flex
           flexDirection={["column-reverse", "column-reverse", "column", "column"]}
         >
-          <Video
-            src="/assets/videos/about-us5.mov"
-            autoPlay
-            muted
-            loop
-            playsInline
-            objectFit="cover"
-            w="100%"
-            h={["240px", "240px", "100vh", "100vh"]}
-            top={0}
-            left={0}
-            zIndex={-1}
-            px={["16px", "16px", 0, 0]}
+          <Flex
+            mx={["16px", "16px", 0, 0]}
             mt={["60px", "60px", 0, 0]}
             mb={[0, 0, "60px", "60px"]}
-          />
+            justifyContent="center"
+            bg="#000000FF"
+            zIndex={0}
+          >
+            <Video
+              src="/assets/videos/about-us.mov"
+              bg="#000000FF"
+              autoPlay
+              muted
+              loop
+              playsInline
+              objectFit="cover"
+              w="auto"
+              h={["240px", "240px", "100vh", "100vh"]}
+              top={0}
+              left={0}
+              zIndex={-1}
+            />
+          </Flex>
 
           <Box
             pr={["16px", "16px", "46px", "46px"]}
