@@ -1,4 +1,4 @@
-import type { ApiError, GiftPublic, ProductPublic, GiftCartItem, ProductCartItem_Output } from "./client"
+import type { ApiError, GiftPublic, ProductPublic, GiftCartItem, ProductCartItem_Output, ProductAttachment } from "./client"
 import useCustomToast from "./hooks/useCustomToast"
 import { Currency } from "./contexts/CurrencyContext"
 import { TranslatablePrice } from "./components/Common/SwitchLocalization"
@@ -76,7 +76,7 @@ export const setupHorizontalScrollOnOverflow = (container: HTMLElement | null) =
 
 
 export const getItemPrice = (
-  item: ProductPublic | GiftPublic | ProductCartItem_Output | GiftCartItem,
+  item: ProductPublic | GiftPublic | ProductCartItem_Output | GiftCartItem | ProductAttachment,
   currency: Currency,
   quantity?: number
 ) => {

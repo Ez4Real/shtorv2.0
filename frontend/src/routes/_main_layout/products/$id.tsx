@@ -208,7 +208,7 @@ function Product() {
                             >
                             <Text className="main-footer-link">{t("Product.care")}</Text>
                           </RouterLink>
-                          { !product.is_gift && (
+                          { !product.is_gift && product.category.title_en === "Clothes" && (
                             <RouterLink
                               to="/size-guide"
                               hash="root"
@@ -278,7 +278,7 @@ function Product() {
                           lineHeight={["20px", "20px", "23px", "23px"]}
                           fontWeight="400"
                         >
-                          {currency.symbol}{getItemPrice(product, currency)}
+                          {currency.symbol}{getItemPrice(product, currency) + getItemPrice(attachments[attachment] as ProductAttachment, currency)}
                         </Text>
                           {product.attachment && (
                             <RadioGroup.Root 

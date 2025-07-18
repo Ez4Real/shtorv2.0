@@ -1,6 +1,6 @@
 import { ProductPublic, ProductsService } from "@/client"
 import ProductCard from "@/components/Product/Card"
-import { Box, Button, Center, Container, Flex, Grid, Image, Spinner } from "@chakra-ui/react"
+import { Box, Button, Center, Container, Flex, Grid, Image, Spinner, Text } from "@chakra-ui/react"
 import { useQuery } from "@tanstack/react-query"
 import { createFileRoute, useNavigate } from "@tanstack/react-router"
 import { useState } from "react"
@@ -24,6 +24,12 @@ function getProductsQueryOptions({ page, category_id, collection_id }: {
   category_id: string | undefined,
   collection_id: string | undefined
 }) {
+  // const logo = useBreakpointValue({
+  //   base: "logo-black.png",
+  //   md: "logo-black.svg"
+  // })
+
+
   return {
     queryFn: () =>
       ProductsService.readProducts({
@@ -104,32 +110,45 @@ function Shop() {
             ))}
           </Grid>
           <Center
-            mt={["100px", "100px", "280px", "280px"]}
+            mt={["100px", "100px", "150px", "150px"]}
           >
-            <Button
-              variant="ghost"
+            <Box
               onClick={() => setPage(page + 1)}
-              display="flex"
-              flexDirection="column"
               gapY="9px"
-              fontSize="16px"
               fontWeight="400"
               onAnimationEnd={() => setSeeMoreSpin(false)}
-              outline="none"
-              bg="none"
             >
-              <Box boxSize="54px 38px">
-                <Image
-                  src="/assets/icons/see-more.png"
-                  animation={seeMoreSpin ? "spin 1.5s ease-in-out" : undefined}
-                  alt="See more icon"
-                  objectFit="contain"
-                  w="100%"
-                  h="auto"
-                />
-              </Box>
-              See More
-            </Button>
+              <Image
+                src="/assets/icons/see-more.svg"
+                animation={seeMoreSpin ? "spin 1.5s ease-in-out" : undefined}
+                alt="See more icon"
+                m="auto"
+                // objectFit="contain"
+                // w="100%"
+              />
+              <Text mt="16px">See More</Text>
+            </Box>
+          </Center>
+
+          <Center
+            mt={["100px", "100px", "150px", "150px"]}
+          >
+            <Box
+              onClick={() => setPage(page + 1)}
+              gapY="9px"
+              fontWeight="400"
+              onAnimationEnd={() => setSeeMoreSpin(false)}
+            >
+              <Image
+                src="/assets/icons/see-more.png"
+                animation={seeMoreSpin ? "spin 1.5s ease-in-out" : undefined}
+                alt="See more icon"
+                m="auto"
+                // objectFit="contain"
+                // w="100%"
+              />
+              <Text mt="16px">See More</Text>
+            </Box>
           </Center>
         </>
       ) : null}

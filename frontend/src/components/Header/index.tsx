@@ -1,4 +1,4 @@
-import { Box, Flex, HStack, Image } from "@chakra-ui/react"
+import { Box, Flex, HStack, Image, useBreakpointValue } from "@chakra-ui/react"
 
 import { Link as RouterLink, useRouterState } from "@tanstack/react-router"
 import SwitchLocalizationMini from "../Common/SwitchLocalization/LanguageMini"
@@ -10,6 +10,10 @@ const Header = () => {
 
     const absoluteHeaderPaths = ['/', '/collections/']
     const isHeaderAbsolute = absoluteHeaderPaths.includes(location.pathname)
+    const logo = useBreakpointValue({
+      base: "logo-black.png",
+      md: "logo-black.svg"
+    })
     return (
       <>
         <Box
@@ -38,7 +42,7 @@ const Header = () => {
               <Box w={["100px", "100px", "180px", "180px"]} cursor="pointer">
                 <RouterLink to="/" hash="root">
                   <Image
-                    src="/assets/images/logo-black.png"
+                    src={`/assets/images/${logo}`} 
                     w="100%"
                     h="auto"
                     alt="Shtor Logo"
