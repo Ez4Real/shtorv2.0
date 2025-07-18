@@ -119,33 +119,10 @@ function Shop() {
               onAnimationEnd={() => setSeeMoreSpin(false)}
             >
               <Image
-                src="/assets/icons/see-more.svg"
+                src="/assets/icons/see-moreAsia.svg"
                 animation={seeMoreSpin ? "spin 1.5s ease-in-out" : undefined}
                 alt="See more icon"
                 m="auto"
-                // objectFit="contain"
-                // w="100%"
-              />
-              <Text mt="16px">See More</Text>
-            </Box>
-          </Center>
-
-          <Center
-            mt={["100px", "100px", "150px", "150px"]}
-          >
-            <Box
-              onClick={() => setPage(page + 1)}
-              gapY="9px"
-              fontWeight="400"
-              onAnimationEnd={() => setSeeMoreSpin(false)}
-            >
-              <Image
-                src="/assets/icons/see-more.png"
-                animation={seeMoreSpin ? "spin 1.5s ease-in-out" : undefined}
-                alt="See more icon"
-                m="auto"
-                // objectFit="contain"
-                // w="100%"
               />
               <Text mt="16px">See More</Text>
             </Box>

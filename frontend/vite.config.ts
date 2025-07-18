@@ -10,5 +10,10 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  server: {
+    host: true,
+    port: 5173,
+    allowedHosts: ["4a235484de1a.ngrok-free.app"],
+  },
   plugins: [react(), TanStackRouterVite()],
 })
