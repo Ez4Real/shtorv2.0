@@ -82,8 +82,8 @@ function AboutUs() {
             flexDirection={["column-reverse", "column-reverse", "unset", "unset"]}
             // pt={["46px", "46px", "60px", "60px"]}
             pb={["46px", "46px", "72px", "72px"]}
-            gap={["24px", "24px", "120px", "120px"]}
-            alignItems="flex-end"
+            alignItems={["center", "center", "flex-end", "flex-end"]}
+            justifyContent="space-between"
           >
             <Image
                 src="assets/images/about-us1.svg"
@@ -92,6 +92,8 @@ function AboutUs() {
               color="ui.main" 
               fontWeight="300" 
               fontSize={["14px", "14px", "16px", "16px"]}
+              w={["100%", "100%", "48%", "48%"]}
+              mb={["24px", "24px", "0", "0"]}
             >
               {t("AboutUs.ludmila.2")}
             </Text>
@@ -108,6 +110,7 @@ function AboutUs() {
               <Flex
                 flexDirection="column"
                 gap={["32px", "32px", "12px", "12px"]}
+                alignItems={["center", "center", "flex-start", "flex-start"]}
               >
                 <Image
                   display={["block", "block", "none", "none"]}
@@ -150,7 +153,7 @@ function AboutUs() {
               flexDirection="column"
               w={["100%", "100%", "50%", "50%"]}
               gap="60px"
-              ml={[0, 0, "59px", "59px"]}
+              ml={[0, 0, "52px", "52px", "52px", "75px"]}
               mt={["24px", "24px", 0, 0]}
             >
               <Image
@@ -313,12 +316,11 @@ function AboutUs() {
               w="50%"
               gap="60px"
               fontSize="24px"
-              // fontWeight="300"
             >
               <Text
                 display={["none", "none", "block", "block"]}
                 fontSize="24px"
-                // fontWeight="300"
+                fontWeight="300"
                 textTransform="uppercase"
                 lineHeight="30px"
               >
@@ -341,7 +343,7 @@ function AboutUs() {
           >
             <Text
               color="ui.main"  
-              fontWeight={["300", "300", "400", "400"]}
+              fontWeight="300"
               fontSize={["18px", "18px", "24px", "24px"]}
               mb={["46px", "46px", "24px", "24px"]}
               textTransform="uppercase"
@@ -351,7 +353,7 @@ function AboutUs() {
             <Image src="assets/images/about-us13.svg"/>
             <Text
               color="ui.main"  
-              fontWeight={["300", "300", "400", "400"]}
+              fontWeight="300"
               fontSize={["18px", "18px", "24px", "24px"]}
               mt={["16px", "16px", "24px", "24px"]}
               textTransform="uppercase"
