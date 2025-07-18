@@ -110,7 +110,6 @@ function AboutUs() {
               <Flex
                 flexDirection="column"
                 gap={["32px", "32px", "12px", "12px"]}
-                alignItems={["center", "center", "flex-start", "flex-start"]}
               >
                 <Image
                   display={["block", "block", "none", "none"]}
@@ -119,6 +118,7 @@ function AboutUs() {
                 />
                 <VStack
                   gap={["8px", "8px", "12px", "12px"]}
+                  alignItems="flex-start"
                 >
                   <Text 
                     color="ui.main" 
