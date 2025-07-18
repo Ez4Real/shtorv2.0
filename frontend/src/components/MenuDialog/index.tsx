@@ -174,8 +174,9 @@ const MenuDialog = () => {
                               {collections?.map((collection) => (
                                 <Accordion.ItemContent key={collection.id}>
                                   <RouterLink
-                                    to="/shop"
-                                    search={{ page: 1, collection_id: collection.id }}
+                                    from="/collections"
+                                    to="/collections/$id"
+                                    params={{ id: collection.id }}
                                     hash="root"
                                     onClick={() => setOpen(!open)}
                                   >

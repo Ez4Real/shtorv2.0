@@ -58,6 +58,8 @@ function Product() {
   const { addItem, items } = useCart()
   const [size, setSize] = useState<string | null>(null)
   const [attachment, setAttachament] = useState<Attachment>("no-attachment")
+  const displayProductPrice = useBreakpointValue({ base: true, md: false})
+
   
   const { data: product, isPending } = useQuery({
     ...getProductQueryOptions({ id: id }),
@@ -132,7 +134,7 @@ function Product() {
               <Flex
                 justifyContent="space-between"
                 flexDirection={{ base: "column", sm: "column", md: "column", lg: "unset" }}
-                gap={["24px", "24px", "176px", "176px"]}
+                gap={["16px", "16px", "176px", "176px"]}
               >
                 <Flex direction={{ base: "column", sm: "row", md: "row", lg: "row" }}>
                   {!isMobile && (
@@ -183,9 +185,9 @@ function Product() {
                     w={["100%", "100%", "50%", "50%"]}
                   >
                       <Text
-                        fontSize="24px"
-                        lineHeight="30px"
-                        mb="24px"
+                        fontSize={["18px", "18px", "24px", "24px"]}
+                        lineHeight={["23px", "23px", "30px", "30px"]}
+                        mb={["12px", "12px", "24px", "24px"]}
                         textTransform="uppercase"
                       >{product[titleKey]}
                       </Text>
@@ -195,8 +197,8 @@ function Product() {
                         gapY={["12px", "12px", "12px", "16px"]}
                       >
                         <Flex
-                          gapX="36px"
-                          fontSize="18px"
+                          gapX={["24px", "24px", "36px", "36px"]}
+                          fontSize={["16px", "16px", "18px", "18px"]}
                           lineHeight="23px"
                         >
                           <Text>{t("Product.description")}</Text>
@@ -218,9 +220,9 @@ function Product() {
 
                         <List.Root
                           pt="0"
-                          pl="26px"
-                          fontSize="16px"
-                          lineHeight="23px"
+                          pl={["22px", "22px", "26px", "26px"]}
+                          fontSize={["14px", "14px", "16px", "16px"]}
+                          lineHeight={["18px", "18px", "23px", "23px"]}
                           css={{
                             '& li': {
                               _marker: { color: "black" },
@@ -240,7 +242,7 @@ function Product() {
                             pl="9px"
                           >
                             <VStack 
-                              gap="10px"
+                              gap={["4px", "4px", "10px", "10px"]}
                               alignItems="flex-start"
                             >
                                 {product.sizes.map((size) => (
@@ -259,8 +261,8 @@ function Product() {
                                       mb="-1px"
                                     />
                                     <RadioGroup.ItemText
-                                      fontSize="16px"
-                                      fontWeight="400"
+                                      fontSize={["14px", "14px", "16px", "16px"]}
+                                      fontWeight={["300", "300", "400" , "400"]}
                                     >
                                       {size}
                                     </RadioGroup.ItemText>
@@ -272,13 +274,12 @@ function Product() {
                         )}
 
                         <Text
-                          fontSize="18px"
-                          lineHeight="23px"
+                          fontSize={["16px", "16px", "18px", "18px"]}
+                          lineHeight={["20px", "20px", "23px", "23px"]}
                           fontWeight="400"
                         >
                           {currency.symbol}{getItemPrice(product, currency)}
                         </Text>
-
                           {product.attachment && (
                             <RadioGroup.Root 
                               defaultValue="no-attachment"
@@ -308,8 +309,8 @@ function Product() {
                                       mb="-1px"
                                     />
                                     <RadioGroup.ItemText
-                                      fontSize="16px"
-                                      fontWeight="400"
+                                      fontSize={["14px", "14px", "16px", "16px"]}
+                                      fontWeight={["300", "300", "400" , "400"]}
                                     >
                                       {value.label}
                                     </RadioGroup.ItemText>
@@ -355,7 +356,7 @@ function Product() {
           pb={["114px", "114px", "114px", "208px"]}
         >
             <Text
-              mb="32px"
+              mb={["16px", "16px", "32px", "32px"]}
               fontWeight="400"
               fontSize="16px"
             >
@@ -384,7 +385,7 @@ function Product() {
                   <SwiperSlide key={index}>
                     <ProductCard
                       product={product}
-                      displayProductPrice={false}
+                      displayProductPrice={displayProductPrice}
                       titleFontSize="16px"
                       titleLineHeight="20px"
                     />  

@@ -97,11 +97,12 @@ function Main() {
               <Box
                 className="underline-link"
                 position={["static", "static", "static", "absolute"]}
-                color={["black", "black", "black", "white"]}
+                color="black"
                 mt={["16px", "16px", "16px", "0"]}
                 bottom="46px"
                 left="46px"
-                fontSize="16px"
+                fontSize={["16px", "16px", "20px", "20px"]}
+                fontWeight={["300", "300", "400", "400"]}
                 textDecoration="underline"
                 textDecorationThickness="0"
                 textUnderlineOffset="2px"
