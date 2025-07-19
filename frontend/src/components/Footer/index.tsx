@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Group, Image, Input, Text, Link } from "@chakra-ui/react"
+import { Box, Button, Flex, Group, Image, Input, Text, Link, useBreakpointValue } from "@chakra-ui/react"
 import { Link as RouterLink } from "@tanstack/react-router"
 import SwitchLocalizationSlash from "../Common/SwitchLocalization/LanguageCurrencyViaSlash"
 import { useTranslation } from "react-i18next"
@@ -15,7 +15,11 @@ const Footer = () => {
     { to: "/size-guide", text: t("Footer.sizeGuide")},
   ]
 
-  // !!!!!
+  const logo = useBreakpointValue({
+    base: "logo-footer.png",
+    md: "logo-footer.svg"
+  })
+  
   return (
     <Box 
       as="footer" 
@@ -25,12 +29,12 @@ const Footer = () => {
       <Flex justifyContent="center">
         <RouterLink to="/">
           <Image
-            src="/assets/images/logo-footer.svg"
+            src={`/assets/images/${logo}`}
             textAlign="center"
             // h={["75px", "67px", "150px", "225px", "235px"]}
             h="100%"
             w="100%"
-            objectFit="contain"
+            objectFit="cover"
             // mb={["24px", "24px", "59px", "59px"]}
           />
         </RouterLink>
