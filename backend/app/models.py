@@ -176,6 +176,8 @@ class ProductBase(SQLModel):
     price_eur: float = Field(ge=0.9, le=99999.0)
     attachment: bool = Field(default=False)
     is_gift: bool = Field(default=False)
+    in_stock: bool = Field(default=True)
+    preorder: bool = Field(default=False)
     
     # code: str = Field(min_length=1, max_length=255, unique=True)
     
@@ -214,6 +216,8 @@ class UpdateBase(SQLModel):
     price_eur: float | None = Field(default=None, ge=0.9, le=99999.0)
     attachment: bool | None = Field(default=None)
     is_gift: bool | None = Field(default=None)
+    in_stock: bool | None = Field(default=None)
+    preorder: bool | None = Field(default=None)
     
     @model_validator(mode='before')
     def validate_to_json(cls, value):
@@ -263,7 +267,8 @@ class ProductPublic(ProductBase):
     order: int
     collection: CollectionPublic
     category: ProductCategoryPublic
-    images: list[ProductImage]  
+    images: list[ProductImage]
+    preorder: bool
 
 class ProductsPublic(SQLModel):
     data: list[ProductPublic]
@@ -417,6 +422,7 @@ class ProductCartItem(CartProductBase):
     category: ProductCategoryPublic
     images: list[ProductImage]
     size: str | None
+    preorder: bool
     attachment: ProductAttachment | None
     
 class CertificateType(str, Enum):

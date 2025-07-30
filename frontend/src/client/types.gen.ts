@@ -313,6 +313,8 @@ export type ProductBase = {
   price_eur: number
   attachment?: boolean
   is_gift?: boolean
+  in_stock?: boolean
+  preorder?: boolean
 }
 
 export type ProductCartItem_Input = {
@@ -329,6 +331,7 @@ export type ProductCartItem_Input = {
   category: ProductCategoryPublic
   images: Array<ProductImage>
   size: string | null
+  preorder: boolean
   attachment: ProductAttachment | null
 }
 
@@ -348,6 +351,7 @@ export type ProductCartItem_Output = {
   category: ProductCategoryPublic
   images: Array<ProductImage>
   size: string | null
+  preorder: boolean
   attachment: ProductAttachment | null
 }
 
@@ -394,6 +398,8 @@ export type ProductPublic = {
   price_eur: number
   attachment?: boolean
   is_gift?: boolean
+  in_stock?: boolean
+  preorder: boolean
   id: string
   owner_id: string
   created_at: string
@@ -430,6 +436,8 @@ export type UpdateBase = {
   price_eur?: number | null
   attachment?: boolean | null
   is_gift?: boolean | null
+  in_stock?: boolean | null
+  preorder?: boolean | null
 }
 
 export type UpdatePassword = {
@@ -661,8 +669,6 @@ export type PaymentsCreatePaymentData = {
 }
 
 export type PaymentsCreatePaymentResponse = PaymentResponse
-
-export type PaymentsPersonalWebhookResponse = unknown
 
 export type PaymentsPublicKeyResponse = unknown
 

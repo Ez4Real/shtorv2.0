@@ -399,7 +399,11 @@ function Order() {
                 w="100%"
                 align="center"
               >
-                <Box boxSize="140px" minW="90px">
+                <Box
+                  boxSize="140px"
+                  minW="90px"
+                  position="relative"
+                >
                   <Image
                     w="100%"
                     h="100%"
@@ -407,6 +411,22 @@ function Order() {
                     objectFit="cover"
                     borderRadius="md"
                   />
+                  {item.data.type === "product" && item.data.preorder && (
+                    <Badge
+                      position="absolute"
+                      top="6px"
+                      left="6px"
+                      p="2px 4px"
+                      borderRadius={6}
+                      colorPalette="whiteAlpha"
+                      color="black"
+                      background="white"
+                      fontSize={["10px", "10px", "12px", "12px"]}
+                      fontWeight="300"
+                    >
+                      Pre-order
+                    </Badge>
+                  )}
                 </Box>
                 <Box p=".5rem 1rem" maxW="350px">
                   <Text fontWeight="bold">{item.data[titleKey]}</Text>

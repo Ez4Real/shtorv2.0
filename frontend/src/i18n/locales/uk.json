@@ -306,7 +306,9 @@
       "no-attachment": "Без підвісу",
       "silver-chain": "Посрібнений ланцюг",
       "silver-orbit": "Посрібнена орбіта"
-    }
+    },
+    "preorder": "Попереднє замовлення",
+    "outOfStock": "Немає в наявності"
   },
   "Orders": {
     "shipping-method": {

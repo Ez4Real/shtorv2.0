@@ -36,6 +36,7 @@ export const pickProductData = (product: ProductPublic) => ({
   price_uah: product.price_uah,
   price_usd: product.price_usd,
   price_eur: product.price_eur,
+  preorder: product.preorder,
   images: product.images,
 })
 
@@ -78,9 +79,13 @@ export function pickGiftData(
   return data
 }
 
+
 export const CartProvider = ({ children }: { children: ReactNode }) => {
   const [isOpen, setIsOpen] = useState(false)
   const [items, setItems] = useState<OrderBasketItem_Output[]>([])
+
+  
+  console.log(items);  
 
 
   const getCartTotal = (currency: Currency) => {

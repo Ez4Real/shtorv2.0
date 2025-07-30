@@ -61,7 +61,6 @@ import type {
   OrdersDeleteOrderResponse,
   PaymentsCreatePaymentData,
   PaymentsCreatePaymentResponse,
-  PaymentsPersonalWebhookResponse,
   PaymentsPublicKeyResponse,
   PaymentsPaymentStatusData,
   PaymentsPaymentStatusResponse,
@@ -788,18 +787,6 @@ export class PaymentsService {
       errors: {
         422: "Validation Error",
       },
-    })
-  }
-
-  /**
-   * Personal Webhook
-   * @returns unknown Successful Response
-   * @throws ApiError
-   */
-  public static personalWebhook(): CancelablePromise<PaymentsPersonalWebhookResponse> {
-    return __request(OpenAPI, {
-      method: "POST",
-      url: "/api/v1/payments/personal-webhook",
     })
   }
 

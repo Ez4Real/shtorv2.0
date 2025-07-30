@@ -64,6 +64,8 @@ const AddProduct = () => {
         price_eur: min_price,
         attachment: false,
         is_gift: false,
+        in_stock: true,
+        preorder: false,
         sizes: null
       },
       images: undefined
@@ -371,6 +373,51 @@ const AddProduct = () => {
                     <Field 
                       alignSelf="center"
                       label="Apply gift product"
+                    >
+                      <Switch.Root
+                        colorPalette="teal"
+                        name={field.name}
+                        checked={field.value}
+                        onCheckedChange={({ checked }) => field.onChange(checked)}
+                      >
+                        <Switch.HiddenInput onBlur={field.onBlur} />
+                        <Switch.Control />
+                        
+                      </Switch.Root>
+                    </Field>
+                  )}
+                />
+
+
+                <Controller
+                  name="product.in_stock"
+                  control={control}
+                  render={({ field }) => (
+                    <Field 
+                      alignSelf="center"
+                      label="In Stock"
+                    >
+                      <Switch.Root
+                        colorPalette="teal"
+                        name={field.name}
+                        checked={field.value}
+                        onCheckedChange={({ checked }) => field.onChange(checked)}
+                      >
+                        <Switch.HiddenInput onBlur={field.onBlur} />
+                        <Switch.Control />
+                        
+                      </Switch.Root>
+                    </Field>
+                  )}
+                />
+
+                <Controller
+                  name="product.preorder"
+                  control={control}
+                  render={({ field }) => (
+                    <Field 
+                      alignSelf="center"
+                      label="Pre-order"
                     >
                       <Switch.Root
                         colorPalette="teal"

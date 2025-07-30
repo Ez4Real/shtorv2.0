@@ -376,6 +376,50 @@ const EditProduct = ({ product }: EditProductProps) => {
                   )}
                 />
 
+                <Controller
+                  name="product.in_stock"
+                  control={control}
+                  render={({ field }) => (
+                    <Field 
+                      alignSelf="center"
+                      label="In Stock"
+                    >
+                      <Switch.Root
+                        colorPalette="teal"
+                        name={field.name}
+                        checked={field.value as boolean || undefined}
+                        onCheckedChange={({ checked }) => field.onChange(checked)}
+                      >
+                        <Switch.HiddenInput onBlur={field.onBlur} />
+                        <Switch.Control />
+                        
+                      </Switch.Root>
+                    </Field>
+                  )}
+                />
+
+                <Controller
+                  name="product.preorder"
+                  control={control}
+                  render={({ field }) => (
+                    <Field 
+                      alignSelf="center"
+                      label="Preoder"
+                    >
+                      <Switch.Root
+                        colorPalette="teal"
+                        name={field.name}
+                        checked={field.value as boolean || undefined}
+                        onCheckedChange={({ checked }) => field.onChange(checked)}
+                      >
+                        <Switch.HiddenInput onBlur={field.onBlur} />
+                        <Switch.Control />
+                        
+                      </Switch.Root>
+                    </Field>
+                  )}
+                />
+
               </Grid>
 
               <Field

@@ -307,7 +307,9 @@
       "no-attachment": "No attachment",
       "silver-chain": "Silver plated chain",
       "silver-orbit": "Silver plated orbit"
-    }
+    },
+    "preorder": "Pre-order",
+    "outOfStock": "Out of stock"
   },
   "Orders": {
     "shipping-method": {

@@ -1,10 +1,11 @@
 import { OpenAPI, ProductPublic } from "@/client"
 import { useCurrency } from "@/contexts/CurrencyContext"
 import { getItemPrice } from "@/utils"
-import { Box, Flex, Image, Text } from "@chakra-ui/react"
+import { Badge, Box, Flex, Image, Text } from "@chakra-ui/react"
 import { useTranslation } from "react-i18next"
 import { Link as RouterLink } from "@tanstack/react-router"
 import { TranslatableTitle } from "../Common/SwitchLocalization"
+import { t } from "i18next"
 
 interface ProductCardProps {
   product: ProductPublic
@@ -36,13 +37,48 @@ const ProductCard = ({
         params={{ id: product.id }}
         hash="root"
       >
-        <Box w="100%">
+        <Box
+          w="100%"
+          position="relative"
+        >
           <Image
             src={`${OpenAPI.BASE}/media/${product.images[0].url}`}
             alt={product.images[0].alt_text || "unset"}
             w="100%"
             h="100%"
           />
+          {product.preorder && (
+            <Badge
+              position="absolute"
+              top={["10px", "24px", "24px", "24px"]}
+              left={["10px", "24px", "24px", "24px"]}
+              p={["2px 4px", "6px 8px", "6px 8px", "6px 8px"]}
+              borderRadius={0}
+              colorPalette="whiteAlpha"
+              color="black"
+              background="white"
+              fontSize={["12px", "16px", "16px", "16px"]}
+              fontWeight="300"
+            >
+              {t("Product.preorder")}
+            </Badge>
+          )}
+          {!product.in_stock && (
+            <Badge
+              position="absolute"
+              top={["10px", "24px", "24px", "24px"]}
+              left={["10px", "24px", "24px", "24px"]}
+              p={["2px 4px", "6px 8px", "6px 8px", "6px 8px"]}
+              borderRadius={0}
+              colorPalette="whiteAlpha"
+              color="black"
+              background="white"
+              fontSize={["12px", "16px", "16px", "16px"]}
+              fontWeight="300"
+            >
+              {t("Product.outOfStock")}
+            </Badge>
+          )}
         </Box>
         <Text
           mt={["12px", "12px", "16px", "16px"]}

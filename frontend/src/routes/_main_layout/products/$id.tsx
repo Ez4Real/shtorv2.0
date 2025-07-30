@@ -331,8 +331,10 @@ function Product() {
                         borderRadius="0"
                         maxW={["100%", "100%", "363px", "363px"]}
                         h="32px"
+                        disabled={!product.in_stock}
                         onClick={
                           () => { 
+                          if (!product.in_stock) return
                           addItem({
                             ...pickProductData(product),
                             type: "product",
