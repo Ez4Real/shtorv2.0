@@ -162,7 +162,6 @@ function Checkout() {
         const paymentResponse = await PaymentsService.createPayment({
           requestBody: serialisePaymentData(),
         })
-
         console.log("Payment response: ", paymentResponse)
 
         const orderData = { ...data, invoiceId: paymentResponse.invoiceId }
@@ -170,8 +169,9 @@ function Checkout() {
         const orderResponse = await OrdersService.createOrder({
           requestBody: orderData,
         })
-
         console.log("Create Order Response: ", orderResponse)
+        
+        window.location.href = paymentResponse.pageUrl
 
         return paymentResponse.pageUrl
       } catch (error) {
@@ -179,8 +179,7 @@ function Checkout() {
         throw error
       }
     },
-    onSuccess: (data) => {
-      window.open(data, "_blank", "noopener,noreferrer")
+    onSuccess: () => {
       showSuccessToast(t("Checkout.success"))
       reset()
       clearCart()
