@@ -84,8 +84,8 @@ const MenuDialog = () => {
                   onClick={() => setOpen(!open)}
                 >
                   <Text
-                    fontSize={["16px", "16px", "24px", "24px"]}
-                    lineHeight={["20px", "20px", "30px", "30px"]}
+                    fontSize="16px"
+                    lineHeight="20px"
                     fontWeight="300"
                   >{t("MenuDialog.homepage")}
                   </Text>
@@ -96,8 +96,8 @@ const MenuDialog = () => {
                   onClick={() => setOpen(!open)}
                 >
                   <Text
-                    fontSize={["16px", "16px", "24px", "24px"]}
-                    lineHeight={["20px", "20px", "30px", "30px"]}
+                    fontSize="16px"
+                    lineHeight="20px"
                     fontWeight="300"
                   >{t("MenuDialog.aboutUs")}
                   </Text>
@@ -110,8 +110,8 @@ const MenuDialog = () => {
                         p="0"
                       >
                         <Text
-                          fontSize={["16px", "16px", "24px", "24px"]}
-                          lineHeight={["20px", "20px", "30px", "30px"]}
+                          fontSize="16px"
+                          lineHeight="20px"
                           fontWeight="300"
                           cursor="pointer"
                         >{t("MenuDialog.shop.title")}
@@ -128,7 +128,7 @@ const MenuDialog = () => {
                             <Accordion.ItemBody 
                               pt="16px" 
                               pb="0"
-                              fontSize={["16px", "16px", "20px", "20px"]}
+                              fontSize="16px"
                               lineHeight="25px"
                               fontWeight="300"
                             >{t("MenuDialog.shop.all")}
@@ -138,7 +138,7 @@ const MenuDialog = () => {
 
                       <Accordion.ItemContent>
                         <Accordion.ItemBody
-                          pt={["12px", "12px", "12px", "16px"]}
+                          pt="12px"
                           pb="0"
                         >
                           <Accordion.Root collapsible>
@@ -160,11 +160,11 @@ const MenuDialog = () => {
                                   },
                                 }}
                                 
-                                mb={["2px", "2px", 0, 0]}
+                                mb="2px"
                               >
                                 <Text
-                                  fontSize={["16px", "16px", "20px", "20px"]}
-                                  lineHeight={["20px", "20px", "25px", "25px"]}
+                                  fontSize="16px"
+                                  lineHeight="20px"
                                   fontWeight="300" 
                                   cursor="pointer"
                                 >
@@ -209,10 +209,10 @@ const MenuDialog = () => {
                             onClick={() => setOpen(!open)}
                           >
                             <Accordion.ItemBody 
-                              pt={["12px", "12px", "16px", "16px"]}
+                              pt="12px"
                               pb="0"
-                              fontSize={["16px", "16px", "20px", "20px"]}
-                              lineHeight={["20px", "20px", "25px", "25px"]}
+                              fontSize="16px"
+                              lineHeight="20px"
                               fontWeight="300"
                             >{category[titleKey]}
                             </Accordion.ItemBody>
@@ -228,10 +228,10 @@ const MenuDialog = () => {
                             onClick={() => setOpen(!open)}
                           >
                             <Accordion.ItemBody 
-                              pt="16px" 
+                              pt="12px" 
                               pb="0"
-                              fontSize={["16px", "16px", "20px", "20px"]}
-                              lineHeight={["20px", "20px", "25px", "25px"]}
+                              fontSize="16px"
+                              lineHeight="20px"
                               fontWeight="300"
                             >{t("MenuDialog.shop.categories.gifts")}
                             </Accordion.ItemBody>
@@ -245,11 +245,11 @@ const MenuDialog = () => {
                             setOpen(!open)
                             setIsOpen(true)
                           }}
-                          pt="16px" 
+                          pt="12px" 
                           pb="0"
-                          fontSize={["16px", "16px", "24px", "24px"]}
-                          textTransform={["uppercase", "uppercase", "unset", "unset"]}
-                          lineHeight={["20px", "20px", "30px", "30px"]}
+                          fontSize="16px"
+                          textTransform="uppercase"
+                          lineHeight="20px"
                           fontWeight="300"
                         >{t("MenuDialog.bag")}
                         </Accordion.ItemBody>

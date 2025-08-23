@@ -69,7 +69,7 @@ export const main = createSystem(defaultConfig, {
       textDecoration: "underline",
       fontWeight: "300",
       transition: ".1s",
-      fontSize: "16px",
+      fontSize: "14px",
       lineHeight: "20px",
       "&:hover": {
         color: "ui.grey",

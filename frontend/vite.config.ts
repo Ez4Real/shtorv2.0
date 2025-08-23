@@ -10,5 +10,11 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  // server: {
+  //   allowedHosts: ["xxxxxxxxx.ngrok-free.app"],
+  //   // proxy: {
+  //   //   '/api': 'http://localhost:8000',
+  //   // },
+  // },
   plugins: [react(), TanStackRouterVite()],
 })

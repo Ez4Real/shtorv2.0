@@ -100,7 +100,7 @@ function Checkout() {
     setValue,
     watch,
     control,
-    formState: { errors, isValid, isSubmitting },
+    formState: { errors, isValid, isSubmitted },
   } = methods
 
   const shippingMethod = watch("shipping_method")
@@ -142,7 +142,7 @@ function Checkout() {
     ccy: getCurrencyCode(ccy), // 980
     merchantPaymInfo: {
       reference: crypto.randomUUID(),
-      destination: "test payment",
+      destination: "Payment for order at shtor.com.ua",
       customerEmails: email ? [email] : [],
       basketOrder: mapCartItemsToExportStructure(basketOrder),
     },
@@ -173,15 +173,14 @@ function Checkout() {
 
         console.log("Create Order Response: ", orderResponse)
 
-        window.open(paymentResponse.pageUrl, "_blank", "noopener,noreferrer")
-
-        return orderResponse
+        return paymentResponse.pageUrl
       } catch (error) {
         console.error("❌ Error:", error)
         throw error
       }
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
+      window.open(data, "_blank", "noopener,noreferrer")
       showSuccessToast(t("Checkout.success"))
       reset()
       clearCart()
@@ -207,9 +206,9 @@ function Checkout() {
 
   useEffect(() => {
     if (billing === "same") {
-      setValue("billing_address", null);
+      setValue("billing_address", null)
     }
-  }, [billing]);
+  }, [billing])
 
   useEffect(() => {
     const fetchCountries = async () => {
@@ -1047,7 +1046,7 @@ function Checkout() {
             <Button
               type="submit"
               disabled={!isValid}
-              loading={isSubmitting}
+              loading={isSubmitted}
               w="100%"
               mt={["24px", "24px", "24px", "33px"]}
             >

@@ -47,7 +47,7 @@ services:
     build:
       context: ./backend
     volumes:
-      - uploads-data:/backend/uploads 
+      - uploads-data:/app/uploads
     networks:
       - traefik-public
       - default
@@ -127,7 +127,7 @@ services:
     build:
       context: ./backend
     volumes:
-      - uploads-data:/backend/uploads
+      - uploads-data:/app/uploads
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
