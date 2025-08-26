@@ -242,8 +242,8 @@ function Checkout() {
   ]
 
   const shippings = [
-    { value: "ups_express", label: "UPS EXPRESS", price: "$45"},
-    { value: "nova_post", label: "NOVA POST",  price: "Free"},
+    { value: "ups_express", label: t(`Orders.shipping-method.ups_express`), price: "$45"},
+    { value: "nova_post", label: t(`Orders.shipping-method.nova_post`),  price: "Free"},
   ]
 
   useEffect(() => {

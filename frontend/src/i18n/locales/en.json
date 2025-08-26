@@ -313,7 +313,7 @@
   },
   "Orders": {
     "shipping-method": {
-      "nova_post": "Nova Post",
+      "nova_post": "NOVA POST (within Ukraine only)",
       "ups_express": "UPS Express"
     }
   }

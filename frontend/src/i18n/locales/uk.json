@@ -312,7 +312,7 @@
   },
   "Orders": {
     "shipping-method": {
-      "nova_post": "Нова пошта",
+      "nova_post": "Нова пошта (тільки по Україні)",
       "ups_express": "UPS Express"
     }
   }

@@ -106,7 +106,7 @@ function Product() {
     "silver-orbit": {
       name: "silver-orbit",
       label: t("Product.attachments.silver-orbit"),
-      price_uah: 2200,
+      price_uah: 3200,
       price_usd: 90,
       price_eur: 90
     }
