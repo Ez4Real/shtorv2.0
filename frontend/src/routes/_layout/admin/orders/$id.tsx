@@ -436,6 +436,11 @@ function Order() {
                   <Text>
                     Qty: {item.qty} {item.unit}
                   </Text>
+                  {item.data.type == "product" && (
+                    <Text>
+                      Size: {item.data.size}
+                    </Text>
+                  )}
                 </Box>
               </Flex>
             ))}
