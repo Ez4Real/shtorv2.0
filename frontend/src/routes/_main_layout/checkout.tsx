@@ -1041,16 +1041,26 @@ function Checkout() {
           <Grid
             templateColumns={["repeat(1, 1fr)", "repeat(1, 1fr)", "repeat(1, 1fr)", "repeat(2, 1fr)"]}
             gapX={["0", "0", "172px", "172px"]}
+            mt={["24px", "24px", "24px", "33px"]}
           >
-            <Button
-              type="submit"
-              disabled={!isValid}
-              loading={isSubmitted}
-              w="100%"
-              mt={["24px", "24px", "24px", "33px"]}
-            >
-              {t("Checkout.reviewOrder")}
-            </Button>
+            <Box>
+              <Text
+                color="red"
+                fontSize="12px"
+                maxW="500px"
+              >
+                {t("Checkout.paymentRestrictions.AMEX")}
+              </Text>
+              <Button
+                type="submit"
+                disabled={!isValid}
+                loading={isSubmitted}
+                mt={["8px", "8px", "8px", "12px"]}
+                w="100%"
+              >
+                {t("Checkout.reviewOrder")}
+              </Button>
+            </Box>
           </Grid>
         </form>
       </FormProvider>

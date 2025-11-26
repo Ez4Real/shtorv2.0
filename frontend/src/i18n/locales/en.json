@@ -284,6 +284,9 @@
       "same": "Same as shipping address",
       "different": "Use a different billing address"
     },
+    "paymentRestrictions": {
+      "AMEX": "Please note that the payment system does not accept American Express cards. Select another payment method."
+    },
     "reviewOrder": "Review order",
     "orderSummary": {
       "title": "Order summary",

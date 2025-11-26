@@ -2,7 +2,7 @@ from uuid import UUID
 from typing import Any
 
 from fastapi import APIRouter, HTTPException, Query, Depends, Form
-from sqlmodel import func, select
+from sqlmodel import func, select, update
 
 from app.core.config import settings
 from app.api.deps import CurrentUser, SessionDep, parse_product_create, parse_product_update
@@ -276,15 +276,24 @@ def delete_product(
     """
     product = session.get(Product, id)
     if not product:
-        raise HTTPException(status_code=404, detail="Product not found")
+      raise HTTPException(status_code=404, detail="Product not found")
     if not current_user.is_superuser and (product.owner_id != current_user.id):
-        raise HTTPException(status_code=400, detail="Not enough permissions")
+      raise HTTPException(status_code=400, detail="Not enough permissions")
     product_images = session.exec(
-        select(ProductImage).filter(ProductImage.product_id == product.id)
+      select(ProductImage).filter(ProductImage.product_id == product.id)
     ).all()
     for image in product_images:
-      deleted = delete_image_from_local(image.url)
-      if deleted: session.delete(image)
+      if delete_image_from_local(image.url):
+        session.delete(image)
+
     session.delete(product)
+    
+    products_after = session.exec(
+      select(Product).where(Product.order > product.order).order_by(Product.order)
+    ).all()
+    for p in products_after:
+      p.order -= 1
+      session.commit()
+    
     session.commit()
     return Message(message="Product deleted successfully")
