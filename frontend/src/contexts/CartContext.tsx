@@ -84,9 +84,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   const [isOpen, setIsOpen] = useState(false)
   const [items, setItems] = useState<OrderBasketItem_Output[]>([])
 
-  
-  console.log(items);  
-
+  // console.log(items);  
 
   const getCartTotal = (currency: Currency) => {
     const key = `price_${currency.code}` as TranslatablePrice

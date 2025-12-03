@@ -31,20 +31,20 @@ def read_products(
       statement = statement.where(Product.collection_id == collection_id)
     if is_gift is not None:
       statement = statement.where(Product.is_gift == is_gift)
-      
+
     products_order_bounds = select(
       func.min(Product.order), func.max(Product.order)
     )
     min_order, max_order = session.exec(products_order_bounds).one()
-        
+
     count_subquery = statement.subquery()
     count = session.exec(
       select(func.count()).select_from(count_subquery)
     ).one()
-    
+
     statement = statement.offset(skip).limit(limit).order_by(Product.order)
     products = session.exec(statement).all()
-    
+
     return ProductsPublic(
       data=products,
       count=count,
@@ -75,6 +75,7 @@ def read_products_by_category(
 
     return ProductsPublic(data=products, count=count)
 
+
 @router.get("/collection/{id}", response_model=ProductsPublic)
 def read_products_by_collection(
     session: SessionDep,
@@ -82,31 +83,36 @@ def read_products_by_collection(
     skip: int = 0, limit: int = 100,
     exclude_product_id: UUID | None = Query(default=None),
 ) -> Any:
+    print("Skip:", skip)
+    print("Limit:", limit)
     """
     Retrieve products by collection.
     """
     count_statement = (
-        select(func.count())
-        .select_from(Product)
-        .where(Product.collection_id == id)
+      select(func.count())
+      .select_from(Product)
+      .where(Product.collection_id == id)
     )
     if exclude_product_id:
       count_statement = count_statement.where(Product.id != exclude_product_id)
     count = session.exec(count_statement).one()
-    
+
     statement = (
-        select(Product)
-        .where(Product.collection_id == id)
-        .offset(skip).limit(limit)
+      select(Product)
+      .where(Product.collection_id == id)
+      .offset(skip).limit(limit)
+      .order_by(Product.order)
     )
     if exclude_product_id:
       statement = statement.where(Product.id != exclude_product_id)
-      
+
     products = session.exec(statement).all()
+
+    print("Products count:", len(products))
+    print("Products:", products)
 
     return ProductsPublic(data=products, count=count, min_order=None, max_order=None)
 
-# @router.get("/")
 
 @router.get("/{id}", response_model=ProductPublic)
 def read_product(
@@ -138,7 +144,7 @@ def create_product(
     collection = session.get(Collection, product_in.collection_id)
     if not collection:
       raise HTTPException(status_code=400, detail="Collection not found")
-    
+
     next_product_order = (session.scalar(select(func.max(Product.order))) or 0) + 1
     product = Product.model_validate(
       product_in.model_dump(exclude={"images"}),
@@ -149,7 +155,7 @@ def create_product(
         "order": next_product_order
       }
     )
-    
+
     if product_in.images:
       for index, image_in in enumerate(product_in.images):
         image = save_image_to_local(
@@ -162,12 +168,12 @@ def create_product(
           collection_id=collection.id,
           order=index+1
         )
-            
+
         session.add(product_image)
         product.images.append(product_image)
 
     session.add(product)
-    
+
     session.commit()
     session.refresh(product)
     return product
@@ -186,7 +192,7 @@ def update_product(
         raise HTTPException(status_code=404, detail="Product not found")
     if not current_user.is_superuser:
         raise HTTPException(status_code=403, detail="Not enough permissions")
-    
+
     if product_in.category_id:
       category = session.get(ProductCategory, product_in.category_id)
       if not category:
@@ -202,7 +208,7 @@ def update_product(
       exclude={"images"}
     )
     product.sqlmodel_update(update_dict)
-    
+
     if product_in.images is not None:
       for image in product.images:
         delete_image_from_local(image.url)
@@ -223,7 +229,7 @@ def update_product(
     session.commit()
     session.refresh(product)
     return product
-  
+
 
 @router.put("/update-order/{id}", response_model=ProductPublic)
 def update_product_order(
@@ -241,20 +247,20 @@ def update_product_order(
       raise HTTPException(status_code=404, detail="Product not found")
     if not current_user.is_superuser:
         raise HTTPException(status_code=403, detail="Not enough permissions")
-    
+
     if not order_shift: return product
-    
+
     current_order = product.order
     new_order = current_order + order_shift
-    
+
     max_order = session.scalar(select(func.max(Product.order)))
     if new_order < 1 or new_order > max_order:
       raise HTTPException(status_code=400, detail="Target order out of range")
-    
+
     neighbor_product = session.exec(select(Product).where(Product.order == new_order)).first()
     if not neighbor_product:
       raise HTTPException(status_code=404, detail="Neighbor product not found")
-    
+
     product.order = -1
     session.commit()
 
@@ -262,7 +268,7 @@ def update_product_order(
     session.commit()
     product.order = new_order
     session.commit()
-    
+
     session.refresh(product)
     return product
 
@@ -287,13 +293,13 @@ def delete_product(
         session.delete(image)
 
     session.delete(product)
-    
+
     products_after = session.exec(
       select(Product).where(Product.order > product.order).order_by(Product.order)
     ).all()
     for p in products_after:
       p.order -= 1
       session.commit()
-    
+
     session.commit()
     return Message(message="Product deleted successfully")

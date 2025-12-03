@@ -1,57 +1,34 @@
-import { CollectionsService, ProductPublic, ProductsService } from "@/client"
-import Collection from "@/components/Collection"
-import ProductCard from "@/components/Product/Card"
+import { CollectionsService } from "@/client"
+import CollectionPreview from "@/components/Collection/preview"
 import { chakra } from "@chakra-ui/react"
-import { Box, Container, Flex, Grid, Spinner, Text, useBreakpointValue } from "@chakra-ui/react"
+import { Box, Container } from "@chakra-ui/react"
 import { useQuery } from "@tanstack/react-query"
 import { createFileRoute } from "@tanstack/react-router"
 import { Link as RouterLink } from "@tanstack/react-router"
-import { useTranslation } from "react-i18next"
 
 
 export const Route = createFileRoute("/_main_layout/")({
   component: Main,
 })
 
-function getCollectionQueryOptions({ order }: { order: number }) {
+function getCollectionsQueryOptions() {
   return {
-    queryFn: () => CollectionsService.readCollectionByOrder({ order }),
-    queryKey: ["collections", { order }]
-  }
-}
-
-const PER_PAGE = 6
-
-function getProductsQueryOptions({ collection_id }: { collection_id: string }) {
-  return {
-    queryFn: () => ProductsService.readProductsByCollection({
-      id: collection_id,
-      skip: 0,
-      limit: PER_PAGE
-    }),
-    queryKey: ["products", { collection_id }]
+    queryFn: () => CollectionsService.readCollections(),
+    queryKey: ["collections"],
   }
 }
 
 
 function Main() {
-  const { t } = useTranslation()
-    const bannerBreakpoint = useBreakpointValue<"banner_mobile" | "banner_desktop">({
-    base: "banner_mobile",
-    lg: "banner_desktop",
-  })
-  const collectionOrder = 1
-  
-  const { data: collection, isPending: isCollectionPending } = useQuery({
-    ...getCollectionQueryOptions({ order: collectionOrder }),
+  const { data: collectionsData, isPending } = useQuery({
+    ...getCollectionsQueryOptions(),
   })
 
-  const { data: productsData, isPending: isProductsPending } = useQuery({
-    ...getProductsQueryOptions({ collection_id: collection?.id ?? "" }),
-    enabled: !!collection?.id,
- })
+  const collections = collectionsData?.data ?? []
+  const firstCollection = collections[0]
+  console.log(firstCollection)
   
- const products = productsData?.data
+
  
  const Video = chakra("video")
 
@@ -87,10 +64,10 @@ function Main() {
             zIndex={-1}
           />
 
-          { collection?.id && (
+          { firstCollection?.id && (
             <RouterLink
               to="/collections/$id"
-              params={{ id: collection.id }}
+              params={{ id: firstCollection.id }}
               from="/"
               hash="root"
             >
@@ -107,71 +84,20 @@ function Main() {
                 textDecorationThickness="0"
                 textUnderlineOffset="2px"
               >
-                {collection?.title}
+                {firstCollection?.title}
               </Box>
             </RouterLink>
           )}
         </Box>
-
-        <Container
-          my={["90px", "90px", "90px", "110px"]}
-          p={["0", "0", "0", "0 46px"]}
-        >
-          
-          {isProductsPending ? (
-            <Flex justify="center" align="center" height="100vh">
-              <Spinner size="xl" saturate="1s" color="ui.main" />
-            </Flex>
-          ) : (
-            <Grid
-              templateColumns={["repeat(2, 1fr)", "repeat(2, 1fr)", "repeat(2, 1fr)", "repeat(3, 1fr)"]}
-              gapX={["24px", "24px", "54px", "54px"]}
-              gapY={["32px", "32px", "46px", "46px"]}
-            >
-              {products?.map((product: ProductPublic, index: number) => (
-                <ProductCard key={index} product={product}/>
-              ))}
-            </Grid>
-          )}
-
-          <Box
-            mt={["46px", "46px", "46px", "60px"]}
-          >
-            <RouterLink
-              from="/"
-              to="/collections/"
-              hash="root"
-            >
-              <Text
-                textDecoration="underline"
-                fontWeight="300"
-                fontSize={["16px", "16px", "18px", "18px"]}
-                lineHeight="22px"
-                transition=".1s"
-                textAlign="end"
-                _hover={{
-                  color: "ui.grey",
-                  textDecoration: "none",
-                }}
-              >
-                {t("Homepage.allCollections")}
-              </Text>
-            </RouterLink>
-          </Box>
-        </Container>
       </Box>
 
-      {isCollectionPending ? (
-        <Flex justify="center" align="center" height="100vh">
-          <Spinner size="xl" saturate="1s" color="ui.main" />
-        </Flex>
-      ) : (
-        <Collection
-          collection={collection!}
-          bannerBreakpoint={bannerBreakpoint ?? "banner_mobile"}
+      {!isPending && collections.map((collection) => (
+        <CollectionPreview
+          key={collection.id}
+          collection={collection}
         />
-      )}
-      
+      ))}      
+
     </Container>
   )
 }

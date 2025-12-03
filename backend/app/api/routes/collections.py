@@ -247,5 +247,13 @@ def delete_collection(
       if deleted: session.delete(banner)
     
   session.delete(collection)
+  
+  collections_after = session.exec(
+    select(Collection).where(Collection.order > collection.order).order_by(Collection.order)
+  ).all()
+  for collection in collections_after:
+    collection.order -= 1
+    session.commit()
+  
   session.commit()
   return Message(message="Collection deleted successfully")
