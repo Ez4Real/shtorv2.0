@@ -3,7 +3,7 @@ import {
   OrderBasketItem_Output,
   OpenAPI,
   OrderCreate,
-  OrdersService,
+  // OrdersService,
   ShippingMethods,
   PaymentCreate,
   PaymentsService,
@@ -152,24 +152,25 @@ function Checkout() {
 
 
   const mutation = useMutation({
-    mutationFn: async (data: OrderCreate) => {
+    mutationFn: async (
+      //@ts-ignore
+      data: OrderCreate
+    ) => {
       try {
-        console.log(OpenAPI);
-        
-        console.log("Create payment request body: ", serialisePaymentData())
-        
+        // console.log(OpenAPI)
+        // console.log("Create payment request body: ", serialisePaymentData())
 
         const paymentResponse = await PaymentsService.createPayment({
           requestBody: serialisePaymentData(),
         })
-        console.log("Payment response: ", paymentResponse)
+        // console.log("Payment response: ", paymentResponse)
 
-        const orderData = { ...data, invoiceId: paymentResponse.invoiceId }
-        console.log("Order Data: ", orderData)
-        const orderResponse = await OrdersService.createOrder({
-          requestBody: orderData,
-        })
-        console.log("Create Order Response: ", orderResponse)
+        // const orderData = { ...data, invoiceId: paymentResponse.invoiceId }
+        // console.log("Order Data: ", orderData)
+        // const orderResponse = await OrdersService.createOrder({
+        //   requestBody: orderData,
+        // })
+        // console.log("Create Order Response: ", orderResponse)
         
         window.location.href = paymentResponse.pageUrl
 

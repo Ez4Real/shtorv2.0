@@ -25,10 +25,7 @@ function Main() {
   })
 
   const collections = collectionsData?.data ?? []
-  const firstCollection = collections[0]
-  console.log(firstCollection)
-  
-
+  const firstCollection = collections[0]  
  
  const Video = chakra("video")
 
@@ -39,7 +36,8 @@ function Main() {
       p={0}
     >
       <Box
-        p={["0px 16px", "0px 16px", "0px 16px", "0px"]}
+        p={0}
+        // p={["0px 16px", "0px 16px", "0px 16px", "0px"]}
         m={0}
       >
         <Box
@@ -72,6 +70,7 @@ function Main() {
               hash="root"
             >
               <Box
+                padding={["0 16px", "0 16px", "0 16px", "0"]}
                 className="underline-link"
                 position={["static", "static", "static", "absolute"]}
                 color="black"
@@ -90,7 +89,7 @@ function Main() {
           )}
         </Box>
       </Box>
-
+      
       {!isPending && collections.map((collection) => (
         <CollectionPreview
           key={collection.id}

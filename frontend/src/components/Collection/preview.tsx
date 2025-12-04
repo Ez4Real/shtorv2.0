@@ -46,9 +46,8 @@ const CollectionPreview = ({
     <>
       <Container
         my={["90px", "90px", "90px", "110px"]}
-        p={["0", "0", "0", "0 46px"]}
-      >
-            
+        p={["0px 16px", "0px 16px ", "0px 16px", "0 46px"]}
+      > 
         {isProductsPending ? (
             <Flex justify="center" align="center" height="100vh">
                 <Spinner size="xl" saturate="1s" color="ui.main" />
