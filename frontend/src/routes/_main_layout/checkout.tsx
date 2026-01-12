@@ -3,7 +3,7 @@ import {
   OrderBasketItem_Output,
   OpenAPI,
   OrderCreate,
-  // OrdersService,
+  OrdersService,
   ShippingMethods,
   PaymentCreate,
   PaymentsService,
@@ -165,13 +165,13 @@ function Checkout() {
         })
         // console.log("Payment response: ", paymentResponse)
 
-        // const orderData = { ...data, invoiceId: paymentResponse.invoiceId }
+        const orderData = { ...data, invoiceId: paymentResponse.invoiceId }
         // console.log("Order Data: ", orderData)
-        // const orderResponse = await OrdersService.createOrder({
-        //   requestBody: orderData,
-        // })
+        // const orderResponse = 
+        await OrdersService.createOrder({
+          requestBody: orderData,
+        })
         // console.log("Create Order Response: ", orderResponse)
-        
         window.location.href = paymentResponse.pageUrl
 
         return paymentResponse.pageUrl

@@ -83,8 +83,6 @@ def read_products_by_collection(
     skip: int = 0, limit: int = 100,
     exclude_product_id: UUID | None = Query(default=None),
 ) -> Any:
-    print("Skip:", skip)
-    print("Limit:", limit)
     """
     Retrieve products by collection.
     """
@@ -107,9 +105,6 @@ def read_products_by_collection(
       statement = statement.where(Product.id != exclude_product_id)
 
     products = session.exec(statement).all()
-
-    print("Products count:", len(products))
-    print("Products:", products)
 
     return ProductsPublic(data=products, count=count, min_order=None, max_order=None)
 
