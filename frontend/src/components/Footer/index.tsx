@@ -11,7 +11,7 @@ const Footer = () => {
     { to: "/payment-and-delivery", text: t("Footer.paymentAndDelivery")},
     { to: "/returns-and-exchange", text: t("Footer.returns")},
     { to: "/public-offer-agreement", text: t("Footer.publicOfferAgreement")},
-    { to: "https://t.me/gala_butnotdalis", text: t("Footer.chat")},
+    { to: "https://t.me/galashtor", text: t("Footer.chat")},
     { to: "/size-guide", text: t("Footer.sizeGuide")},
   ]
 
