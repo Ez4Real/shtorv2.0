@@ -639,7 +639,7 @@ function Checkout() {
                   variant="subtle"
                   mt="12px"
                   onValueChange={({ value }) => {
-                    setBilling(value)
+                    if (value !== null) setBilling(value)
                   }}
                   defaultValue="same"
                   

@@ -6,7 +6,7 @@ import {
   type DraggableProvided,
   Droppable,
   type DroppableProvided,
-} from "react-beautiful-dnd"
+} from "@hello-pangea/dnd"
 import { useColorModeValue } from "../ui/color-mode"
 import { LuTrash2 } from "react-icons/lu"
 
@@ -42,11 +42,11 @@ const ImagesOrderingContainer = ({
     fileUpload.setFiles(updated)
   }
 
-  const handleRemoveImg = (indexToRemove: number) => {
-    const updated = fileUpload.acceptedFiles.filter((_, i) => i !== indexToRemove)
-    fileUpload.clearFiles()
-    fileUpload.setFiles(updated)
-  }
+  // const handleRemoveImg = (indexToRemove: number) => {
+  //   const updated = fileUpload.acceptedFiles.filter((_, i) => i !== indexToRemove)
+  //   fileUpload.clearFiles()
+  //   fileUpload.setFiles(updated)
+  // }
 
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
@@ -64,7 +64,7 @@ const ImagesOrderingContainer = ({
             w="full"
             css={{
               scrollSnapType: "x mandatory",
-              "::-webkit-scrollbar-thumb": {
+              "&::-webkit-scrollbar-thumb": {
                 background: useColorModeValue("ui.main", "ui.dim"),
               },
             }}
@@ -107,7 +107,7 @@ const ImagesOrderingContainer = ({
                         display="flex"
                         justifyContent="center"
                         alignItems="center"
-                        onClick={() => handleRemoveImg(index)}
+                        // onClick={() => handleRemoveImg(index)}
                       >
                         <LuTrash2 size={14} color="#ef4444" cursor="pointer" />
                       </FileUpload.ItemDeleteTrigger>

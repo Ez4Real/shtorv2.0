@@ -447,8 +447,7 @@ const AddProduct = () => {
                   accept={{ "image/*": ["jpg", "png"] }}
                 >
                   <FileUpload.RootProvider value={fileUpload}>
-                    <FileUpload.HiddenInput
-                    />
+                    <FileUpload.HiddenInput />
                     <FileUpload.Dropzone minH="8rem" w="full">
                       <LuUpload />
                       <FileUpload.DropzoneContent>
@@ -456,12 +455,15 @@ const AddProduct = () => {
                         <Box color="fg.muted">PNG, JPG up to 5MB</Box>
                       </FileUpload.DropzoneContent>
                     </FileUpload.Dropzone>
+                    
+                    <FileUpload.ItemGroup>
+                      {fileUpload.acceptedFiles.length > 0 && (
+                        <ImagesOrderingContainer
+                          fileUpload={fileUpload}
+                        />
+                      )}
+                    </FileUpload.ItemGroup>
 
-                    {fileUpload.acceptedFiles.length > 0 && (
-                      <ImagesOrderingContainer
-                        fileUpload={fileUpload}
-                      />
-                    )}
                   </FileUpload.RootProvider>
                 </FileUpload.Root>
               </Field>

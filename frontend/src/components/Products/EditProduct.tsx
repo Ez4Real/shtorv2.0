@@ -444,11 +444,13 @@ const EditProduct = ({ product }: EditProductProps) => {
                       </FileUpload.DropzoneContent>
                     </FileUpload.Dropzone>
 
-                    {fileUpload.acceptedFiles.length > 0 && (
-                      <ImagesOrderingContainer
-                        fileUpload={fileUpload}
-                      />
-                    )}
+                    <FileUpload.ItemGroup>
+                      {fileUpload.acceptedFiles.length > 0 && (
+                        <ImagesOrderingContainer
+                          fileUpload={fileUpload}
+                        />
+                      )}
+                    </FileUpload.ItemGroup>
                   </FileUpload.RootProvider>
                 </FileUpload.Root>
               </Field>

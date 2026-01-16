@@ -15,16 +15,16 @@
     "@builder.io/react": "^8.1.2",
     "@chakra-ui/react": "^3.8.0",
     "@emotion/react": "^11.14.0",
+    "@hello-pangea/dnd": "^18.0.1",
     "@tanstack/react-query": "^5.28.14",
     "@tanstack/react-query-devtools": "^5.28.14",
     "@tanstack/react-router": "1.19.1",
     "axios": "^1.8.4",
-    "form-data": "4.0.0",
+    "form-data": "^4.0.5",
     "i18next": "^25.1.2",
     "i18next-browser-languagedetector": "^8.1.0",
     "next-themes": "^0.4.4",
     "react": "^18.2.0",
-    "react-beautiful-dnd": "^13.1.1",
     "react-dom": "^18.2.0",
     "react-error-boundary": "^4.0.13",
     "react-hook-form": "7.49.3",
@@ -40,11 +40,13 @@
     "@tanstack/router-vite-plugin": "1.19.0",
     "@types/node": "^20.10.5",
     "@types/react": "^18.2.37",
-    "@types/react-beautiful-dnd": "^13.1.8",
     "@types/react-dom": "^18.2.15",
     "@vitejs/plugin-react-swc": "^3.5.0",
     "dotenv": "^16.4.5",
     "typescript": "^5.2.2",
     "vite": "^5.4.14"
+  },
+  "overrides": {
+    "esbuild": "0.24.2"
   }
 }
