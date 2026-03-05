@@ -4,9 +4,10 @@ import re
 from datetime import datetime, timezone
 
 from typing import Literal, Annotated, Union
-from pydantic import EmailStr, BaseModel, model_validator, field_validator, StringConstraints
+from pydantic import EmailStr, BaseModel, StringConstraints, ConfigDict, \
+    model_validator, field_validator
 from sqlmodel import Field, Relationship, SQLModel, JSON
-from sqlalchemy import UniqueConstraint, TypeDecorator
+from sqlalchemy import UniqueConstraint, TypeDecorator, Column, Text
 from fastapi import UploadFile, File, Form
 from enum import Enum
 
@@ -167,8 +168,8 @@ class ProductBase(SQLModel):
     sizes: list[str] | None = Field(default=None, sa_type=JSON, min_length=2)
     title_en: str = Field(min_length=1, max_length=255)
     title_uk: str = Field(min_length=1, max_length=255)
-    description_en: str = Field(min_length=1, max_length=510)
-    description_uk: str = Field(min_length=1, max_length=510)
+    description_en: str = Field(sa_column=Column(Text, nullable=False))
+    description_uk: str = Field(sa_column=Column(Text, nullable=False))
     category_id: uuid.UUID
     collection_id: uuid.UUID
     price_usd: float = Field(ge=0.9, le=99999.0)
@@ -203,12 +204,18 @@ class ProductCreate(ProductBase):
     images: list[UploadFile]
 
 
-class UpdateBase(SQLModel):
+class ProductUpdateBase(SQLModel):
     sizes: list[str] | None = Field(default=None, sa_type=JSON, min_length=2)
     title_en: str | None = Field(default=None, min_length=1, max_length=255)
     title_uk: str | None = Field(default=None, min_length=1, max_length=255)
-    description_en: str | None = Field(default=None, min_length=1, max_length=510)
-    description_uk: str | None = Field(default=None, min_length=1, max_length=510)
+    description_en: str | None = Field(
+        sa_column=Column(Text),
+        default=None
+    )
+    description_uk: str | None = Field(
+        sa_column=Column(Text),
+        default=None
+    )
     category_id: uuid.UUID | None = Field(default=None)
     collection_id: uuid.UUID | None = Field(default=None)
     price_usd: float | None = Field(default=None, ge=0.9, le=99999.0)
@@ -225,7 +232,7 @@ class UpdateBase(SQLModel):
             return cls(**json.loads(value))
         return value
 
-class ProductUpdate(UpdateBase):
+class ProductUpdate(ProductUpdateBase):
     images: list[UploadFile] | None = Field(default=None)
     
     
@@ -276,33 +283,61 @@ class ProductsPublic(SQLModel):
     min_order: int | None
     max_order: int | None
     
-
+    
+class GiftOccasion(str, Enum):
+    STANDARD = "STANDARD"
+    MARCH8 = "MARCH8"
+    
 class GiftBase(SQLModel):
     title_en: str = Field(min_length=1, max_length=255)
     title_uk: str = Field(min_length=1, max_length=255)
-    description_en: str = Field(min_length=1, max_length=510)
-    description_uk: str = Field(min_length=1, max_length=510)
+    description_en: str = Field(sa_column=Column(Text, nullable=False))
+    description_uk: str = Field(sa_column=Column(Text, nullable=False))
     price_usd: float = Field(ge=0.9, le=99999.0)
     price_uah: float = Field(ge=0.9, le=99999.0)
     price_eur: float = Field(ge=0.9, le=99999.0)
     
     dynamic_price: bool = Field(default=False)
+    occasion: GiftOccasion = Field(default=GiftOccasion.STANDARD, index=True)
     
     @model_validator(mode='before')
     def validate_to_json(cls, value):
         if isinstance(value, str):
             return cls(**json.loads(value))
         return value
+    
+
+class GiftImage(ImageBase, table=True):
+    __tablename__ = "gift_images"
+    __table_args__ = (UniqueConstraint("gift_id", "order", name="unique_gift_image_order"),)
+    
+    id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
+    gift_id: uuid.UUID = Field(
+        foreign_key="gift.id", nullable=False, ondelete="CASCADE"
+    )
+    gift: "Gift" = Relationship(back_populates="images")
+    order: int = Field(default=None)
+
+class GiftCreate(GiftBase):
+    images: list[UploadFile]
+    
     
 class GiftUpdateBase(SQLModel):
     title_en: str | None = Field(default=None, min_length=1, max_length=255)
     title_uk: str | None = Field(default=None, min_length=1, max_length=255)
-    description_en: str | None = Field(default=None, min_length=1, max_length=510)
-    description_uk: str | None = Field(default=None, min_length=1, max_length=510)
+    description_en: str | None = Field(
+        sa_column=Column(Text),
+        default=None
+    )
+    description_uk: str | None = Field(
+        sa_column=Column(Text),
+        default=None
+    )
     price_usd: float | None = Field(default=None, ge=0.9, le=99999.0)
     price_uah: float | None = Field(default=None, ge=0.9, le=99999.0)
     price_eur: float | None = Field(default=None, ge=0.9, le=99999.0)
     dynamic_price: bool | None = Field(default=None) 
+    occasion: GiftOccasion | None = Field(default=None)
     
     @model_validator(mode='before')
     def validate_to_json(cls, value):
@@ -310,35 +345,21 @@ class GiftUpdateBase(SQLModel):
             return cls(**json.loads(value))
         return value
 
-class GiftCreate(GiftBase):
-    image: UploadFile
-
 class GiftUpdate(GiftUpdateBase): 
-    image: UploadFile | None = File(default=None)
+    images: list[UploadFile] | None = Field(default=None)
     
 class Gift(GiftBase, table=True):
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     order: int = Field(index=True, unique=True, gt=0)
-    image: "GiftBanner" = Relationship(back_populates="gift", sa_relationship_kwargs={"cascade": "all, delete-orphan"})
-
-class GiftBanner(ImageBase, table=True):
-    __tablename__ = "gift_banner"
-
-    id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
-    gift_id: uuid.UUID = Field(
-        foreign_key="gift.id", nullable=False, ondelete="CASCADE"
-    )
-    gift: Gift = Relationship(back_populates="image")
-
-class GiftBannerPublic(ImageBase):
-    id: uuid.UUID
+    images: list[GiftImage] = Relationship(back_populates="gift", cascade_delete=True)
 
 class GiftPublic(GiftBase):
     id: uuid.UUID
     created_at: datetime
     order: int
-    image: GiftBannerPublic
+    images: list[GiftImage]
+    occasion: GiftOccasion
 
 class GiftsPublic(SQLModel):
     data: list[GiftPublic]
@@ -416,8 +437,8 @@ class ProductAttachment(SQLModel):
     
 class ProductCartItem(CartProductBase):
     type: Literal["product"] = "product"
-    description_en: str = Field(min_length=1, max_length=510)
-    description_uk: str = Field(min_length=1, max_length=510)
+    description_en: str = Field(sa_column=Column(Text, nullable=False))
+    description_uk: str = Field(sa_column=Column(Text, nullable=False))
     collection: CollectionPublic
     category: ProductCategoryPublic
     images: list[ProductImage]
@@ -431,7 +452,9 @@ class CertificateType(str, Enum):
     
 class GiftCartItem(CartProductBase):
     type: Literal["gift"] = "gift"
-    images: list[GiftBannerPublic]
+    description_en: str = Field(sa_column=Column(Text, nullable=False))
+    description_uk: str = Field(sa_column=Column(Text, nullable=False))
+    images: list[GiftImage]
     certificate_type: CertificateType
 
 class PydanticJSONListType(TypeDecorator):
@@ -482,6 +505,9 @@ class OrderBasketItem(BasketItemBase):
     data: BasketItemData
 
 class OrderBase(SQLModel):
+    model_config = ConfigDict(arbitrary_types_allowed=True)
+    
+    
     email: str
     delivery_address: Address = Field(sa_type=PydanticJSONType(Address))
     billing_address: Address | None = Field(sa_type=PydanticJSONType(Address), default=None)
@@ -496,8 +522,6 @@ class OrderBase(SQLModel):
     currency: Currency
     basketOrder: list[OrderBasketItem] = Field(sa_type=PydanticJSONListType(OrderBasketItem))
     
-    class Config:
-      arbitrary_types_allowed = True
 
 class OrderCreate(OrderBase):
     invoiceId: str = Field(unique=True)
@@ -527,12 +551,14 @@ class MerchantPaymentInfo(SQLModel):
   basketOrder: list[PaymentBasketItem]
 
 class PaymentCreate(SQLModel):
+    model_config = ConfigDict(arbitrary_types_allowed=True)
+    
+    
     amount: int
     ccy: int # 980 | 840 | 978  (UAH | USD | EUR)
     merchantPaymInfo: MerchantPaymentInfo = Field(sa_type=PydanticJSONType(MerchantPaymentInfo))
     redirectUrl: str | None = Field(default=None)
     webHookUrl: str | None = Field(default=None)
-
     validity: int | None = Field(default=None) # Строк дії в секундах, за замовчуванням рахунок перестає бути дійсним через 24 години
     paymentType: str | None = Field(default='debit') # "debit" | "hold" Для значення hold термін складає 9 днів. Якщо через 9 днів холд не буде фіналізовано — він скасовується
     qrId: str | None = Field(default=None) # Ідентифікатор QR-каси для встановлення суми оплати на існуючих QR-кас
@@ -540,8 +566,6 @@ class PaymentCreate(SQLModel):
     displayType: str | None = Field(default=None)
     # saveCardData: None | SaveCardData
     
-    class Config:
-      arbitrary_types_allowed = True
       
 class PaymentResponse(SQLModel):
     invoiceId: str

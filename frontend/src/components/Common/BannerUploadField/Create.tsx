@@ -58,38 +58,41 @@ const CreateBannerUploadField = ({
           </Button>
         </FileUpload.Trigger>
 
-        {fileUpload.acceptedFiles.length > 0 && (
-          <FileUpload.Item
-            file={fileUpload.acceptedFiles[0]}
-            p={0}
-            rounded="md"
-            w="auto"
-          >
-          <Box>
-            <FileUpload.ItemPreviewImage
-              w="100%"
-              h="100%"
-              maxH={["unset", "26rem", "26rem", "26rem"]}
+        <FileUpload.ItemGroup w="auto">
+          {fileUpload.acceptedFiles.length > 0 && (
+            <FileUpload.Item
+              file={fileUpload.acceptedFiles[0]}
+              p={0}
               rounded="md"
-            /></Box>
-            <FileUpload.ItemDeleteTrigger
-              right={0}
-              onClick={() => handleRemoveImg}
-              p=".25rem"
-              position="absolute"
-              boxSize={10}
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
             >
-              <LuTrash2 
-                size={20}
-                color="#ef4444"
-                cursor="pointer"
-              />
-            </FileUpload.ItemDeleteTrigger>
-          </FileUpload.Item>
-        )}
+              <Box>
+                <FileUpload.ItemPreviewImage
+                  w="100%"
+                  h="100%"
+                  maxH={["unset", "26rem", "26rem", "26rem"]}
+                  rounded="md"
+                />
+              </Box>
+
+              <FileUpload.ItemDeleteTrigger
+                right={0}
+                onClick={() => handleRemoveImg}
+                p=".25rem"
+                position="absolute"
+                boxSize={10}
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+              >
+                <LuTrash2 
+                  size={20}
+                  color="#ef4444"
+                  cursor="pointer"
+              />  
+              </FileUpload.ItemDeleteTrigger>
+            </FileUpload.Item>
+          )}
+        </FileUpload.ItemGroup>
       </FileUploadRootProvider>
     </Field>
 )}

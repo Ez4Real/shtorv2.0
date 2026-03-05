@@ -42,6 +42,8 @@ import type {
   GiftsReadGiftByOrderResponse,
   GiftsUpdateGiftOrderData,
   GiftsUpdateGiftOrderResponse,
+  GiftsReadGiftsByOccasionData,
+  GiftsReadGiftsByOccasionResponse,
   LoginLoginAccessTokenData,
   LoginLoginAccessTokenResponse,
   LoginTestTokenResponse,
@@ -561,6 +563,35 @@ export class GiftsService {
       },
       formData: data.formData,
       mediaType: "application/x-www-form-urlencoded",
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Read Gifts By Occasion
+   * Get gifts by Occasion.
+   * @param data The data for the request.
+   * @param data.occasion
+   * @param data.skip
+   * @param data.limit
+   * @returns GiftsPublic Successful Response
+   * @throws ApiError
+   */
+  public static readGiftsByOccasion(
+    data: GiftsReadGiftsByOccasionData,
+  ): CancelablePromise<GiftsReadGiftsByOccasionResponse> {
+    return __request(OpenAPI, {
+      method: "GET",
+      url: "/api/v1/gifts/occasion/{occasion}",
+      path: {
+        occasion: data.occasion,
+      },
+      query: {
+        skip: data.skip,
+        limit: data.limit,
+      },
       errors: {
         422: "Validation Error",
       },

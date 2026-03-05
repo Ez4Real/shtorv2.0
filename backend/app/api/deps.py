@@ -13,7 +13,7 @@ from app.core import security
 from app.core.config import settings
 from app.core.db import engine
 from app.models import TokenPayload, User, CollectionBase, CollectionCreate, CollectionUpdate, \
-    ProductBase, ProductCreate, ProductUpdate, UpdateBase, GiftBase, GiftCreate, GiftUpdate, GiftUpdateBase
+    ProductBase, ProductCreate, ProductUpdate, ProductUpdateBase, GiftBase, GiftCreate, GiftUpdate, GiftUpdateBase
 
 reusable_oauth2 = OAuth2PasswordBearer(
     tokenUrl=f"{settings.API_V1_STR}/login/access-token"
@@ -117,7 +117,7 @@ def parse_product_create(
     return product
     
 def parse_product_update(
-    product: UpdateBase = Form(...),
+    product: ProductUpdateBase = Form(...),
     images: list[UploadFile] | None = File(default=None),
 ) -> ProductUpdate:
     return ProductUpdate(
@@ -128,21 +128,21 @@ def parse_product_update(
 
 def parse_gift_create(
     gift: GiftBase = Form(...),
-    image: UploadFile = File(),
+    images: list[UploadFile] = File(),
 ) -> GiftCreate:
     gift_data = gift.model_dump()
     gift = GiftCreate(
-        image=image,
+        images=images,
         **gift_data
     )
     return gift
 
 def parse_gift_update(
     gift: GiftUpdateBase = Form(...),
-    image: UploadFile | None = File(default=None),
+    images: list[UploadFile] | None = File(default=None),
 ) -> GiftUpdate:
     gift_data = gift.model_dump()
     gift = GiftUpdate(
-        image=image, 
+        images=images, 
         **gift_data)
     return gift

@@ -20,15 +20,16 @@ const Sidebar = () => {
   const queryClient = useQueryClient()
   const currentUser = queryClient.getQueryData<UserPublic>(["currentUser"])
   const { logout } = useAuth()
-  const [open, setOpen] = useState(false)
+  const [openMobile, setOpenMobile] = useState(false)
+  const [openDesktop, setOpenDesktop] = useState(false)
 
   return (
     <>
       {/* Mobile */}
       <DrawerRoot
         placement="start"
-        open={open}
-        onOpenChange={(e) => setOpen(e.open)}
+        open={openMobile}
+        onOpenChange={(e) => setOpenMobile(e.open)}
       >
         <DrawerBackdrop />
         <DrawerTrigger asChild>
@@ -49,7 +50,10 @@ const Sidebar = () => {
           <DrawerBody>
             <Flex flexDir="column" justify="space-between">
               <Box>
-                <SidebarItems />
+                <SidebarItems
+                  isOpen={openMobile}
+                  setIsOpen={setOpenMobile}                
+                />
                 <Flex
                   as="button"
                   onClick={() => {
@@ -81,12 +85,17 @@ const Sidebar = () => {
         position="sticky"
         bg="bg.subtle"
         top={0}
-        minW={60}
+        width={openDesktop ? "240px" : "64px"}
+        transition="width 0.35s cubic-bezier(0.4, 0, 0.2, 1)"
         h="100vh"
         p={4}
+        overflow="hidden"
       >
         <Box w="100%">
-          <SidebarItems />
+          <SidebarItems
+            isOpen={openDesktop}
+            setIsOpen={setOpenDesktop}
+          />
         </Box>
       </Box>
     </>

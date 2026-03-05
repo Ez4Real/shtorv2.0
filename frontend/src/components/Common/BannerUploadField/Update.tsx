@@ -63,51 +63,53 @@ const UpdateBannerUploadField = ({
           </Button>
         </FileUpload.Trigger>
   
-        {fileUpload.acceptedFiles.length > 0 ? (
-          <FileUpload.Item
-            file={fileUpload.acceptedFiles[0]}
-            p={0}
-            rounded="md"
-            w="auto"
-          >
-            <FileUpload.ItemPreviewImage
-              w="100%"
-              h="100%"
-              maxH="26rem"
+        <FileUpload.ItemGroup w="auto">
+          {fileUpload.acceptedFiles.length > 0 ? (
+            <FileUpload.Item
+              file={fileUpload.acceptedFiles[0]}
+              p={0}
               rounded="md"
-            />
-            <FileUpload.ItemDeleteTrigger
-              onClick={handleRemoveImg}
-              p=".25rem"
-              position="absolute"
-              boxSize={10}
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
             >
-              <LuTrash2 size={20} color="#ef4444" cursor="pointer" />
-            </FileUpload.ItemDeleteTrigger>
-          </FileUpload.Item>
-        ) : bannerUrl ? (
-          <Box position="relative">
-            <Image
-              src={`${OpenAPI.BASE}/media/${bannerUrl}`}
-              w="100%"
-              h="100%"
-              maxH="26rem"
-              rounded="md"
-            />
-            <Button
-              onClick={handleRemoveImg}
-              position="absolute"
-              p=".25rem"
-              top={0}
-              bg={0}
-            >
-              <LuTrash2 size={20} color="#ef4444" cursor="pointer" />
-            </Button>
-          </Box>
-        ) : null}
+              <FileUpload.ItemPreviewImage
+                w="100%"
+                h="100%"
+                maxH="26rem"
+                rounded="md"
+              />
+              {/* <FileUpload.ItemDeleteTrigger
+                onClick={handleRemoveImg}
+                p=".25rem"
+                position="absolute"
+                boxSize={10}
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+              >
+                <LuTrash2 size={20} color="#ef4444" cursor="pointer" />
+              </FileUpload.ItemDeleteTrigger> */}
+            </FileUpload.Item>
+          ) : bannerUrl ? (
+            <Box position="relative">
+              <Image
+                src={`${OpenAPI.BASE}/media/${bannerUrl}`}
+                w="100%"
+                h="100%"
+                maxH="26rem"
+                rounded="md"
+              />
+              <Button
+                onClick={handleRemoveImg}
+                position="absolute"
+                p=".25rem"
+                right={0}
+                top={0}
+                bg={0}
+              >
+                <LuTrash2 size={20} color="#ef4444" cursor="pointer" />
+              </Button>
+            </Box>
+          ) : null}
+        </FileUpload.ItemGroup>
       </FileUploadRootProvider>
     </Field>
 )}

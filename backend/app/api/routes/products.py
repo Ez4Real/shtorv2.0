@@ -6,7 +6,7 @@ from sqlmodel import func, select, update
 
 from app.core.config import settings
 from app.api.deps import CurrentUser, SessionDep, parse_product_create, parse_product_update
-from app.models import Product, ProductImage,  ProductCreate, ProductUpdate, ProductPublic, ProductsPublic, \
+from app.models import Product, ProductImage, ProductCreate, ProductUpdate, ProductPublic, ProductsPublic, \
     ProductCategory, Collection, Message
 from app.utils import save_image_to_local, delete_image_from_local
 
@@ -120,6 +120,7 @@ def read_product(
     product = session.get(Product, id)
     if not product:
       raise HTTPException(status_code=404, detail="Product not found")
+    
     return product
 
 
@@ -160,7 +161,7 @@ def create_product(
         product_image = ProductImage(
           url=image,
           alt_text=f"{product.title_en} product image",
-          collection_id=collection.id,
+          collection_id=collection.id, #!!! nah tut eto?
           order=index+1
         )
 
@@ -171,6 +172,7 @@ def create_product(
 
     session.commit()
     session.refresh(product)
+    
     return product
 
 
@@ -223,6 +225,7 @@ def update_product(
     session.add(product)
     session.commit()
     session.refresh(product)
+
     return product
 
 

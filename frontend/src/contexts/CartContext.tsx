@@ -73,7 +73,7 @@ export function pickGiftData(
     price_usd,
     price_eur,
     created_at: gift.created_at,
-    images: [gift.image],
+    images: gift.images,
   }
 
   return data

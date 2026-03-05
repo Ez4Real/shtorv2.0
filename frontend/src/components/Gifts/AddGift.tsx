@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { Controller, FormProvider, useForm, type SubmitHandler } from "react-hook-form"
 
@@ -8,12 +8,16 @@ import {
     DialogTitle,
     Input,
     Text,
-    Flex,
     Grid,
     NumberInput,
     GridItem,
     Switch,
-    Textarea
+    Textarea,
+    FileUpload,
+    Box,
+    useFileUpload,
+    Select,
+    createListCollection
   } from "@chakra-ui/react"
 import { FaPlus } from "react-icons/fa"
 
@@ -35,9 +39,9 @@ import {
     DialogTrigger,
   } from "../ui/dialog"
   import { Field } from "../ui/field"
-import CreateBannerUploadField from "../Common/BannerUploadField/Create"
 import { InputGroup } from "../ui/input-group"
-
+import { LuUpload } from "react-icons/lu"
+import ImagesOrderingContainer from "../Products/ImageOrderingContainer"
 
 const AddGift = () => {
   const [isOpen, setIsOpen] = useState(false)
@@ -60,9 +64,10 @@ const AddGift = () => {
         price_uah: min_price,
         price_usd: min_price,
         price_eur: min_price,
-        dynamic_price: false
+        dynamic_price: false,
+        occasion: "STANDARD"
       },
-      image: undefined,
+      images: undefined,
     }
   })
   
@@ -89,8 +94,28 @@ const AddGift = () => {
   })
 
   const onSubmit: SubmitHandler<Body_gifts_create_gift> =  (data) => {
+    console.log(data);
+    
     mutation.mutate(data)
   }
+
+  const fileUpload = useFileUpload({ maxFiles: 20, maxFileSize: 5242880 })
+
+  useEffect(() => {
+    methods.setValue("images", fileUpload.acceptedFiles)
+  }, [fileUpload.acceptedFiles])
+
+
+  // #Temporary# Woman's Day 2026 Block
+  const occasionCollection = createListCollection({
+    items: [
+      { label: "Standard", value: "STANDARD" },
+      { label: "March 8", value: "MARCH8" },
+    ],
+  });
+  // __________________________________
+
+  
 
   return (
       <DialogRoot
@@ -207,7 +232,48 @@ const AddGift = () => {
                     )}
                   />
 
-                  <GridItem />
+                  <Field
+                    required
+                    invalid={!!errors.gift?.occasion}
+                    errorText={errors.gift?.occasion?.message}
+                    label="Related Event"
+                  >
+                    <Select.Root
+                      collection={occasionCollection}
+                      id="gift.occasion"
+                      {...register('gift.occasion', {
+                        required: "Event is required.",
+                      })}
+                      size="sm"
+                      width="full"
+                      defaultValue={["STANDARD"]}
+                    >
+                        <Select.HiddenSelect />
+                        <Select.Control>
+                        <Select.Trigger>
+                            <Select.ValueText
+                              placeholder="Select a related event"
+                            />
+                        </Select.Trigger>
+                        <Select.IndicatorGroup>
+                            <Select.Indicator />
+                        </Select.IndicatorGroup>
+                        </Select.Control>
+                        <Select.Positioner>
+                        <Select.Content>
+                            {occasionCollection.items.map((instance) => (
+                            <Select.Item
+                              item={instance}
+                              key={instance.value}
+                            >
+                                {instance.label}
+                              <Select.ItemIndicator />
+                            </Select.Item>
+                            ))}
+                        </Select.Content>
+                        </Select.Positioner>
+                    </Select.Root>
+                  </Field>
 
                   <Field
                     required
@@ -300,19 +366,39 @@ const AddGift = () => {
                     <GridItem />
                 </Grid>
 
-                <Flex 
-                  gap="1rem"
-                  w="100%"
-                  maxH={["unset", "525px", "525px", "525px"]}
-                  direction={["column", "row", "row", "row"]}
+                <Field
+                  required
+                  label="Upload images"
+                  mt="16px"
                 >
-                <CreateBannerUploadField
-                    field_id="image"
-                    label="Image"
-                    error={errors.image?.message}
-                    invalid={!!errors.image}
-                />
-                </Flex>
+                  <FileUpload.Root
+                    alignItems="stretch"
+                    maxFiles={20}
+                    id="images"
+                    accept={{ "image/*": ["jpg", "png"] }}
+                  >
+                    <FileUpload.RootProvider value={fileUpload}>
+                      <FileUpload.HiddenInput />
+                      <FileUpload.Dropzone minH="8rem" w="full">
+                        <LuUpload />
+                        <FileUpload.DropzoneContent>
+                          <Box>Drag and drop up to 20 images</Box>
+                          <Box color="fg.muted">PNG, JPG up to 5MB</Box>
+                        </FileUpload.DropzoneContent>
+                      </FileUpload.Dropzone>
+                      
+                      <FileUpload.ItemGroup>
+                        {fileUpload.acceptedFiles.length > 0 && (
+                          <ImagesOrderingContainer
+                            fileUpload={fileUpload}
+                          />
+                        )}
+                      </FileUpload.ItemGroup>
+  
+                    </FileUpload.RootProvider>
+                  </FileUpload.Root>
+                </Field>
+                
               </DialogBody>
     
               <DialogFooter gap={2} pt={4}>

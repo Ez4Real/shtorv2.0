@@ -4,11 +4,11 @@ import { Link as RouterLink } from "@tanstack/react-router"
 import { useEffect, useState } from 'react';
 import type { Swiper as SwiperCore } from "swiper";
 import { useRef } from "react";
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { FreeMode, Navigation, Thumbs, Pagination, Scrollbar } from 'swiper/modules';
 import { getItemPrice } from "@/utils"
 
 import type { Swiper as SwiperType } from 'swiper'
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { FreeMode, Navigation, Thumbs, Pagination, Scrollbar } from 'swiper/modules';
 
 import 'swiper/css'
 import 'swiper/css/free-mode'
@@ -136,7 +136,14 @@ function Product() {
                 flexDirection={{ base: "column", sm: "column", md: "column", lg: "unset" }}
                 gap={["16px", "16px", "176px", "176px"]}
               >
-                <Flex direction={{ base: "column", sm: "row", md: "row", lg: "row" }}>
+                <Flex
+                  direction={{
+                    base: "column",
+                    sm: "row",
+                    md: "row",
+                    lg: "row" 
+                  }}
+                >
                   {!isMobile && (
                     <Box h="600px" w="96px" overflow="hidden">
                       <Swiper

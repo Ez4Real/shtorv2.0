@@ -92,7 +92,6 @@ const EditProduct = ({ product }: EditProductProps) => {
 
   const fileUpload = useFileUpload({ maxFiles: 20, maxFileSize: 5242880 })
 
-
   useEffect(() => {
     methods.setValue("images", fileUpload.acceptedFiles)
   }, [fileUpload.acceptedFiles])

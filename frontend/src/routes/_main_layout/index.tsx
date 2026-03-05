@@ -1,5 +1,6 @@
 import { CollectionsService } from "@/client"
 import CollectionPreview from "@/components/Collection/preview"
+import WomansDay2026 from "@/components/Promotions/WomansDay2026"
 import { chakra } from "@chakra-ui/react"
 import { Box, Container } from "@chakra-ui/react"
 import { useQuery } from "@tanstack/react-query"
@@ -89,6 +90,9 @@ function Main() {
           )}
         </Box>
       </Box>
+
+      {/* #Temporary# Woman's Day 2026 Block | tupie defki blin :) */}
+      <WomansDay2026 />
       
       {!isPending && collections.map((collection) => (
         <CollectionPreview

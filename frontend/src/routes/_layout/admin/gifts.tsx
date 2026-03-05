@@ -5,6 +5,7 @@ import {
   EmptyState,
   Flex,
   Heading,
+  HStack,
   Image,
   Table,
   VStack,
@@ -203,19 +204,25 @@ function GiftsTable() {
                     EUR - {gift.price_eur}
                   </Box>
                 </Table.Cell>
-
-                <Table.Cell
-                  px={["1.5rem", ".75rem", ".75rem", ".75rem"]}
-                >
-                  <Image
-                    src={`${OpenAPI.BASE}/media/${gift.image.url}`}
-                    fit="cover"
-                    justifySelf="center"
-                    rounded={"4px"}
-                    boxSize="100px"
-                    minW="100px"
-                  />
+                
+                <Table.Cell>
+                  <HStack gap={1}>
+                    {gift.images && gift.images.length > 0
+                      ? gift.images.slice(0, 4).map((img, index) => (
+                          <Box key={index}>
+                            <Image
+                              src={`${OpenAPI.BASE}/media/${img.url}`}
+                              boxSize="100px"
+                              minW="100px"
+                              objectFit="cover"
+                              borderRadius="md"
+                            />
+                          </Box>
+                        ))
+                      : "N/A"}
+                  </HStack>
                 </Table.Cell>
+                
 
                 <Table.Cell p="1rem .25rem !important">
                   <GiftActionsMenu gift={gift} />

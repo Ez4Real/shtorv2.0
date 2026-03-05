@@ -29,12 +29,12 @@ export type Body_collections_update_collection_order = {
 
 export type Body_gifts_create_gift = {
   gift: GiftBase
-  image: Blob | File
+  images: Array<Blob | File>
 }
 
 export type Body_gifts_update_gift = {
   gift: GiftUpdateBase
-  image?: (Blob | File) | null
+  images?: Array<Blob | File> | null
 }
 
 export type Body_gifts_update_gift_order = {
@@ -56,7 +56,7 @@ export type Body_products_create_product = {
 }
 
 export type Body_products_update_product = {
-  product: UpdateBase
+  product: ProductUpdateBase
   images?: Array<Blob | File> | null
 }
 
@@ -106,12 +106,6 @@ export type Currency = "uah" | "usd" | "eur"
 
 export type DeviceType = "desktop" | "mobile"
 
-export type GiftBannerPublic = {
-  url: string
-  alt_text?: string | null
-  id: string
-}
-
 export type GiftBase = {
   title_en: string
   title_uk: string
@@ -121,6 +115,7 @@ export type GiftBase = {
   price_uah: number
   price_eur: number
   dynamic_price?: boolean
+  occasion?: GiftOccasion
 }
 
 export type GiftCartItem = {
@@ -131,11 +126,23 @@ export type GiftCartItem = {
   price_uah: number
   price_eur: number
   type?: "gift"
-  images: Array<GiftBannerPublic>
+  description_en: string
+  description_uk: string
+  images: Array<GiftImage>
   certificate_type: CertificateType
 }
 
 export type type = "gift"
+
+export type GiftImage = {
+  url: string
+  alt_text?: string | null
+  id?: string
+  gift_id: string
+  order?: number
+}
+
+export type GiftOccasion = "STANDARD" | "MARCH8"
 
 export type GiftPublic = {
   title_en: string
@@ -146,10 +153,11 @@ export type GiftPublic = {
   price_uah: number
   price_eur: number
   dynamic_price?: boolean
+  occasion: GiftOccasion
   id: string
   created_at: string
   order: number
-  image: GiftBannerPublic
+  images: Array<GiftImage>
 }
 
 export type GiftsPublic = {
@@ -168,6 +176,7 @@ export type GiftUpdateBase = {
   price_uah?: number | null
   price_eur?: number | null
   dynamic_price?: boolean | null
+  occasion?: GiftOccasion | null
 }
 
 export type HTTPValidationError = {
@@ -416,14 +425,7 @@ export type ProductsPublic = {
   max_order: number | null
 }
 
-export type ShippingMethods = "ups_express" | "nova_post"
-
-export type Token = {
-  access_token: string
-  token_type?: string
-}
-
-export type UpdateBase = {
+export type ProductUpdateBase = {
   sizes?: Array<string> | null
   title_en?: string | null
   title_uk?: string | null
@@ -438,6 +440,13 @@ export type UpdateBase = {
   is_gift?: boolean | null
   in_stock?: boolean | null
   preorder?: boolean | null
+}
+
+export type ShippingMethods = "ups_express" | "nova_post"
+
+export type Token = {
+  access_token: string
+  token_type?: string
 }
 
 export type UpdatePassword = {
@@ -612,6 +621,14 @@ export type GiftsUpdateGiftOrderData = {
 }
 
 export type GiftsUpdateGiftOrderResponse = GiftPublic
+
+export type GiftsReadGiftsByOccasionData = {
+  limit?: number
+  occasion: GiftOccasion
+  skip?: number
+}
+
+export type GiftsReadGiftsByOccasionResponse = GiftsPublic
 
 export type LoginLoginAccessTokenData = {
   formData: Body_login_login_access_token

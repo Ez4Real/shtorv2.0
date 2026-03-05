@@ -10,17 +10,22 @@ import { getItemPrice } from "@/utils"
 interface GiftCardProps {
   gift: GiftPublic
   showPrice?: boolean
+  titleFontSize?: string
+  titleLineHeight?: string
 }
 
 const GiftCard = ({
     gift,
     showPrice = true,
+    titleFontSize = "24px",
+    titleLineHeight = "30px"
 }: GiftCardProps) => {
   const { i18n } = useTranslation()
   const { currency } = useCurrency()
-  const titleKey = `title_${i18n.language}` as TranslatableTitle
-  return (
 
+  const titleKey = `title_${i18n.language}` as TranslatableTitle
+  
+  return (
     <Flex
       direction="column"
       alignItems="flex-start"
@@ -33,16 +38,16 @@ const GiftCard = ({
       >
         <Box w="100%">
           <Image
-          src={`${OpenAPI.BASE}/media/${gift.image.url}`}
-          alt={gift.image.alt_text || "unset"}
+          src={`${OpenAPI.BASE}/media/${gift.images[0].url}`}
+          alt={gift.images[0].alt_text || "unset"}
           w="100%"
           h="100%"
           />
         </Box>
         <Text
-          mt="16px"
-          fontSize="24px"
-          lineHeight="30px"
+          mt={["12px", "12px", "16px", "16px"]}
+          fontSize={["14px", "14px", titleFontSize, titleFontSize]}
+          lineHeight={["18px", "18px", titleLineHeight, titleLineHeight]}
           textTransform="uppercase"
         >
           {gift[titleKey]}

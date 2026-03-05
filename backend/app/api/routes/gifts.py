@@ -4,11 +4,9 @@ from fastapi import APIRouter, HTTPException, Depends, Form, Query
 from sqlmodel import func, select
 
 from app.core.config import settings
-from app.api.deps import CurrentUser, SessionDep, parse_gift_create, \
-  parse_gift_update
-from app.models import Gift, GiftCreate, GiftUpdateBase, \
-    GiftBanner, GiftPublic, GiftsPublic, \
-    Message
+from app.api.deps import CurrentUser, SessionDep, parse_gift_create, parse_gift_update
+from app.models import Gift, GiftCreate, GiftUpdate, GiftImage, GiftPublic, GiftsPublic, \
+  GiftOccasion, Message
 from app.utils import save_image_to_local, delete_image_from_local
 
 router = APIRouter(prefix="/gifts", tags=["gifts"])
@@ -78,22 +76,25 @@ def create_gift(
     """
     next_gift_order = (session.scalar(select(func.max(Gift.order))) or 0) + 1
     gift = Gift.model_validate(
-      gift_in.model_dump(exclude={"image"}),
+      gift_in.model_dump(exclude={"images"}),
       update={"order": next_gift_order}
     )
 
-    banner_url = save_image_to_local(
-      gift_in.image,
-      settings.GIFT_IMAGES_DIR
-    )
-    gift_banner = GiftBanner(
-      url=banner_url,
-      alt_text=f"{gift.title_en} gift banner",
-      gift_id=gift.id
-    )
-    session.add(gift_banner)
+    if gift_in.images:
+      for index, image_in in enumerate(gift_in.images):
+        image = save_image_to_local(
+          image_in,
+          settings.GIFT_IMAGES_DIR
+        )
+        gift_image = GiftImage(
+          url=image,
+          alt_text=f"{gift.title_en} product image",
+          order=index+1
+        )
+
+        session.add(gift_image)
+        gift.images.append(gift_image)
     
-    gift.image = gift_banner
     session.add(gift)
     
     session.commit()
@@ -107,7 +108,7 @@ def update_gift(
     session: SessionDep,
     current_user: CurrentUser,
     id: UUID,
-    gift_in: GiftUpdateBase = Depends(parse_gift_update),
+    gift_in: GiftUpdate = Depends(parse_gift_update),
 ) -> GiftPublic:
     """
     Update a gift.
@@ -121,26 +122,26 @@ def update_gift(
     update_dict = gift_in.model_dump(
       exclude_unset=True,
       exclude_none=True,
-      exclude={"image"}
+      exclude={"images"}
     )
     gift.sqlmodel_update(update_dict)
 
     
-    if gift_in.image:
-      old_image = gift.image
-      if old_image:
-        delete_image_from_local(old_image.url)
-        session.delete(old_image)
+    if gift_in.images is not None:
+      for image in gift.images:
+        delete_image_from_local(image.url)
+        session.delete(image)
+      session.commit()
 
-      image_url = save_image_to_local(
-        gift_in.image, settings.GIFT_IMAGES_DIR
-      )
-      new_gift_banner = GiftBanner(
-        url=image_url,
-        alt_text=f"{gift.title_en} gift banner",
-        gift=gift
-      )
-      session.add(new_gift_banner)
+      for index, image_in in enumerate(gift_in.images):
+        url = save_image_to_local(image_in, settings.GIFT_IMAGES_DIR)
+        new_image = GiftImage(
+          url=url,
+          alt_text=f"{gift.title_en} image",
+          gift=gift,
+          order=index + 1
+        )
+        session.add(new_image)
 
     session.add(gift)
     session.commit()
@@ -203,12 +204,63 @@ def delete_gift(
     raise HTTPException(status_code=404, detail="Gift not found")
   if not current_user.is_superuser:
     raise HTTPException(status_code=400, detail="Not enough permissions")
-  
-  if gift.image:
-    banner = session.get(GiftBanner, gift.image.id)
-    deleted = delete_image_from_local(banner.url)
-    if deleted: session.delete(banner)
-    
+  gift_images = session.exec(
+    select(GiftImage).filter(GiftImage.gift_id == gift.id)
+  ).all()
+  for image in gift_images:
+    if delete_image_from_local(image.url):
+      session.delete(image)
+
   session.delete(gift)
+
+  gifts_after = session.exec(
+    select(Gift).where(Gift.order > gift.order).order_by(Gift.order)
+  ).all()
+  for p in gifts_after:
+    p.order -= 1
+    session.commit()
+
   session.commit()
   return Message(message="Gift deleted successfully")
+
+
+#Temporary# Woman's Day 2026 Block
+@router.get("/occasion/{occasion}", response_model=GiftsPublic)
+def read_gifts_by_occasion(
+  session: SessionDep,
+  occasion: GiftOccasion,
+  skip: int = 0, limit: int = 100
+) -> GiftsPublic:
+  """
+  Get gifts by Occasion.
+  """
+  count_statement = (
+    select(func.count())
+    .select_from(Gift)
+    .where(Gift.occasion == occasion)
+  )
+  count = session.exec(count_statement).one()
+  
+  gifts_order_bounds = (
+    select(func.min(Gift.order), func.max(Gift.order))
+    .where(Gift.occasion == occasion)
+  )
+  min_order, max_order = session.exec(gifts_order_bounds).one()
+  
+  statement = (
+    select(Gift)
+    .where(Gift.occasion == occasion)
+    .offset(skip)
+    .limit(limit)
+    .order_by(Gift.order)
+  )
+  gifts = session.exec(statement).all()
+
+  return GiftsPublic(
+    data=gifts,
+    count=count,
+    min_order=min_order or 0,
+    max_order=max_order or 0
+  )
+#________________________________________________________________
+

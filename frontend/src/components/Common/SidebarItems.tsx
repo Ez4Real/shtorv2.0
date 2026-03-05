@@ -1,7 +1,7 @@
 import { Box, Flex, Icon, Text } from "@chakra-ui/react"
 import { useQueryClient } from "@tanstack/react-query"
 import { Link as RouterLink } from "@tanstack/react-router"
-import { FiBriefcase, FiHome, FiSettings, FiUsers, FiAirplay, FiLayers, FiGift } from "react-icons/fi"
+import { FiBriefcase, FiHome, FiSettings, FiUsers, FiAirplay, FiLayers, FiGift, FiChevronRight } from "react-icons/fi"
 import { LuShoppingCart } from "react-icons/lu";
 import { BiCategory } from "react-icons/bi";
 import type { IconType } from "react-icons/lib"
@@ -20,6 +20,8 @@ const items = [
 ]
 
 interface SidebarItemsProps {
+  isOpen: boolean
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>
   onClose?: () => void
 }
 
@@ -29,7 +31,7 @@ interface Item {
   path: string
 }
 
-const SidebarItems = ({ onClose }: SidebarItemsProps) => {
+const SidebarItems = ({ isOpen, setIsOpen, onClose }: SidebarItemsProps) => {
   const queryClient = useQueryClient()
   const currentUser = queryClient.getQueryData<UserPublic>(["currentUser"])
 
@@ -41,7 +43,7 @@ const SidebarItems = ({ onClose }: SidebarItemsProps) => {
     <RouterLink key={title} to={path} onClick={onClose}>
       <Flex
         gap={4}
-        px={4}
+        px={isOpen ? 4 : 2}
         py={2}
         _hover={{
           background: "ui.main",
@@ -52,16 +54,38 @@ const SidebarItems = ({ onClose }: SidebarItemsProps) => {
         borderRadius="md"
       >
         <Icon as={icon} alignSelf="center" />
-        <Text ml={2}>{title}</Text>
+        <Text
+          display={isOpen ? "static" : "none"}
+          ml={2}
+        >{title}</Text>
       </Flex>
     </RouterLink>
   ))
 
   return (
     <>
-      <Text fontSize="xs" px={4} py={2} fontWeight="bold">
-        Menu
-      </Text>
+      <Flex
+        p={isOpen ? "8px 16px" : "8px"}
+        gap="1rem"
+      >
+        <Icon
+          display={{ base: "none", md: "flex" }}
+          as={FiChevronRight}
+          transform={isOpen ? "rotate(-180deg)" : "rotate(0deg)"}
+          transition="transform 0.25s cubic-bezier(0.4, 0, 0.2, 1)"
+          onClick={() => setIsOpen(!isOpen)}
+          alignSelf="center"
+          cursor="pointer"
+        />
+        <Text
+          display={isOpen ? "static" : "none"}
+          fontSize="xs"
+          py={2} 
+          fontWeight="bold"
+        >
+          Menu
+        </Text>
+      </Flex>
       <Box>{listItems}</Box>
     </>
   )

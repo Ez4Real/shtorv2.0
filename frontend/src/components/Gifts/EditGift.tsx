@@ -1,18 +1,22 @@
 import {
+  Box,
   Button,
   ButtonGroup,
+  createListCollection,
   DialogActionTrigger,
-  Flex,
+  FileUpload,
   Grid,
   GridItem,
   Input,
   NumberInput,
+  Select,
   Switch,
   Text,
   Textarea,
+  useFileUpload,
 } from "@chakra-ui/react"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Controller, FormProvider, type SubmitHandler, useForm } from "react-hook-form"
 import { FaExchangeAlt } from "react-icons/fa"
 
@@ -30,8 +34,9 @@ import {
   DialogTrigger,
 } from "../ui/dialog"
 import { Field } from "../ui/field"
-import UpdateBannerUploadField from "../Common/BannerUploadField/Update"
 import { InputGroup } from "../ui/input-group"
+import { LuUpload } from "react-icons/lu"
+import ImagesOrderingContainer from "../Products/ImageOrderingContainer"
 
 interface EditGiftProps {
   gift: GiftPublic
@@ -53,7 +58,7 @@ const EditGift = ({ gift }: EditGiftProps) => {
       gift: {
         ...gift
       },
-      image: undefined
+      images: null
     }
   })
 
@@ -85,6 +90,21 @@ const EditGift = ({ gift }: EditGiftProps) => {
     mutation.mutate(data)
   }
 
+  const fileUpload = useFileUpload({ maxFiles: 20, maxFileSize: 5242880 })
+
+  useEffect(() => {
+    methods.setValue("images", fileUpload.acceptedFiles)
+  }, [fileUpload.acceptedFiles])
+
+  // #Temporary# Woman's Day 2026 Block
+  const occasionCollection = createListCollection({
+    items: [
+      { label: "Standard", value: "STANDARD" },
+      { label: "March 8", value: "MARCH8" },
+    ],
+  });
+  // __________________________________
+
   return (
     <DialogRoot
       size={{ base: "xs", md: "xl" }}
@@ -105,110 +125,151 @@ const EditGift = ({ gift }: EditGiftProps) => {
               <DialogTitle>Edit Gift</DialogTitle>
             </DialogHeader>
             <DialogBody pb={0}>
-                <Text mb={4}>Fill in the details to add a new gift.</Text>
-                <Grid
-                    templateColumns={["repeat(1, 1fr)", "repeat(1, 1fr)", "repeat(2, 1fr)", "repeat(2, 1fr)"]}
-                    gap="16px"
+              <Text mb={4}>Fill in the details to add a new gift.</Text>
+              <Grid
+                templateColumns={["repeat(1, 1fr)", "repeat(1, 1fr)", "repeat(2, 1fr)", "repeat(2, 1fr)"]}
+                gap="16px"
+              >
+                <Field
+                  required
+                  invalid={!!errors.gift?.title_en}
+                  errorText={errors.gift?.title_en?.message}
+                  label="English title"
                 >
+                  <Input
+                    id="title_en"
+                    {...register("gift.title_en", {
+                      required: "English title is required.",
+                    })}
+                    placeholder="English title"
+                    type="text"
+                  />
+                </Field>
+                <Field
+                  required
+                  invalid={!!errors.gift?.title_uk}
+                  errorText={errors.gift?.title_uk?.message}
+                  label="Ukrainian title"
+                >
+                  <Input
+                    id="title_uk"
+                    {...register("gift.title_uk", {
+                      required: "Ukrainian title is required.",
+                    })}
+                    placeholder="Ukrainian title"
+                    type="text"
+                  />
+                </Field>
+
+                <Field
+                  required
+                  invalid={!!errors.gift?.description_en}
+                  errorText={errors.gift?.description_en?.message}
+                  label="English description"
+                >
+                  <Textarea
+                    id="description_en"
+                    {...register("gift.description_en", {
+                      required: "English description is required.",
+                      setValueAs: (value: string) => value.trim(),
+                    })}
+                    placeholder="English description"
+                    resize="vertical"
+                    minHeight="2.5rem"
+                    maxHeight="8rem"
+                  />
+                </Field>
+                <Field
+                  required
+                  invalid={!!errors.gift?.description_uk}
+                  errorText={errors.gift?.description_uk?.message}
+                  label="Ukrainian description"
+                >
+                  <Textarea
+                    id="description_uk"
+                    {...register("gift.description_uk", {
+                      required: "Ukrainian description is required.",
+                      setValueAs: (value: string) => value.trim(),
+                    })}
+                    placeholder="Ukrainian description"
+                    resize="vertical"
+                    minHeight="2.5rem"
+                    maxHeight="8rem"
+                  />
+                </Field>
+
+                <Controller
+                  name="gift.dynamic_price"
+                  control={control}
+                  render={({ field }) => (
                     <Field
-                    required
-                    invalid={!!errors.gift?.title_en}
-                    errorText={errors.gift?.title_en?.message}
-                    label="English title"
+                      alignSelf="center"
+                      label="Apply optional price"
                     >
-                    <Input
-                        id="title_en"
-                        {...register("gift.title_en", {
-                        required: "English title is required.",
-                        })}
-                        placeholder="English title"
-                        type="text"
+                      <Switch.Root
+                        colorPalette="teal"
+                        name={field.name}
+                        checked={field.value as boolean | undefined}
+                        onCheckedChange={({ checked }) => field.onChange(checked)}
+                      >
+                        <Switch.HiddenInput onBlur={field.onBlur} />
+                        <Switch.Control />
+
+                      </Switch.Root>
+                    </Field>
+                  )}
+                />
+
+                <Field
+                  required
+                  invalid={!!errors.gift?.occasion}
+                  errorText={errors.gift?.occasion?.message}
+                  label="Related Event"
+                >
+                  <Select.Root
+                    collection={occasionCollection}
+                    id="gift.occasion"
+                    {...register('gift.occasion', {
+                      required: "Event is required.",
+                    })}
+                    size="sm"
+                    width="full"
+                    defaultValue={[gift.occasion]}
+                  >
+                    <Select.HiddenSelect />
+                    <Select.Control>
+                      <Select.Trigger>
+                        <Select.ValueText
+                          placeholder="Select a related event"
                         />
-                    </Field>
-                    <Field
-                      required
-                      invalid={!!errors.gift?.title_uk}
-                      errorText={errors.gift?.title_uk?.message}
-                      label="Ukrainian title"
-                    >
-                    <Input
-                      id="title_uk"
-                      {...register("gift.title_uk", {
-                        required: "Ukrainian title is required.",
-                      })}
-                      placeholder="Ukrainian title"
-                      type="text"
-                    />
-                    </Field>
-
-                    <Field
-                      required
-                      invalid={!!errors.gift?.description_en}
-                      errorText={errors.gift?.description_en?.message}
-                      label="English description"
-                    >
-                      <Textarea
-                        id="description_en"
-                        {...register("gift.description_en", {
-                          required: "English description is required.",
-                          setValueAs: (value: string) => value.trim(),
-                        })}
-                        placeholder="English description"
-                        resize="vertical"
-                        minHeight="2.5rem"
-                        maxHeight="8rem"
-                      />
-                    </Field>
-                    <Field
-                      required
-                      invalid={!!errors.gift?.description_uk}
-                      errorText={errors.gift?.description_uk?.message}
-                      label="Ukrainian description"
-                    >
-                      <Textarea
-                        id="description_uk"
-                        {...register("gift.description_uk", {
-                          required: "Ukrainian description is required.",
-                          setValueAs: (value: string) => value.trim(),
-                        })}
-                        placeholder="Ukrainian description"
-                        resize="vertical"
-                        minHeight="2.5rem"
-                        maxHeight="8rem"
-                      />
-                    </Field>
-
-                    <Controller
-                      name="gift.dynamic_price"
-                      control={control}
-                      render={({ field }) => (
-                        <Field 
-                          alignSelf="center"
-                          label="Apply optional price"
-                        >
-                          <Switch.Root
-                            colorPalette="teal"
-                            name={field.name}
-                            checked={field.value as boolean | undefined}
-                            onCheckedChange={({ checked }) => field.onChange(checked)}
+                      </Select.Trigger>
+                      <Select.IndicatorGroup>
+                        <Select.Indicator />
+                      </Select.IndicatorGroup>
+                    </Select.Control>
+                    <Select.Positioner>
+                      <Select.Content>
+                        {occasionCollection.items.map((instance) => (
+                          <Select.Item
+                            item={instance}
+                            key={instance.value}
                           >
-                            <Switch.HiddenInput onBlur={field.onBlur} />
-                            <Switch.Control />
-                            
-                          </Switch.Root>
-                        </Field>
-                      )}
-                    />
-  
-                    <GridItem />
+                            {instance.label}
+                            <Select.ItemIndicator />
+                          </Select.Item>
+                        ))}
+                      </Select.Content>
+                    </Select.Positioner>
+                  </Select.Root>
+                </Field>
 
-                    <Field
-                    required
-                    invalid={!!errors.gift?.price_uah}
-                    errorText={errors.gift?.price_uah?.message}
-                    label="Ukrainian Hryvnas"
-                    >
-                    <NumberInput.Root
+                <Field
+                  required
+                  invalid={!!errors.gift?.price_uah}
+                  errorText={errors.gift?.price_uah?.message}
+                  label="Ukrainian Hryvnas"
+                >
+                  <NumberInput.Root
                     required
                     defaultValue="0.9"
                     step={step}
@@ -216,28 +277,28 @@ const EditGift = ({ gift }: EditGiftProps) => {
                     max={max_price}
                     w="full"
                     id="price_uah"
-                    >
-                    <NumberInput.Control/>
+                  >
+                    <NumberInput.Control />
                     <InputGroup
-                        startElement={"₴"}
-                        w="full"
+                      startElement={"₴"}
+                      w="full"
                     >
-                        <NumberInput.Input
+                      <NumberInput.Input
                         {...register("gift.price_uah", {
-                            required: "Price in hryvnas is required.",
-                            setValueAs: (value: string) => Number(value)
+                          required: "Price in hryvnas is required.",
+                          setValueAs: (value: string) => Number(value)
                         })}
-                        />
-                        </InputGroup>
-                    </NumberInput.Root>
-                    </Field>
-                    <Field
-                    required
-                    invalid={!!errors.gift?.price_usd}
-                    errorText={errors.gift?.price_usd?.message}
-                    label="US Dollar"
-                    >
-                    <NumberInput.Root
+                      />
+                    </InputGroup>
+                  </NumberInput.Root>
+                </Field>
+                <Field
+                  required
+                  invalid={!!errors.gift?.price_usd}
+                  errorText={errors.gift?.price_usd?.message}
+                  label="US Dollar"
+                >
+                  <NumberInput.Root
                     required
                     defaultValue="0.9"
                     step={step}
@@ -245,68 +306,87 @@ const EditGift = ({ gift }: EditGiftProps) => {
                     max={max_price}
                     w="full"
                     id="price_usd"
-                    >
-                    <NumberInput.Control/>
+                  >
+                    <NumberInput.Control />
                     <InputGroup
-                        startElement={"$"}
-                        w="full"
-                    >
-                        <NumberInput.Input
-                        {...register("gift.price_usd", {
-                            required: "Price in US dollars is required.",
-                            setValueAs: (value: string) => Number(value)
-                        })}
-                        />
-                        </InputGroup>
-                    </NumberInput.Root>
-                    </Field>
-                    <Field
-                      required
-                      invalid={!!errors.gift?.price_eur}
-                      errorText={errors.gift?.price_eur?.message}
-                      label="Euro"
-                    >
-                    <NumberInput.Root
-                      required
-                      defaultValue="0.9"
-                      step={step}
-                      min={min_price}
-                      max={max_price}
+                      startElement={"$"}
                       w="full"
-                      id="price_eur"
                     >
-                    <NumberInput.Control/>
-                    <InputGroup
-                        startElement={"€"}
-                        w="full"
-                    >
-                        <NumberInput.Input
-                        {...register("gift.price_eur", {
-                            required: "Price in euros is required.",
-                            setValueAs: (value: string) => Number(value)
+                      <NumberInput.Input
+                        {...register("gift.price_usd", {
+                          required: "Price in US dollars is required.",
+                          setValueAs: (value: string) => Number(value)
                         })}
-                        />
-                        </InputGroup>
-                    </NumberInput.Root>
-                    </Field>
-
-                    <GridItem />
-                </Grid>
-
-                <Flex 
-                    gap="1rem"
-                    w="100%"
-                    maxH={["unset", "525px", "525px", "525px"]}
-                    direction={["column", "row", "row", "row"]}
+                      />
+                    </InputGroup>
+                  </NumberInput.Root>
+                </Field>
+                <Field
+                  required
+                  invalid={!!errors.gift?.price_eur}
+                  errorText={errors.gift?.price_eur?.message}
+                  label="Euro"
                 >
-                <UpdateBannerUploadField
-                  field_id="image"
-                  label="Image"
-                  currentBannerUrl={gift.image.url}
-                  error={errors.image?.message}
-                  invalid={!!errors.image}
-                />
-                </Flex>
+                  <NumberInput.Root
+                    required
+                    defaultValue="0.9"
+                    step={step}
+                    min={min_price}
+                    max={max_price}
+                    w="full"
+                    id="price_eur"
+                  >
+                    <NumberInput.Control />
+                    <InputGroup
+                      startElement={"€"}
+                      w="full"
+                    >
+                      <NumberInput.Input
+                        {...register("gift.price_eur", {
+                          required: "Price in euros is required.",
+                          setValueAs: (value: string) => Number(value)
+                        })}
+                      />
+                    </InputGroup>
+                  </NumberInput.Root>
+                </Field>
+
+                <GridItem />
+              </Grid>
+
+              <Field
+                required
+                label="Upload images"
+                mt="16px"
+              >
+                <FileUpload.Root
+                  alignItems="stretch"
+                  maxFiles={20}
+                  id="images"
+                  accept={{ "image/*": ["jpg", "png"] }}
+                >
+                  <FileUpload.RootProvider value={fileUpload}>
+                    <FileUpload.HiddenInput
+                    />
+                    <FileUpload.Dropzone minH="8rem" w="full">
+                      <LuUpload />
+                      <FileUpload.DropzoneContent>
+                        <Box>Drag and drop up to 20 images</Box>
+                        <Box color="fg.muted">PNG, JPG up to 5MB</Box>
+                      </FileUpload.DropzoneContent>
+                    </FileUpload.Dropzone>
+
+                    <FileUpload.ItemGroup>
+                      {fileUpload.acceptedFiles.length > 0 && (
+                        <ImagesOrderingContainer
+                          fileUpload={fileUpload}
+                        />
+                      )}
+                    </FileUpload.ItemGroup>
+                  </FileUpload.RootProvider>
+                </FileUpload.Root>
+              </Field>
+
             </DialogBody>
 
             <DialogFooter gap={2}>
