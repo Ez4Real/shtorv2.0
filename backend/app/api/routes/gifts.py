@@ -224,7 +224,6 @@ def delete_gift(
   return Message(message="Gift deleted successfully")
 
 
-#Temporary# Woman's Day 2026 Block
 @router.get("/occasion/{occasion}", response_model=GiftsPublic)
 def read_gifts_by_occasion(
   session: SessionDep,
@@ -262,5 +261,3 @@ def read_gifts_by_occasion(
     min_order=min_order or 0,
     max_order=max_order or 0
   )
-#________________________________________________________________
-
