@@ -1,9 +1,11 @@
 from uuid import UUID
 from typing import Any
 from sqlmodel import func, select
-from fastapi import APIRouter, HTTPException
-from app.api.deps import CurrentUser, SessionDep
-from app.models import Order, OrderCreate, OrderPublic, OrdersPublic, Message
+from fastapi import APIRouter, HTTPException, Depends
+from app.core.config import settings
+from app.api.deps import CurrentUser, SessionDep, parse_order_create
+from app.models import Order, OrderCreate, OrderPublic, OrdersPublic, Message, PostcardImage
+from app.utils import save_image_to_local
 
 router = APIRouter(prefix="/orders", tags=["orders"])
 
@@ -32,7 +34,7 @@ def read_order(
     session: SessionDep,
     current_user: CurrentUser,
     id: UUID
-) -> Any:
+) -> OrderPublic:
     """
     Get order by ID.
     """
@@ -45,19 +47,42 @@ def read_order(
 
 @router.post("/", response_model=OrderPublic)
 def create_order(
-    *, session: SessionDep, order_in: OrderCreate
+    *,
+    session: SessionDep,
+    order_in: OrderCreate = Depends(parse_order_create)
 ) -> Any:
     """
     Create new order.
     """
+    print("\n\nOrder In:", order_in ,'\n')
+    
     order = session.exec(
       select(Order).filter_by(invoiceId=order_in.invoiceId)
     ).first()
     if order:
       raise HTTPException(status_code=400, detail="Order with this Invoice ID already exists.")
   
-  
-    order = Order.model_validate(order_in)
+    order = Order.model_validate(order_in.model_dump(exclude={"postcard_image"}),)
+    
+    print("Postcard IN: ", bool(order.personalized_postcard))
+    if order.personalized_postcard:
+        print("Postcard image IN: ", bool(order_in.postcard_image))
+        if not order_in.postcard_image: 
+            raise HTTPException(status_code=400, detail="Postcard image is required when personalized postcard is enabled")
+        
+        image = save_image_to_local(
+            order_in.postcard_image,
+            settings.PERSONALIZED_POSTCARD_IMAGES_DIR
+        )
+        postcard_image = PostcardImage(
+            url=image,
+            alt_text=f"personalized postcard image",
+            order_id=order.id, #!!! nah tut eto?
+        )
+
+        session.add(postcard_image)
+        order.postcard_image = postcard_image
+
     session.add(order)
     session.commit()
     session.refresh(order)

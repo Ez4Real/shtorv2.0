@@ -33,8 +33,14 @@ function Order() {
 
   if (!order) return null
 
+  console.log(order);
+  
+
   return (
-    <Container maxW="full">
+    <Container
+      maxW="full"
+      mt={["1.5rem", "1.5rem", "1.5rem", "1.5rem"]}
+    >
       {isPending ? (
         <Flex justify="center" align="center" height="100vh">
           <Spinner size="xl" saturate="1s" color="ui.main" />
@@ -49,20 +55,31 @@ function Order() {
               textTransform="uppercase"
               letterSpacing="0.05em"
               color="#A0AEC0"
+              display="inline-flex"
+              gap={1}
             >
-              Order ID: {order.id}
+              Order ID:
+              <Text color="teal">
+                {order.id}
+              </Text>
             </Text>
             <Badge
               bg="#8c9baeba"
               color={`paymentStatus.${order.payment_status}`}
               borderRadius="8px"
-              fontSize="1em"
+              fontSize={[".675em", ".675em", "1em", "1em"]}
+              size={["sm", "sm", "md", "md"]}
               textTransform="uppercase"
             >
               {order.payment_status}
             </Badge>
           </Flex>
-          <Flex justify="space-between" align="center" mt={2}>
+          <Flex
+            justify="space-between"
+            align="start"
+            mt={2}
+            direction={["column", "row", "row", "row"]}
+          >
             <Text
               fontFamily='-apple-system, BlinkMacSystemFont, "Segoe UI"'
               fontSize="12px"
@@ -70,10 +87,18 @@ function Order() {
               textTransform="uppercase"
               letterSpacing="0.05em"
               color="#A0AEC0"
+              display="inline-flex"
+              gap={1}
             >
-              Invoice ID: {order.invoiceId}
+              Invoice ID:
+              <Text color="teal">
+                {order.invoiceId}
+              </Text>
             </Text>
-            <Text color="gray.500">
+            <Text
+              color="gray.500"
+              fontSize={["12px", "12px", "16px", "16px"]}
+            >
               Created: {new Date(order.created_at).toLocaleString()}
             </Text>
           </Flex>
@@ -398,7 +423,20 @@ function Order() {
                 borderRadius="md"
                 w="100%"
                 align="center"
+                position="relative"
+                overflow="hidden"
               >
+                {item.data.type === "gift" && (
+                  <Badge
+                    position="absolute"
+                    zIndex={1}
+                    top={0}
+                    right={0}
+                    colorPalette={item.data.certificate_type === "digital" ? "teal" : "orange"}
+                    opacity={.875}
+                    borderRadius={"0 0 0 0.375rem"}
+                  >{item.data.certificate_type}</Badge>
+                )}
                 <Box
                   boxSize="140px"
                   minW="90px"
@@ -429,7 +467,9 @@ function Order() {
                   )}
                 </Box>
                 <Box p=".5rem 1rem" maxW="350px">
-                  <Text fontWeight="bold">{item.data[titleKey]}</Text>
+                  <Text fontWeight="bold">
+                    {item.data[titleKey]}
+                  </Text>
                   <Text>
                     Price: {currencyList[order.currency].symbol}{getItemPrice(item.data, currencyList[order.currency])}
                   </Text>

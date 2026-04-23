@@ -264,7 +264,14 @@
     "phoneRequired": "Phone is required.",
     "contact": {
       "title": "Contact",
-      "newsletter": "Email me with news and offers"
+      "newsletter": "Email me with news and offers",
+      "personalizedPostcard": {
+        "label": "Add a personalized postcard",
+        "contentLabel": "Enter the content of your postcard",
+        "uploadImageLabel": "Upload Image",
+        "languageChoiceLabel": "Postcard language",
+        "free": "Free"
+      }
     },
     "delivery": {
       "title": "Delivery",

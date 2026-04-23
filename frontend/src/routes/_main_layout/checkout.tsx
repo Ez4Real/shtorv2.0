@@ -14,11 +14,12 @@ import { TranslatableDescription,
   TranslatablePrice,
   TranslatableTitle } from "@/components/Common/SwitchLocalization"
 import { InputGroup } from "@/components/ui/input-group"
+import CreateBannerUploadField from "@/components/Common/BannerUploadField/Create"
 import { useCart } from "@/contexts/CartContext"
 import { getCurrencyCode, useCurrency } from "@/contexts/CurrencyContext"
 import useCustomToast from "@/hooks/useCustomToast"
 import { getItemPrice, handleError } from "@/utils"
-import { Box, Button, Checkbox, Container, createListCollection, Flex, Grid, Image, Input, Mark, Portal, RadioGroup, Select, StackSeparator, Text, VStack } from "@chakra-ui/react"
+import { Badge, Box, Button, Checkbox, Container, createListCollection, Flex, Grid, Image, Input, Mark, Portal, RadioGroup, Select, StackSeparator, Text, Textarea, VStack } from "@chakra-ui/react"
 import { useMutation } from "@tanstack/react-query"
 import { useNavigate } from "@tanstack/react-router"
 import { createFileRoute } from "@tanstack/react-router"
@@ -28,6 +29,8 @@ import { useEffect, useMemo, useState } from "react"
 import { Controller, FormProvider, SubmitHandler, useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import { FiMail, FiSearch } from "react-icons/fi"
+import { BsPostcard } from "react-icons/bs"
+import PersonalizedPostcard from "@/components/PersonalizedPostcard"
 
 
 export const Route = createFileRoute("/_main_layout/checkout")({
@@ -50,7 +53,7 @@ function Checkout() {
     "uah": 1500,
     "usd": 45,
     "eur": 45,
-  }
+  }  
   
   const { showSuccessToast } = useCustomToast()
 
@@ -320,8 +323,12 @@ function Checkout() {
                     >
                       <Checkbox.HiddenInput />
                       <Checkbox.Control
-                        boxSize={["12px", "12px", "16px", "16px"]}
+                        boxSize={["16px", "16px", "20px", "20px"]}
                         m="4px"
+                        p="1px"
+                        rounded="4px"
+                        colorPalette="teal"
+                        color={field.value ? "white" : "black"}
                       >
                         <FiMail />
                       </Checkbox.Control >
@@ -334,6 +341,8 @@ function Checkout() {
                   </Field>
                 )}
               />
+
+              <PersonalizedPostcard />
 
               <Text
                 mt="24px"

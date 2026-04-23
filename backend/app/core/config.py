@@ -160,6 +160,13 @@ class Settings(BaseSettings):
         Path(self.UPLOAD_DIR / self.GIFT_IMAGES_DIR).mkdir(parents=True, exist_ok=True)
         return self
     
+    PERSONALIZED_POSTCARD_IMAGES_DIR: Path = Path("personalized-postcard-images")
+    @model_validator(mode="after")
+    def _ensure_personalized_postcard_images_dir_exists(self) -> Self:
+        """Ensure the personalized postcard images upload directory exists."""
+        Path(self.UPLOAD_DIR / self.PERSONALIZED_POSTCARD_IMAGES_DIR).mkdir(parents=True, exist_ok=True)
+        return self
+    
     MONOBANK_ACQUIRING_API: str = ""
     MONOBANK_ACQUIRE_TOKEN: str = ""
     MONOBANK_PUBLIC_KEY: str = ""

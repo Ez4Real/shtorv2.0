@@ -263,7 +263,14 @@
     "phoneRequired": "Введіть номер телефону.",
     "contact": {
       "title": "Контактна інформація",
-      "newsletter": "Повідомляти мене про новини та знижки"
+      "newsletter": "Повідомляти мене про новини та знижки",
+      "personalizedPostcard": {
+        "label": "Додати персоналізовану листівку",
+        "contentLabel": "Введіть зміст вашої листівки",
+        "uploadImageLabel": "Завантажити Фото",
+        "languageChoiceLabel": "Оберіть мову листівки",
+        "free": "Безкоштовно"
+      }
     },
     "delivery": {
       "title": "Доставка",
