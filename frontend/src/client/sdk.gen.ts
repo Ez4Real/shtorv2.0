@@ -734,7 +734,7 @@ export class OrdersService {
    * Create Order
    * Create new order.
    * @param data The data for the request.
-   * @param data.requestBody
+   * @param data.formData
    * @returns OrderPublic Successful Response
    * @throws ApiError
    */
@@ -744,8 +744,8 @@ export class OrdersService {
     return __request(OpenAPI, {
       method: "POST",
       url: "/api/v1/orders/",
-      body: data.requestBody,
-      mediaType: "application/json",
+      formData: data.formData,
+      mediaType: "multipart/form-data",
       errors: {
         422: "Validation Error",
       },

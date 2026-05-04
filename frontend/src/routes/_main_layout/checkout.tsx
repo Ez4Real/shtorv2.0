@@ -2,7 +2,7 @@ import {
   ApiError,
   OrderBasketItem_Output,
   OpenAPI,
-  OrderCreate,
+  Body_orders_create_order,
   OrdersService,
   ShippingMethods,
   PaymentCreate,
@@ -28,6 +28,7 @@ import { useEffect, useMemo, useState } from "react"
 import { Controller, FormProvider, SubmitHandler, useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import { FiMail, FiSearch } from "react-icons/fi"
+import PersonalizedPostcard from "@/components/PersonalizedPostcard"
 
 
 export const Route = createFileRoute("/_main_layout/checkout")({
@@ -50,7 +51,7 @@ function Checkout() {
     "uah": 1500,
     "usd": 45,
     "eur": 45,
-  }
+  }  
   
   const { showSuccessToast } = useCustomToast()
 
@@ -58,37 +59,45 @@ function Checkout() {
     return method === "nova_post" ? 0 : delivery[currency.code]
   }
 
-  const methods = useForm<OrderCreate>({
+  const methods = useForm<Body_orders_create_order>({
     mode: "onBlur",
     criteriaMode: "all",
     shouldUnregister: false,
     defaultValues: {
-      email: "",
-      delivery_address: {
-        country: "",
-        first_name: "",
-        last_name: "",
-        address: "",
-        postal_code: "",
-        city: "",
-        phone: "",
+      order: {
+        email: "",
+        delivery_address: {
+          country: "",
+          first_name: "",
+          last_name: "",
+          address: "",
+          postal_code: "",
+          city: "",
+          phone: "",
+        },
+        billing_address: {
+          country: "",
+          first_name: "",
+          last_name: "",
+          address: "",
+          postal_code: "",
+          city: "",
+          phone: "",
+        },
+        personalized_postcard: null,
+        // personalized_postcard: {
+        //   content: "",
+        //   language: "en"
+        // },
+        shipping_method: "ups_express",
+        mailing: false,
+        comment: "",
+        payment_status: "created",
+        amount: subtotal + getDeliveryCost("ups_express"),
+        currency: currency.code,
+        basketOrder: items
       },
-      billing_address: {
-        country: "",
-        first_name: "",
-        last_name: "",
-        address: "",
-        postal_code: "",
-        city: "",
-        phone: "",
-      },
-      shipping_method: "ups_express",
-      mailing: false,
-      comment: "",
-      payment_status: "created",
-      amount: subtotal + getDeliveryCost("ups_express"),
-      currency: currency.code,
-      basketOrder: items
+      postcard_image: undefined
     },
   })
 
@@ -103,11 +112,11 @@ function Checkout() {
     formState: { errors, isValid, isSubmitted },
   } = methods
 
-  const shippingMethod = watch("shipping_method")
-  const amount = watch("amount")
-  const ccy = watch("currency")
-  const email = watch("email")
-  const basketOrder = watch("basketOrder")
+  const shippingMethod = watch("order.shipping_method")
+  const amount = watch("order.amount")
+  const ccy = watch("order.currency")
+  const email = watch("order.email")
+  const basketOrder = watch("order.basketOrder")
 
   function mapCartItemsToExportStructure(
     items: OrderBasketItem_Output[]
@@ -154,7 +163,7 @@ function Checkout() {
   const mutation = useMutation({
     mutationFn: async (
       //@ts-ignore
-      data: OrderCreate
+      data: Body_orders_create_order
     ) => {
       try {
         // console.log(OpenAPI)
@@ -164,12 +173,23 @@ function Checkout() {
           requestBody: serialisePaymentData(),
         })
         // console.log("Payment response: ", paymentResponse)
+        console.log("Before" , data);
 
-        const orderData = { ...data, invoiceId: paymentResponse.invoiceId }
+        data.order.invoiceId = paymentResponse.invoiceId
+
+        console.log("After" , data);
+        
+
+        // data.order.invoiceId
+        // const orderData = {
+        //   invoiceId: paymentResponse.invoiceId,
+        //   ...data
+        // }
+
         // console.log("Order Data: ", orderData)
         // const orderResponse = 
         await OrdersService.createOrder({
-          requestBody: orderData,
+          formData: data,
         })
         // console.log("Create Order Response: ", orderResponse)
         window.location.href = paymentResponse.pageUrl
@@ -190,23 +210,23 @@ function Checkout() {
     },
   })
 
-  const onSubmit: SubmitHandler<OrderCreate> = (data) => {
+  const onSubmit: SubmitHandler<Body_orders_create_order> = (data) => {
     mutation.mutate(data)
   }
 
 
   useEffect(() => {
-    setValue("amount", subtotal + getDeliveryCost(shippingMethod))
+    setValue("order.amount", subtotal + getDeliveryCost(shippingMethod))
   }, [shippingMethod, subtotal, currency])
 
   
   useEffect(() => {
-    setValue("currency", currency.code)
+    setValue("order.currency", currency.code)
   }, [currency])
 
   useEffect(() => {
     if (billing === "same") {
-      setValue("billing_address", null)
+      setValue("order.billing_address", null)
     }
   }, [billing])
 
@@ -286,14 +306,14 @@ function Checkout() {
             
               <Field
                 required
-                invalid={!!errors.email}
-                errorText={errors.email?.message}
+                invalid={!!errors.order?.email}
+                errorText={errors.order?.email?.message}
                 w="100%"
                 mt={["12px", "12px", "16px", "16px"]}
               >
                 <Input
                   id="email"
-                  {...register("email", {
+                  {...register("order.email", {
                     required: t("Checkout.emailRequired")
                   })}
                   type="email"
@@ -305,11 +325,11 @@ function Checkout() {
 
               <Controller
                 control={control}
-                name="mailing"
+                name="order.mailing"
                 render={({ field }) => (
                   <Field
-                    invalid={!!errors.mailing}
-                    errorText={errors.mailing?.message}
+                    invalid={!!errors.order?.mailing}
+                    errorText={errors.order?.mailing?.message}
                     disabled={field.disabled}
                   >
                     <Checkbox.Root
@@ -320,8 +340,12 @@ function Checkout() {
                     >
                       <Checkbox.HiddenInput />
                       <Checkbox.Control
-                        boxSize={["12px", "12px", "16px", "16px"]}
+                        boxSize={["16px", "16px", "20px", "20px"]}
                         m="4px"
+                        p="1px"
+                        rounded="4px"
+                        colorPalette="teal"
+                        color={field.value ? "white" : "black"}
                       >
                         <FiMail />
                       </Checkbox.Control >
@@ -335,6 +359,8 @@ function Checkout() {
                 )}
               />
 
+              <PersonalizedPostcard />
+
               <Text
                 mt="24px"
                 fontSize="24px"
@@ -345,13 +371,13 @@ function Checkout() {
               </Text>
 
               <Field
-                invalid={!!errors.delivery_address?.country}
-                errorText={errors.delivery_address?.country?.message}
+                invalid={!!errors.order?.delivery_address?.country}
+                errorText={errors.order?.delivery_address?.country?.message}
                 mt={["12px", "12px", "16px", "16px"]}
               >
                 <Controller
                   control={control}
-                  name="delivery_address.country"
+                  name="order.delivery_address.country"
                   rules={{ required: t("Checkout.countryRequired") }}
                   render={({ field }) => (
                     <Select.Root
@@ -399,13 +425,13 @@ function Checkout() {
               >
                 <Field
                   required
-                  invalid={!!errors.delivery_address?.first_name}
-                  errorText={errors.delivery_address?.first_name?.message}
+                  invalid={!!errors.order?.delivery_address?.first_name}
+                  errorText={errors.order?.delivery_address?.first_name?.message}
                   w="100%"
                 >
                   <Input
                     id="delivery_address.first_name"
-                    {...register("delivery_address.first_name", {
+                    {...register("order.delivery_address.first_name", {
                       required: t("Checkout.firstNameRequired")
                     })}
                     placeholder={t("Checkout.delivery.firstName")}
@@ -416,13 +442,13 @@ function Checkout() {
                 </Field>
                 <Field
                   required
-                  invalid={!!errors.delivery_address?.last_name}
-                  errorText={errors.delivery_address?.last_name?.message}
+                  invalid={!!errors.order?.delivery_address?.last_name}
+                  errorText={errors.order?.delivery_address?.last_name?.message}
                   w="100%"
                 >
                   <Input
                     id="delivery_address.last_name"
-                    {...register("delivery_address.last_name", {
+                    {...register("order.delivery_address.last_name", {
                       required: t("Checkout.lastNameRequired")
                     })}
                     placeholder={t("Checkout.delivery.lastName")}
@@ -435,8 +461,8 @@ function Checkout() {
 
               <Field
                 required
-                invalid={!!errors.delivery_address?.address}
-                errorText={errors.delivery_address?.address?.message}
+                invalid={!!errors.order?.delivery_address?.address}
+                errorText={errors.order?.delivery_address?.address?.message}
                 mt={["10px", "10px", "12px", "12px"]}
               >
                 <InputGroup
@@ -445,7 +471,7 @@ function Checkout() {
                 >
                   <Input
                     id="delivery_address.address"
-                    {...register("delivery_address.address", {
+                    {...register("order.delivery_address.address", {
                       required: t("Checkout.addressRequired")
                     })}
                     placeholder={t("Checkout.delivery.address")}
@@ -460,14 +486,14 @@ function Checkout() {
               
               { suite ? (
                 <Field
-                  invalid={!!errors.delivery_address?.additional}
-                  errorText={errors.delivery_address?.additional?.message}
+                  invalid={!!errors.order?.delivery_address?.additional}
+                  errorText={errors.order?.delivery_address?.additional?.message}
                   w="100%"
                   mt={["10px", "10px", "12px", "12px"]}
                 >
                   <Input
                     id="delivery_address.additional"
-                    {...register("delivery_address.additional")}
+                    {...register("order.delivery_address.additional")}
                     placeholder={t("Checkout.delivery.suite")}
                     borderColor="ui.greyBorder"
                     type="text"
@@ -500,13 +526,13 @@ function Checkout() {
               >
                 <Field
                   required
-                  invalid={!!errors.delivery_address?.postal_code}
-                  errorText={errors.delivery_address?.postal_code?.message}
+                  invalid={!!errors.order?.delivery_address?.postal_code}
+                  errorText={errors.order?.delivery_address?.postal_code?.message}
                   w="100%"
                 >
                   <Input
                     id="delivery_address.postal_code"
-                    {...register("delivery_address.postal_code", {
+                    {...register("order.delivery_address.postal_code", {
                       required: t("Checkout.postalCodeRequired")
                     })}
                     placeholder={t("Checkout.delivery.postalCode")}
@@ -516,13 +542,13 @@ function Checkout() {
                   />
                 </Field>
                 <Field
-                  invalid={!!errors.delivery_address?.city}
-                  errorText={errors.delivery_address?.city?.message}
+                  invalid={!!errors.order?.delivery_address?.city}
+                  errorText={errors.order?.delivery_address?.city?.message}
                   w="100%"
                 >
                   <Input
                     id="delivery_address.city"
-                    {...register("delivery_address.city", {
+                    {...register("order.delivery_address.city", {
                       required: t("Checkout.cityRequired")
                     })}
                     placeholder={t("Checkout.delivery.city")}
@@ -534,14 +560,14 @@ function Checkout() {
               </Flex>
 
               <Field
-                invalid={!!errors.delivery_address?.phone}
-                errorText={errors.delivery_address?.phone?.message}
+                invalid={!!errors.order?.delivery_address?.phone}
+                errorText={errors.order?.delivery_address?.phone?.message}
                 w="100%"
                 mt={["10px", "10px", "12px", "12px"]}
               >
                 <Input
                   id="delivery_address.phone"
-                  {...register("delivery_address.phone", {
+                  {...register("order.delivery_address.phone", {
                     required: t("Checkout.phoneRequired"),
                     minLength: 7,
                     maxLength: 20
@@ -566,7 +592,7 @@ function Checkout() {
                 </Text>
                 
                 <Controller
-                  name="shipping_method"
+                  name="order.shipping_method"
                   control={control}
                   render={({ field }) => (
                   <RadioGroup.Root
@@ -576,7 +602,7 @@ function Checkout() {
                     name={field.name}
                     value={field.value}
                     onValueChange={({ value }) => {
-                      setValue("shipping_method", value as ShippingMethods)
+                      setValue("order.shipping_method", value as ShippingMethods)
                     }}
                     defaultValue="ups_express"
                     
@@ -691,13 +717,13 @@ function Checkout() {
                         
                       >
                         <Field
-                          invalid={!!errors.billing_address?.country}
-                          errorText={errors.billing_address?.country?.message}
+                          invalid={!!errors.order?.billing_address?.country}
+                          errorText={errors.order?.billing_address?.country?.message}
                           mt={["12px", "12px", "16px", "16px"]}
                         >
                           <Controller
                             control={control}
-                            name="billing_address.country"
+                            name="order.billing_address.country"
                             rules={{ required: t("Checkout.countryRequired") }}
                             render={({ field }) => (
                               <Select.Root
@@ -747,13 +773,13 @@ function Checkout() {
                         >
                           <Field
                             required
-                            invalid={!!errors.billing_address?.first_name}
-                            errorText={errors.billing_address?.first_name?.message}
+                            invalid={!!errors.order?.billing_address?.first_name}
+                            errorText={errors.order?.billing_address?.first_name?.message}
                             w="100%"
                           >
                             <Input
                               id="billing_address.first_name"
-                              {...register("billing_address.first_name", {
+                              {...register("order.billing_address.first_name", {
                                 required: t("Checkout.firstNameRequired")
                               })}
                               variant="subtle"
@@ -766,13 +792,13 @@ function Checkout() {
                             />
                           </Field>
                           <Field
-                            invalid={!!errors.billing_address?.last_name}
-                            errorText={errors.billing_address?.last_name?.message}
+                            invalid={!!errors.order?.billing_address?.last_name}
+                            errorText={errors.order?.billing_address?.last_name?.message}
                             w="100%"
                           >
                             <Input
                               id="billing_address.last_name"
-                              {...register("billing_address.last_name", {
+                              {...register("order.billing_address.last_name", {
                                 required: t("Checkout.lastNameRequired")
                               })}
                               variant="subtle"
@@ -788,8 +814,8 @@ function Checkout() {
 
                         <Field
                           required
-                          invalid={!!errors.billing_address?.address}
-                          errorText={errors.billing_address?.address?.message}
+                          invalid={!!errors.order?.billing_address?.address}
+                          errorText={errors.order?.billing_address?.address?.message}
                         >
                           <InputGroup
                             endElement={<FiSearch />}
@@ -797,7 +823,7 @@ function Checkout() {
                           >
                             <Input
                               id="billing_address.address"
-                              {...register("billing_address.address", {
+                              {...register("order.billing_address.address", {
                                 required: t("Checkout.addressRequired")
                               })}
                               variant="subtle"
@@ -814,13 +840,13 @@ function Checkout() {
 
                         { suite ? (
                           <Field
-                            invalid={!!errors.billing_address?.additional}
-                            errorText={errors.billing_address?.additional?.message}
+                            invalid={!!errors.order?.billing_address?.additional}
+                            errorText={errors.order?.billing_address?.additional?.message}
                             w="100%"
                           >
                             <Input
                               id="billing_address.additional"
-                              {...register("billing_address.additional")}
+                              {...register("order.billing_address.additional")}
                               variant="subtle"
                               placeholder={t("Checkout.delivery.suite")}
                               border=".5px solid"
@@ -854,13 +880,13 @@ function Checkout() {
                         >
                           <Field
                             required
-                            invalid={!!errors.billing_address?.postal_code}
-                            errorText={errors.billing_address?.postal_code?.message}
+                            invalid={!!errors.order?.billing_address?.postal_code}
+                            errorText={errors.order?.billing_address?.postal_code?.message}
                             w="100%"
                           >
                             <Input
                               id="billing_address.postal_code"
-                              {...register("billing_address.postal_code", {
+                              {...register("order.billing_address.postal_code", {
                                 required: t("Checkout.postalCodeRequired")
                               })}
                               variant="subtle"
@@ -874,13 +900,13 @@ function Checkout() {
                           </Field>
                           <Field
                             required
-                            invalid={!!errors.billing_address?.city}
-                            errorText={errors.billing_address?.city?.message}
+                            invalid={!!errors.order?.billing_address?.city}
+                            errorText={errors.order?.billing_address?.city?.message}
                             w="100%"
                           >
                             <Input
                               id="billing_address.city"
-                              {...register("billing_address.city", {
+                              {...register("order.billing_address.city", {
                                 required: t("Checkout.cityRequired")
                               })}
                               variant="subtle"
@@ -896,13 +922,13 @@ function Checkout() {
 
                         <Field
                           required
-                          invalid={!!errors.billing_address?.phone}
-                          errorText={errors.billing_address?.phone?.message}
+                          invalid={!!errors.order?.billing_address?.phone}
+                          errorText={errors.order?.billing_address?.phone?.message}
                           w="100%"
                         >
                           <Input
                             id="billing_address.phone"
-                            {...register("billing_address.phone", {
+                            {...register("order.billing_address.phone", {
                               required: t("Checkout.phoneRequired")
                             })}
                             variant="subtle"

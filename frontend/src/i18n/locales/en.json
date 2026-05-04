@@ -266,6 +266,23 @@
       "title": "Contact",
       "newsletter": "Email me with news and offers"
     },
+
+    "personalizedPostcard": {
+      "label": "Add a personalized postcard",
+      "image": {
+        "label": "Upload Image",
+        "required": "Image is required"
+      },
+      "content": {
+        "placeholder": "Enter the content of your postcard",
+        "required": "Content is required"
+      },
+      "language": {
+        "placeholder": "Postcard language",
+        "required": "Language is required"
+      },
+      "free": "Free"
+    },
     "delivery": {
       "title": "Delivery",
       "country": "Country/Region",

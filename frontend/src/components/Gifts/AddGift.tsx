@@ -94,8 +94,6 @@ const AddGift = () => {
   })
 
   const onSubmit: SubmitHandler<Body_gifts_create_gift> =  (data) => {
-    console.log(data);
-    
     mutation.mutate(data)
   }
 

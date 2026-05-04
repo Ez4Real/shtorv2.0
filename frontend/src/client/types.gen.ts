@@ -50,6 +50,11 @@ export type Body_login_login_access_token = {
   client_secret?: string | null
 }
 
+export type Body_orders_create_order = {
+  order: OrderCreateBase
+  postcard_image?: (Blob | File) | null
+}
+
 export type Body_products_create_product = {
   product: ProductBase
   images: Array<Blob | File>
@@ -218,7 +223,7 @@ export type OrderBasketItem_Output = {
   data: ProductCartItem_Output | GiftCartItem
 }
 
-export type OrderCreate = {
+export type OrderCreateBase = {
   email: string
   delivery_address: Address
   billing_address?: Address | null
@@ -231,6 +236,7 @@ export type OrderCreate = {
   amount: number
   currency: Currency
   basketOrder: Array<OrderBasketItem_Input>
+  personalized_postcard?: PersonalizedPostcardBase | null
   invoiceId: string
 }
 
@@ -247,6 +253,7 @@ export type OrderPublic = {
   amount: number
   currency: Currency
   basketOrder: Array<OrderBasketItem_Output>
+  personalized_postcard?: PersonalizedPostcardBase | null
   id: string
   invoiceId: string
 }
@@ -292,6 +299,13 @@ export type PaymentStatus =
   | "failure"
   | "reversed"
   | "expired"
+
+export type PersonalizedPostcardBase = {
+  content: string
+  language: PostcardLanguages
+}
+
+export type PostcardLanguages = "en" | "uk"
 
 export type PrivateUserCreate = {
   email: string
@@ -664,7 +678,7 @@ export type OrdersReadOrdersData = {
 export type OrdersReadOrdersResponse = OrdersPublic
 
 export type OrdersCreateOrderData = {
-  requestBody: OrderCreate
+  formData: Body_orders_create_order
 }
 
 export type OrdersCreateOrderResponse = OrderPublic

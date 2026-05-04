@@ -1,9 +1,11 @@
 from uuid import UUID
 from typing import Any
 from sqlmodel import func, select
-from fastapi import APIRouter, HTTPException
-from app.api.deps import CurrentUser, SessionDep
-from app.models import Order, OrderCreate, OrderPublic, OrdersPublic, Message
+from fastapi import APIRouter, HTTPException, Depends
+from app.core.config import settings
+from app.api.deps import CurrentUser, SessionDep, parse_order_create
+from app.models import Order, OrderCreate, OrderPublic, OrdersPublic, Message, PostcardImage
+from app.utils import save_image_to_local, delete_image_from_local
 
 router = APIRouter(prefix="/orders", tags=["orders"])
 
@@ -13,7 +15,7 @@ def read_orders(
     session: SessionDep,
     current_user: CurrentUser,
     skip: int = 0, limit: int = 100
-) -> Any:
+) -> OrdersPublic:
     """
     Retrieve orders.
     """
@@ -32,7 +34,7 @@ def read_order(
     session: SessionDep,
     current_user: CurrentUser,
     id: UUID
-) -> Any:
+) -> OrderPublic:
     """
     Get order by ID.
     """
@@ -45,7 +47,9 @@ def read_order(
 
 @router.post("/", response_model=OrderPublic)
 def create_order(
-    *, session: SessionDep, order_in: OrderCreate
+    *,
+    session: SessionDep,
+    order_in: OrderCreate = Depends(parse_order_create)
 ) -> Any:
     """
     Create new order.
@@ -56,8 +60,34 @@ def create_order(
     if order:
       raise HTTPException(status_code=400, detail="Order with this Invoice ID already exists.")
   
-  
-    order = Order.model_validate(order_in)
+    order = Order.model_validate(order_in.model_dump(exclude={"postcard_image"}),)
+    
+    if order.personalized_postcard:
+        print("Postcard image: ", order_in.postcard_image)
+        if not order_in.postcard_image: 
+            raise HTTPException(status_code=400, detail="Postcard image is required when personalized postcard is enabled")
+        
+        file = order_in.postcard_image
+
+        if file.content_type not in settings.POSTCARD_IMAGE_UPLOAD_TYPES:
+            raise HTTPException(
+                status_code=400,
+                detail="Invalid image format. Only PNG and JPG are allowed."
+            )
+                
+        image = save_image_to_local(
+            order_in.postcard_image,
+            settings.PERSONALIZED_POSTCARD_IMAGES_DIR
+        )
+        postcard_image = PostcardImage(
+            url=image,
+            alt_text="personalized postcard image",
+        )
+        
+
+        session.add(postcard_image)
+        order.postcard_image = postcard_image
+
     session.add(order)
     session.commit()
     session.refresh(order)
@@ -77,6 +107,14 @@ def delete_order(
         raise HTTPException(status_code=404, detail="Order not found")
     if not current_user.is_superuser:
         raise HTTPException(status_code=400, detail="Not enough permissions")
+    
+    if order.personalized_postcard:
+        image = session.exec(
+        select(PostcardImage).filter(PostcardImage.order_id == order.id)
+        ).first()
+        if delete_image_from_local(image.url):
+            session.delete(image)
+    
     session.delete(order)
     session.commit()
     return Message(message="Order deleted successfully")

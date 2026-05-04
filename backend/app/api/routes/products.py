@@ -126,54 +126,54 @@ def read_product(
 
 @router.post("/", response_model=ProductPublic)
 def create_product(
-      *,
-      session: SessionDep,
-      current_user: CurrentUser,
-      product_in: ProductCreate = Depends(parse_product_create)
-) -> Any:
-    """
-    Create new product.
-    """
-    category = session.get(ProductCategory, product_in.category_id)
-    if not category:
-      raise HTTPException(status_code=400, detail="Category not found")
-    collection = session.get(Collection, product_in.collection_id)
-    if not collection:
-      raise HTTPException(status_code=400, detail="Collection not found")
+  *,
+  session: SessionDep,
+  current_user: CurrentUser,
+  product_in: ProductCreate = Depends(parse_product_create)
+) -> ProductPublic:
+  """
+  Create new product.
+  """
+  category = session.get(ProductCategory, product_in.category_id)
+  if not category:
+    raise HTTPException(status_code=400, detail="Category not found")
+  collection = session.get(Collection, product_in.collection_id)
+  if not collection:
+    raise HTTPException(status_code=400, detail="Collection not found")
 
-    next_product_order = (session.scalar(select(func.max(Product.order))) or 0) + 1
-    product = Product.model_validate(
-      product_in.model_dump(exclude={"images"}),
-      update={
-        "owner_id": current_user.id,
-        "category": category,
-        "collection": collection,
-        "order": next_product_order
-      }
-    )
+  next_product_order = (session.scalar(select(func.max(Product.order))) or 0) + 1
+  product = Product.model_validate(
+    product_in.model_dump(exclude={"images"}),
+    update={
+      "owner_id": current_user.id,
+      "category": category,
+      "collection": collection,
+      "order": next_product_order
+    }
+  )
 
-    if product_in.images:
-      for index, image_in in enumerate(product_in.images):
-        image = save_image_to_local(
-          image_in,
-          settings.PRODUCT_IMAGES_DIR
-        )
-        product_image = ProductImage(
-          url=image,
-          alt_text=f"{product.title_en} product image",
-          collection_id=collection.id, #!!! nah tut eto?
-          order=index+1
-        )
+  if product_in.images:
+    for index, image_in in enumerate(product_in.images):
+      image = save_image_to_local(
+        image_in,
+        settings.PRODUCT_IMAGES_DIR
+      )
+      product_image = ProductImage(
+        url=image,
+        alt_text=f"{product.title_en} product image",
+        collection_id=collection.id, #!!! nah tut eto?
+        order=index+1
+      )
 
-        session.add(product_image)
-        product.images.append(product_image)
+      session.add(product_image)
+      product.images.append(product_image)
 
-    session.add(product)
+  session.add(product)
 
-    session.commit()
-    session.refresh(product)
-    
-    return product
+  session.commit()
+  session.refresh(product)
+  
+  return product
 
 
 @router.put("/{id}", response_model=ProductPublic)

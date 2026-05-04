@@ -1,6 +1,6 @@
 from collections.abc import Generator
 from typing import Annotated 
-import uuid
+import json
 
 import jwt
 from fastapi import Depends, HTTPException, status, UploadFile, Form, File
@@ -12,8 +12,11 @@ from sqlmodel import Session
 from app.core import security
 from app.core.config import settings
 from app.core.db import engine
-from app.models import TokenPayload, User, CollectionBase, CollectionCreate, CollectionUpdate, \
-    ProductBase, ProductCreate, ProductUpdate, ProductUpdateBase, GiftBase, GiftCreate, GiftUpdate, GiftUpdateBase
+from app.models import TokenPayload, User, \
+    CollectionBase, CollectionCreate, CollectionUpdate, \
+    ProductBase, ProductCreate, ProductUpdate, ProductUpdateBase, \
+    GiftBase, GiftCreate, GiftUpdate, GiftUpdateBase, \
+    OrderCreateBase, OrderCreate
 
 reusable_oauth2 = OAuth2PasswordBearer(
     tokenUrl=f"{settings.API_V1_STR}/login/access-token"
@@ -146,3 +149,14 @@ def parse_gift_update(
         images=images, 
         **gift_data)
     return gift
+
+def parse_order_create(
+    order: OrderCreateBase = Form(...),
+    postcard_image: UploadFile | None = File(default=None),
+) -> OrderCreate:
+    order_data = order.model_dump()
+    order = OrderCreate(
+        postcard_image=postcard_image,
+        **order_data
+    )
+    return order

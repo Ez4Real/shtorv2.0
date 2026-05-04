@@ -6,17 +6,23 @@ import { useFormContext } from "react-hook-form"
 
 
 interface CreateBannerUploadFieldProps {
-  field_id: "banner_desktop" | "banner_mobile" | "image"
+  field_id: "banner_desktop" | "banner_mobile" | "image" | "postcard_image"
   label: string
   error?: string
   invalid?: boolean
+  displayLabel?: boolean
+  uploadButtonLabel?: string
+  maxH?: string[]
 }
   
 const CreateBannerUploadField = ({
   field_id,
   label,
   error,
-  invalid
+  invalid,
+  displayLabel = true,
+  uploadButtonLabel = "Upload Image",
+  maxH=["unset", "26rem", "26rem", "26rem"]
 }: CreateBannerUploadFieldProps) => {
   const fileUpload = useFileUpload({ maxFiles: 1, maxFileSize: 5242880 })
 
@@ -28,6 +34,7 @@ const CreateBannerUploadField = ({
     if (fileUpload.acceptedFiles.length > 0) {
       setValue(field_id, fileUpload.acceptedFiles[0], { shouldValidate: true })
     }
+    
   }, [fileUpload.acceptedFiles])
 
   const handleRemoveImg = () => {
@@ -41,7 +48,7 @@ const CreateBannerUploadField = ({
 
   return (
     <Field
-      label={label}
+      label={displayLabel ? label : false}
       required
       errorText={error}
       invalid={invalid}
@@ -52,9 +59,10 @@ const CreateBannerUploadField = ({
           <Button
             variant="outline"
             size="sm"
+            display={fileUpload.acceptedFiles.length ? "none" : "flex-inline"}
           >
             <LuFileImage />
-            Upload Image
+            {uploadButtonLabel}
           </Button>
         </FileUpload.Trigger>
 
@@ -69,7 +77,7 @@ const CreateBannerUploadField = ({
                 <FileUpload.ItemPreviewImage
                   w="100%"
                   h="100%"
-                  maxH={["unset", "26rem", "26rem", "26rem"]}
+                  maxH={maxH}
                   rounded="md"
                 />
               </Box>

@@ -504,9 +504,32 @@ class OrderBasketItem(BasketItemBase):
     id: uuid.UUID
     data: BasketItemData
 
+class PostcardLanguages(str, Enum):
+    ENGLISH = "en"
+    UKRAINIAN = "uk"
+    
+class PersonalizedPostcardBase(SQLModel):
+    content: str = Field(min_length=1, max_length=600)
+    language: PostcardLanguages
+    
+class PersonalizedPostcardCreate(PersonalizedPostcardBase):
+    pass
+    
+class PersonalizedPostcard(PersonalizedPostcardBase):
+    image: ImageBase
+    
+class PostcardImage(ImageBase, table=True):
+    __tablename__ = "postcard_image"
+
+    id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
+    order_id: uuid.UUID = Field(
+        foreign_key="order.id", nullable=False, ondelete="CASCADE"
+    )
+    order: "Order" = Relationship(back_populates="postcard_image")
+    # //////
+
 class OrderBase(SQLModel):
     model_config = ConfigDict(arbitrary_types_allowed=True)
-    
     
     email: str
     delivery_address: Address = Field(sa_type=PydanticJSONType(Address))
@@ -522,15 +545,31 @@ class OrderBase(SQLModel):
     currency: Currency
     basketOrder: list[OrderBasketItem] = Field(sa_type=PydanticJSONListType(OrderBasketItem))
     
+    personalized_postcard: PersonalizedPostcardBase | None = Field(
+        sa_type=PydanticJSONType(PersonalizedPostcardBase),
+        default=None
+    )
+    
+    @model_validator(mode='before')
+    def validate_to_json(cls, value):
+        if isinstance(value, str):
+            return cls(**json.loads(value))
+        return value
 
-class OrderCreate(OrderBase):
+class OrderCreateBase(OrderBase):
     invoiceId: str = Field(unique=True)
     
+class OrderCreate(OrderCreateBase):
+    postcard_image: UploadFile | None = File(default=None)
+    
 class Order(OrderBase, table=True):
+    model_config = ConfigDict(arbitrary_types_allowed=True)
+    
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     modified_date: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     invoiceId: str = Field(unique=True)
+    postcard_image: PostcardImage = Relationship(back_populates="order", cascade_delete=True)
 
 class OrderPublic(OrderBase):
     id: uuid.UUID
@@ -552,7 +591,6 @@ class MerchantPaymentInfo(SQLModel):
 
 class PaymentCreate(SQLModel):
     model_config = ConfigDict(arbitrary_types_allowed=True)
-    
     
     amount: int
     ccy: int # 980 | 840 | 978  (UAH | USD | EUR)
