@@ -5,6 +5,7 @@ import { Controller, useFormContext } from "react-hook-form"
 import { BsPostcard } from "react-icons/bs"
 import { useEffect } from "react"
 import { LuFileImage, LuTrash2 } from "react-icons/lu"
+import { CustomAsterix } from "../ui/custom-asterix"
 
 interface PersonalizedPostcardProps {}
 
@@ -123,7 +124,9 @@ const PersonalizedPostcard = ({}: PersonalizedPostcardProps) => {
                                     <Box id="postcard-upload-section">
                                         <FileUpload.HiddenInput  />
                                     </Box>
-                                    <FileUpload.Trigger asChild>
+                                    <FileUpload.Trigger
+                                      asChild
+                                    >
                                         <Button
                                             variant="outline"
                                             size="sm"
@@ -132,6 +135,11 @@ const PersonalizedPostcard = ({}: PersonalizedPostcardProps) => {
                                         >
                                             <LuFileImage />
                                             {t("Checkout.personalizedPostcard.image.label")}
+                                            <CustomAsterix
+                                              fieldId="postcard_image"
+                                              indentTop={0}
+                                              fontSize="16px"
+                                            />
                                         </Button>
                                     </FileUpload.Trigger>
 
@@ -141,6 +149,7 @@ const PersonalizedPostcard = ({}: PersonalizedPostcardProps) => {
                                                 file={fileUpload.acceptedFiles[0]}
                                                 p={0}
                                                 rounded="md"
+                                                w="fit-content"
                                             >
                                                 <Box>
                                                     <FileUpload.ItemPreviewImage
@@ -202,6 +211,9 @@ const PersonalizedPostcard = ({}: PersonalizedPostcardProps) => {
                                     fontSize="12px"
                                     maxLength={600}
                                 />
+                                <CustomAsterix
+                                  fieldId="order.personalized_postcard.content"
+                                />
                             </Field>
                             <Field
                                 //@ts-ignore
@@ -229,6 +241,9 @@ const PersonalizedPostcard = ({}: PersonalizedPostcardProps) => {
                                     width="full"
                                 >
                                     <Select.HiddenSelect />
+                                    <CustomAsterix
+                                      fieldId="order.personalized_postcard.language"
+                                    />
                                     <Select.Control>
                                         <Select.Trigger>
                                             <Select.ValueText
