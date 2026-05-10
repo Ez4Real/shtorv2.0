@@ -25,10 +25,11 @@ import { createFileRoute } from "@tanstack/react-router"
 import axios from "axios"
 import { Field } from "@/components/ui/field"
 import { useEffect, useMemo, useState } from "react"
-import { Controller, FormProvider, SubmitHandler, useForm } from "react-hook-form"
+import { Controller, FieldErrors, FormProvider, SubmitHandler, useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import { FiMail, FiSearch } from "react-icons/fi"
 import PersonalizedPostcard from "@/components/PersonalizedPostcard"
+import { CustomAsterix } from "@/components/ui/custom-asterix"
 
 
 export const Route = createFileRoute("/_main_layout/checkout")({
@@ -63,6 +64,7 @@ function Checkout() {
     mode: "onBlur",
     criteriaMode: "all",
     shouldUnregister: false,
+    shouldFocusError: true,
     defaultValues: {
       order: {
         email: "",
@@ -85,10 +87,6 @@ function Checkout() {
           phone: "",
         },
         personalized_postcard: null,
-        // personalized_postcard: {
-        //   content: "",
-        //   language: "en"
-        // },
         shipping_method: "ups_express",
         mailing: false,
         comment: "",
@@ -109,7 +107,7 @@ function Checkout() {
     setValue,
     watch,
     control,
-    formState: { errors, isValid, isSubmitted },
+    formState: { errors },
   } = methods
 
   const shippingMethod = watch("order.shipping_method")
@@ -166,32 +164,16 @@ function Checkout() {
       data: Body_orders_create_order
     ) => {
       try {
-        // console.log(OpenAPI)
-        // console.log("Create payment request body: ", serialisePaymentData())
-
         const paymentResponse = await PaymentsService.createPayment({
           requestBody: serialisePaymentData(),
         })
-        // console.log("Payment response: ", paymentResponse)
-        console.log("Before" , data);
 
         data.order.invoiceId = paymentResponse.invoiceId
-
-        console.log("After" , data);
         
-
-        // data.order.invoiceId
-        // const orderData = {
-        //   invoiceId: paymentResponse.invoiceId,
-        //   ...data
-        // }
-
-        // console.log("Order Data: ", orderData)
-        // const orderResponse = 
         await OrdersService.createOrder({
           formData: data,
         })
-        // console.log("Create Order Response: ", orderResponse)
+        
         window.location.href = paymentResponse.pageUrl
 
         return paymentResponse.pageUrl
@@ -278,6 +260,15 @@ function Checkout() {
     }
   }, [items, navigate])
 
+  const onInvalidAdditionalFields = (errors: FieldErrors<Body_orders_create_order>) => {
+    if (errors.postcard_image) {
+      document
+        .getElementById("postcard-upload-section")
+        ?.scrollIntoView({block: "center"})
+      return
+    }
+  }
+
   return (
     <Container
       maxW="100vw"
@@ -286,7 +277,7 @@ function Checkout() {
       paddingInline={["16px", "16px", "46px", "46px"]}
     > 
       <FormProvider {...methods}>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit, onInvalidAdditionalFields)}>
 
           <Grid
             templateColumns={["repeat(1, 1fr)", "repeat(1, 1fr)", "repeat(1, 1fr)", "repeat(2, 1fr)"]}
@@ -320,6 +311,9 @@ function Checkout() {
                   placeholder="Email"
                   borderColor="ui.greyBorder"
                   h="42px"
+                />
+                <CustomAsterix
+                  fieldId="order.email"
                 />
               </Field>
 
@@ -390,6 +384,9 @@ function Checkout() {
                       collection={countryCollection}
                     >
                       <Select.HiddenSelect />
+                      <CustomAsterix
+                        fieldId="order.delivery_address.country"
+                      />
                       <Select.Control>
                         <Select.Trigger borderColor="ui.greyBorder">
                           <Select.ValueText
@@ -439,6 +436,9 @@ function Checkout() {
                     type="text"
                     h="42px"
                   />
+                  <CustomAsterix
+                    fieldId="order.delivery_address.first_name"
+                  />
                 </Field>
                 <Field
                   required
@@ -455,6 +455,9 @@ function Checkout() {
                     borderColor="ui.greyBorder"
                     type="text"
                     h="42px"
+                  />
+                  <CustomAsterix
+                    fieldId="order.delivery_address.last_name"
                   />
                 </Field>
               </Flex>
@@ -478,9 +481,12 @@ function Checkout() {
                     type="text"
                     borderColor="ui.greyBorder"
                     h="42px"
-                  
                   />
                 </InputGroup>
+                <CustomAsterix
+                  fieldId="order.delivery_address.address"
+                />
+                
               </Field>
 
               
@@ -540,6 +546,9 @@ function Checkout() {
                     type="text"
                     h="42px"
                   />
+                  <CustomAsterix
+                    fieldId="order.delivery_address.postal_code"
+                  />
                 </Field>
                 <Field
                   invalid={!!errors.order?.delivery_address?.city}
@@ -556,6 +565,9 @@ function Checkout() {
                     type="text"
                     h="42px"
                   />
+                  <CustomAsterix
+                    fieldId="order.delivery_address.city"
+                  />  
                 </Field>
               </Flex>
 
@@ -577,6 +589,9 @@ function Checkout() {
                   type="text"
                   h="42px"
                 />
+                <CustomAsterix
+                  fieldId="order.delivery_address.phone"
+                />  
               </Field>
 
               <VStack 
@@ -714,7 +729,6 @@ function Checkout() {
                         border="1px solid #DEDEDE"
                         borderTopRadius={0}
                         borderBottomRadius="6px"
-                        
                       >
                         <Field
                           invalid={!!errors.order?.billing_address?.country}
@@ -736,6 +750,10 @@ function Checkout() {
                                 collection={countryCollection}
                               >
                                 <Select.HiddenSelect />
+                                <CustomAsterix
+                                  fieldId="order.billing_address.country"
+                                  zIndex={1}
+                                />  
                                 <Select.Control>
                                   <Select.Trigger
                                     bg="white"
@@ -790,6 +808,10 @@ function Checkout() {
                               type="text"
                               h="42px"
                             />
+                            <CustomAsterix
+                              fieldId="order.billing_address.first_name"
+                              zIndex={0}
+                            />  
                           </Field>
                           <Field
                             invalid={!!errors.order?.billing_address?.last_name}
@@ -809,6 +831,10 @@ function Checkout() {
                               type="text"
                               h="42px"
                             />
+                            <CustomAsterix
+                              fieldId="order.billing_address.last_name"
+                              zIndex={0}
+                            /> 
                           </Field>
                         </Flex>
 
@@ -836,6 +862,10 @@ function Checkout() {
                             
                             />
                           </InputGroup>
+                          <CustomAsterix
+                            fieldId="order.billing_address.address"
+                            zIndex={0}
+                          />
                         </Field>
 
                         { suite ? (
@@ -897,6 +927,10 @@ function Checkout() {
                               type="text"
                               h="42px"
                             />
+                            <CustomAsterix
+                              fieldId="order.billing_address.postal_code"
+                              zIndex={0}
+                            />
                           </Field>
                           <Field
                             required
@@ -916,6 +950,10 @@ function Checkout() {
                               borderRadius="4px"
                               type="text"
                               h="42px"
+                            />
+                            <CustomAsterix
+                              fieldId="order.billing_address.city"
+                              zIndex={0}
                             />
                           </Field>
                         </Flex>
@@ -938,6 +976,10 @@ function Checkout() {
                             borderRadius="4px"
                             type="text"
                             h="42px"
+                          />
+                          <CustomAsterix
+                            fieldId="order.billing_address.phone"
+                            zIndex={0}
                           />
                         </Field>
 
@@ -1080,8 +1122,8 @@ function Checkout() {
               </Text>
               <Button
                 type="submit"
-                disabled={!isValid}
-                loading={isSubmitted}
+                // disabled={!isValid}
+                loading={mutation.isPending}
                 mt={["8px", "8px", "8px", "12px"]}
                 w="100%"
               >

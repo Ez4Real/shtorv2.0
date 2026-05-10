@@ -569,13 +569,17 @@ class Order(OrderBase, table=True):
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     modified_date: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     invoiceId: str = Field(unique=True)
-    postcard_image: PostcardImage = Relationship(back_populates="order", cascade_delete=True)
+    postcard_image: PostcardImage | None = Relationship(
+        back_populates="order",
+        cascade_delete=True
+    )
 
 class OrderPublic(OrderBase):
     id: uuid.UUID
     invoiceId: str = Field(unique=True)
     created_at: datetime
     modified_date: datetime
+    postcard_image: PostcardImage | None = None
 
 class OrdersPublic(SQLModel):
     data: list[OrderPublic]

@@ -273,7 +273,7 @@
       },
       "content": {
         "placeholder": "Введіть зміст вашої листівки",
-        "required": "Завантажте фото листівки"
+        "required": "Зміст листівки обов'язковий"
       },
       "language": {
         "placeholder": "Оберіть мову листівки",
@@ -333,6 +333,14 @@
     "shipping-method": {
       "nova_post": "Нова пошта (тільки по Україні)",
       "ups_express": "UPS Express"
+    }
+  },
+  "Admin": {
+    "Orders": {
+      "postcard-locales": {
+        "en": "Англійська",
+        "uk": "Українська"
+      }
     }
   }
 }

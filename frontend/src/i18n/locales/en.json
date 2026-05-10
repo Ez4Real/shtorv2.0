@@ -336,5 +336,13 @@
       "nova_post": "NOVA POST (within Ukraine only)",
       "ups_express": "UPS Express"
     }
+  },
+  "Admin": {
+    "Orders": {
+      "postcard-locales": {
+        "en": "English",
+        "uk": "Ukrainian"
+      }
+    }
   }
 }

@@ -1,11 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router"
 import { useTranslation } from "react-i18next";
-import { Currency, OrdersService } from "@/client";
+import { Currency, OrdersService, OpenAPI } from "@/client";
 import { useQuery } from "@tanstack/react-query";
 import { currencyList } from "@/contexts/CurrencyContext";
-import { Badge, Box, Container, Flex, Grid, GridItem, Image, Spinner, Text, VStack } from "@chakra-ui/react";
+import { Badge, Box, Container, Flex, Grid, GridItem, Image, Spinner, Text, VStack, Button, useClipboard } from "@chakra-ui/react";
 import { useColorModeValue } from "@/components/ui/color-mode";
 import { getItemPrice } from "@/utils";
+import { FiDownload, FiCopy, FiCheck } from "react-icons/fi";
 import { TranslatableTitle } from "@/components/Common/SwitchLocalization";
 export const Route = createFileRoute("/_layout/admin/orders/$id")({
   component: Order,
@@ -30,11 +31,32 @@ function Order() {
   const { data: order, isPending } = useQuery({
     ...getOrderQueryOptions({ id: id }),
   })
+  const content = order?.personalized_postcard?.content
+  const { copy, copied } = useClipboard({
+    value: content,
+  })
 
   if (!order) return null
-
-  console.log(order);
   
+
+  const downloadPostcardImage = async () => {
+    const url = `${OpenAPI.BASE}/media${order?.postcard_image?.url}`
+
+    const response = await fetch(url)
+    const blob = await response.blob()
+    const blobUrl = window.URL.createObjectURL(blob)
+
+    const a = document.createElement("a")
+    a.href = blobUrl
+    a.download = "postcard.jpg"
+
+    document.body.appendChild(a)
+    a.click()
+    a.remove()
+
+    window.URL.revokeObjectURL(blobUrl)
+  }
+
 
   return (
     <Container
@@ -411,7 +433,8 @@ function Order() {
             gap={4}
             py=".5rem"
             css={{
-              "::-webkit-scrollbar-thumb": {
+              // !!! temp scrollbar
+              "::WebkitScrollbarThumb ": {
                 background: scrollbarColor,
               },
             }}
@@ -485,6 +508,107 @@ function Order() {
               </Flex>
             ))}
           </Grid>
+
+          {order.personalized_postcard && (
+            <>
+              <Text fontSize="lg" fontWeight="bold" mt={4}>
+                Postcard:
+              </Text>
+              <Box
+                py=".5rem"
+              >
+                <Flex
+                  direction={["column", "row", "row", "row"]}
+                  borderWidth="1px"
+                  borderRadius="md"
+                  w="100%"
+                  align="center"
+                  position="relative"
+                  overflow="hidden"
+                >
+                  <Box
+                    position="relative"
+                    w={["full", "full", "auto", "auto"]}
+                    h="-webkit-fill-available"
+                  >
+                    <Box
+                      maxW="165px"
+                      minW="130px"
+                      >
+                      <Image
+                        w="100%"
+                        h="100%"
+                        src={`${OpenAPI.BASE}/media/${order?.postcard_image?.url}`}
+                        objectFit="cover"
+                        borderLeftRadius="md"
+                        />
+                    </Box>
+                    <Button
+                      size={["xs", "xs", "2xs", "2xs"]}
+                      p={0}
+                      position="absolute"
+                      right={1}
+                      top={1}
+                      onClick={downloadPostcardImage}
+                    >
+                      <FiDownload />
+                    </Button>
+                  </Box>
+                  <Flex
+                    direction="column"
+                    borderInlineWidth="1px"
+                    h="-webkit-fill-available"
+                    w="full"
+                    px={2}
+                    py={1}
+                    justify="space-between"
+                    position="relative"
+                  >
+                    <Button
+                      size={["xs", "xs", "2xs", "2xs"]}
+                      p={0}
+                      position="absolute"
+                      right={1}
+                      top={1}
+                      onClick={copy}
+                    >
+                      {copied ? <FiCheck /> : <FiCopy />}
+                    </Button>
+                    <Text color="#A0AEC0">Content: </Text>
+                    <Flex
+                      flex={1}
+                      align="center"
+                      justify="center"
+                    >
+                      <Text>{content}</Text>
+                    </Flex>
+                  </Flex>
+                  <Flex
+                    direction={["row", "column", "column", "column"]}
+                    h="-webkit-fill-available"
+                    w={["full", "auto", "auto", "auto"]}
+                    px={2}
+                    py={1}
+                    // justify="space-between"
+                    align="center"
+                  >
+                    <Text
+                      color="#A0AEC0"
+                      alignSelf="flex-start"
+                    >Language: </Text>
+                    <Flex
+                      flex={1}
+                      align="center"
+                      justify="center"
+                    >
+                      <Text>{t(`Admin.Orders.postcard-locales.${order.personalized_postcard.language}`)}</Text>
+                    </Flex>
+                  </Flex>
+                </Flex>
+              </Box>
+            </>
+          )}
+
         </>
       )}
     </Container>

@@ -256,6 +256,7 @@ export type OrderPublic = {
   personalized_postcard?: PersonalizedPostcardBase | null
   id: string
   invoiceId: string
+  postcard_image?: PostcardImage | null
 }
 
 export type OrdersPublic = {
@@ -303,6 +304,13 @@ export type PaymentStatus =
 export type PersonalizedPostcardBase = {
   content: string
   language: PostcardLanguages
+}
+
+export type PostcardImage = {
+  url: string
+  alt_text?: string | null
+  id?: string
+  order_id: string
 }
 
 export type PostcardLanguages = "en" | "uk"

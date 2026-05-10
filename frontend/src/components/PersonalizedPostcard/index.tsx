@@ -116,8 +116,13 @@ const PersonalizedPostcard = ({}: PersonalizedPostcardProps) => {
                                 }
                                 invalid={!!errors.postcard_image}
                             >
-                                <FileUploadRootProvider value={fileUpload} >
-                                    <FileUpload.HiddenInput />
+                                <FileUploadRootProvider
+                                  value={fileUpload}
+                                  display="block"
+                                >
+                                    <Box id="postcard-upload-section">
+                                        <FileUpload.HiddenInput  />
+                                    </Box>
                                     <FileUpload.Trigger asChild>
                                         <Button
                                             variant="outline"
