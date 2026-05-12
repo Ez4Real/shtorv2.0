@@ -344,5 +344,12 @@
         "uk": "Ukrainian"
       }
     }
+  },
+  "PreferenceDialog": {
+    "title": "Choose language and currency",
+    "language": "Language",
+    "currency": "Currency",
+    "cancel": "Cancel",
+    "save": "Save"
   }
 }

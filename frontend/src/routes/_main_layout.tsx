@@ -6,6 +6,7 @@ import { main } from "@/theme"
 import "../index.css"
 import { CurrencyProvider } from "@/contexts/CurrencyContext"
 import { CartProvider } from "@/contexts/CartContext"
+import PreferenceDialog from "@/components/PreferenceDialog"
 
 export const Route = createFileRoute("/_main_layout")({
   component: MainLayout,
@@ -17,6 +18,9 @@ function MainLayout() {
     <CustomProvider theme={main} forcedTheme="light">
       <CurrencyProvider>
         <CartProvider>
+
+          <PreferenceDialog />
+          
           <Header />
           <Outlet />
           <Footer />
