@@ -13,11 +13,11 @@ function SizeGuide() {
   const { t } = useTranslation()
 
   const sizes = [
-    { size: 'XS', bust: '82-85', waist: '63-66', hips: '87-89' },
-    { size: 'S', bust: '86-89', waist: '67-70', hips: '90-94' },
-    { size: 'M', bust: '90-93', waist: '71-74', hips: '95-99' },
-    { size: 'L', bust: '94-97', waist: '75-79', hips: '100-104' },
-    { size: 'XL', bust: '98-102', waist: '80-86', hips: '105-111' },
+    { size: 'XS', bustCm: '82-85', bustIn: '32.3-33.5', waistCm: '63-66', waistIn: '24.8-26.0', hipsCm: '87-89', hipsIn: '34.3-35.0' },
+    { size: 'S', bustCm: '86-89', bustIn: '33.9-35.0', waistCm: '67-70', waistIn: '26.4-27.6', hipsCm: '90-94', hipsIn: '35.4-37.0' },
+    { size: 'M', bustCm: '90-93', bustIn: '35.4-36.6', waistCm: '71-74', waistIn: '28.0-29.1', hipsCm: '95-99', hipsIn: '37.4-39.0' },
+    { size: 'L', bustCm: '94-97', bustIn: '37.0-38.2', waistCm: '75-79', waistIn: '29.5-31.1', hipsCm: '100-104', hipsIn: '39.4-40.9' },
+    { size: 'XL', bustCm: '98-102', bustIn: '38.6-40.2', waistCm: '80-86', waistIn: '31.5-33.9', hipsCm: '105-111', hipsIn: '41.3-43.7' },
   ];
 
 
@@ -30,82 +30,142 @@ function SizeGuide() {
     >
       <Breadcrumbs
         items={[
-            {name: t("SizeGuide.title"), path: "/size-guide"}
+          { name: t("SizeGuide.title"), path: "/size-guide" }
         ]}
       />
       <Container
-        padding={["0", "0", "0 225px", "0 225px"]}
+        // padding={["0", "0", "0 225px", "0 225px"]}
+        whiteSpace="nowrap"
+        w="fit-content"
+        p={0}
+        maxW="100%"
       >
         <Text
-            fontSize={["16px", "16px", "16px", "24px"]}
-            lineHeight="30px"
-            textTransform="uppercase"
-            fontWeight="300"
-            textAlign="center"
+          fontSize={["16px", "16px", "16px", "24px"]}
+          lineHeight="30px"
+          textTransform="uppercase"
+          fontWeight="300"
+          textAlign="center"
         >
-            {t("SizeGuide.title")}
+          {t("SizeGuide.title")}
         </Text>
         <Container
-            mt={["24px", "24px", "64px", "64px"]}
-            p={["0px", "0px", "23px 28px", "23px 28px"]}
-            border=".5px solid black"
+          mt={["24px", "24px", "64px", "64px"]}
+          p={["0px", "0px", "23px 28px", "23px 28px"]}
+          border=".5px solid black"
+          overflowX="auto"
         >
-            <Table.Root
+          <Table.Root
             size="md"
             showColumnBorder
             css={{
               '& th, & td': {
-              borderColor: 'black'
+                borderColor: 'black'
               },
               '& tbody > tr:last-of-type td': {
-              borderBottom: 'none',
+                borderBottom: 'none',
               },
             }}
             fontWeight="300"
-            fontSize={["14px", "14px", "18px", "18px"]}
-            >
+            fontSize={["12px", "16px", "18px", "18px"]}
+          >
             <Table.Header >
-                <Table.Row>
+              <Table.Row>
                 <Table.ColumnHeader
-                    textAlign="center"
-                    fontWeight="300"
+                  textAlign="center"
+                  fontWeight="300"
+                  rowSpan={2}
                 >
-                    {t("SizeGuide.size")}
+                  {t("SizeGuide.size")}
                 </Table.ColumnHeader>
                 <Table.ColumnHeader
-                    textAlign="center"
-                    fontWeight="300"
+                  textAlign="center"
+                  fontWeight="300"
+                  colSpan={2}
                 >
-                    {t("SizeGuide.bust")}
+                  {t("SizeGuide.bust")}
                 </Table.ColumnHeader>
                 <Table.ColumnHeader
-                    textAlign="center"
-                    fontWeight="300"
+                  textAlign="center"
+                  fontWeight="300"
+                  colSpan={2}
                 >
-                    {t("SizeGuide.waist")}
+                  {t("SizeGuide.waist")}
                 </Table.ColumnHeader>
                 <Table.ColumnHeader
-                    textAlign="center"
-                    fontWeight="300"
+                  textAlign="center"
+                  fontWeight="300"
+                  colSpan={2}
                 >
-                    {t("SizeGuide.hips")}
+                  {t("SizeGuide.hips")}
                 </Table.ColumnHeader>
-                </Table.Row>
+              </Table.Row>
+
+              <Table.Row>
+                <Table.ColumnHeader
+                  textAlign="center"
+                  fontWeight="300"
+                >
+                  cm
+                </Table.ColumnHeader>
+                <Table.ColumnHeader
+                  textAlign="center"
+                  fontWeight="300"
+                >
+                  inches
+                </Table.ColumnHeader>
+
+                <Table.ColumnHeader
+                  textAlign="center"
+                  fontWeight="300"
+                >
+                  cm
+                </Table.ColumnHeader>
+                <Table.ColumnHeader
+                  textAlign="center"
+                  fontWeight="300"
+                >
+                  inches
+                </Table.ColumnHeader>
+
+                <Table.ColumnHeader
+                  textAlign="center"
+                  fontWeight="300"
+                >
+                  cm
+                </Table.ColumnHeader>
+                <Table.ColumnHeader
+                  textAlign="center"
+                  fontWeight="300"
+                >
+                  inches
+                </Table.ColumnHeader>
+              </Table.Row>
+
             </Table.Header>
             <Table.Body >
               {sizes.map((size, index) => (
                 <Table.Row key={index}>
                   <Table.Cell textAlign="center">
-                  {size.size}
+                    {size.size}
                   </Table.Cell>
                   <Table.Cell textAlign="center">
-                  {size.bust}
+                    {size.bustCm}
                   </Table.Cell>
                   <Table.Cell textAlign="center">
-                  {size.waist}
+                    {size.bustIn}
                   </Table.Cell>
                   <Table.Cell textAlign="center">
-                  {size.hips}
+                    {size.waistCm}
+                  </Table.Cell>
+                  <Table.Cell textAlign="center">
+                    {size.waistIn}
+                  </Table.Cell>
+                  <Table.Cell textAlign="center">
+                    {size.hipsCm}
+                  </Table.Cell>
+                  <Table.Cell textAlign="center">
+                    {size.hipsIn}
                   </Table.Cell>
                 </Table.Row>
               ))}

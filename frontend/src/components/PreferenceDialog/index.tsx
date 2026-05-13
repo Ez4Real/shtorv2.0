@@ -50,7 +50,9 @@ const PreferenceDialog = ({ }: PreferenceDialogProps) => {
                 <Portal>
                     <Dialog.Backdrop />
                     <Dialog.Positioner>
-                        <Dialog.Content>
+                        <Dialog.Content
+                          mx={[".5rem", ".5rem", 0, 0]}
+                        >
                             <Dialog.Header>
                                 <Dialog.Title>{t("PreferenceDialog.title")}</Dialog.Title>
                             </Dialog.Header>
