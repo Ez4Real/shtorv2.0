@@ -13,11 +13,11 @@ function SizeGuide() {
   const { t } = useTranslation()
 
   const sizes = [
-    { size: 'XS', bustCm: '82-85', bustIn: '32.3-33.5', waistCm: '63-66', waistIn: '24.8-26.0', hipsCm: '87-89', hipsIn: '34.3-35.0' },
-    { size: 'S', bustCm: '86-89', bustIn: '33.9-35.0', waistCm: '67-70', waistIn: '26.4-27.6', hipsCm: '90-94', hipsIn: '35.4-37.0' },
-    { size: 'M', bustCm: '90-93', bustIn: '35.4-36.6', waistCm: '71-74', waistIn: '28.0-29.1', hipsCm: '95-99', hipsIn: '37.4-39.0' },
-    { size: 'L', bustCm: '94-97', bustIn: '37.0-38.2', waistCm: '75-79', waistIn: '29.5-31.1', hipsCm: '100-104', hipsIn: '39.4-40.9' },
-    { size: 'XL', bustCm: '98-102', bustIn: '38.6-40.2', waistCm: '80-86', waistIn: '31.5-33.9', hipsCm: '105-111', hipsIn: '41.3-43.7' },
+    { size: 'XS', bustCm: '82-85', bustIn: '32-33', waistCm: '63-66', waistIn: '25-26', hipsCm: '87-89', hipsIn: '34-35' },
+    { size: 'S', bustCm: '86-89', bustIn: '34-35', waistCm: '67-70', waistIn: '26-27', hipsCm: '90-94', hipsIn: '36-37' },
+    { size: 'M', bustCm: '90-93', bustIn: '35-36', waistCm: '71-74', waistIn: '28-29', hipsCm: '95-99', hipsIn: '38-39' },
+    { size: 'L', bustCm: '94-97', bustIn: '37-38', waistCm: '75-79', waistIn: '30-31', hipsCm: '100-104', hipsIn: '40-41' },
+    { size: 'XL', bustCm: '98-102', bustIn: '39-40', waistCm: '80-86', waistIn: '32-33', hipsCm: '105-111', hipsIn: '42-43' },
   ];
 
 
