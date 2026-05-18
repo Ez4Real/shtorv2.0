@@ -82,7 +82,7 @@ const PreferenceDialog = ({ }: PreferenceDialogProps) => {
                                                 <SegmentGroup.Items
                                                     items={[
                                                         { label: "EN", value: "en" },
-                                                        { label: "UK", value: "uk" },
+                                                        { label: "UA", value: "uk" },
                                                     ]}
                                                     _checked={{
                                                         color: "white"
