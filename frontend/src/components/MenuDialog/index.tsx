@@ -1,4 +1,4 @@
-import { Accordion, Box, Drawer, Flex, Image, Portal, Text } from "@chakra-ui/react"
+import { Accordion, Drawer, Flex, Image, Portal, Text } from "@chakra-ui/react"
 import { Link as RouterLink } from "@tanstack/react-router"
 import BurgerMenu from "../Common/BurgerMenu"
 import SwitchLocalizationDivider from "../Common/SwitchLocalization/LanguageCurrencyViaDivider"
@@ -105,7 +105,6 @@ const MenuDialog = () => {
 
                 <Accordion.Root collapsible>
                   <Accordion.Item value="plain" border="none">
-
                       <Accordion.ItemTrigger 
                         p="0"
                       >
@@ -120,23 +119,21 @@ const MenuDialog = () => {
 
                       <Accordion.ItemContent>
                         <RouterLink
-                            to="/shop"
-                            search={{ page: 1 }}
-                            hash="root"
-                            onClick={() => setOpen(!open)}
-                          >
-                            <Accordion.ItemBody 
-                              pt="16px" 
-                              pb="0"
-                              fontSize="16px"
-                              lineHeight="25px"
-                              fontWeight="300"
-                            >{t("MenuDialog.shop.all")}
-                            </Accordion.ItemBody>
-                          </RouterLink>
-                      </Accordion.ItemContent>
+                          to="/shop"
+                          search={{ page: 1 }}
+                          hash="root"
+                          onClick={() => setOpen(!open)}
+                        >
+                          <Accordion.ItemBody 
+                            pt="16px" 
+                            pb="0"
+                            fontSize="16px"
+                            lineHeight="25px"
+                            fontWeight="300"
+                          >{t("MenuDialog.shop.all")}
+                          </Accordion.ItemBody>
+                        </RouterLink>
 
-                      <Accordion.ItemContent>
                         <Accordion.ItemBody
                           pt="12px"
                           pb="0"
@@ -159,7 +156,6 @@ const MenuDialog = () => {
                                     borderColor: 'ui.border',
                                   },
                                 }}
-                                
                                 mb="2px"
                               >
                                 <Text
@@ -171,57 +167,56 @@ const MenuDialog = () => {
                                   {t("MenuDialog.shop.collection")}
                                 </Text>
                               </Accordion.ItemTrigger>
-                              {collections?.map((collection) => (
-                                <Accordion.ItemContent key={collection.id}>
-                                  <RouterLink
-                                    from="/collections"
-                                    to="/collections/$id"
-                                    params={{ id: collection.id }}
-                                    hash="root"
-                                    onClick={() => setOpen(!open)}
-                                  >
-                                    <Accordion.ItemBody 
-                                      pt="10px" 
-                                      pb="0"
-                                      textTransform="uppercase"
+
+                              <Accordion.ItemContent>
+                                <Accordion.ItemBody pb="0" pt={0}>
+                                  {collections?.map((collection) => (
+                                    <RouterLink
+                                      key={collection.id}
+                                      from="/collections"
+                                      to="/collections/$id"
+                                      params={{ id: collection.id }}
+                                      hash="root"
+                                      onClick={() => setOpen(false)}
                                     >
                                       <Text
+                                        textTransform="uppercase"
                                         fontSize="16px"
-                                        fontWeight="300" 
-                                        cursor="pointer">
-                                          {collection.title}
+                                        fontWeight="300"
+                                        cursor="pointer"
+                                        pt="10px"
+                                      >
+                                        {collection.title}
                                       </Text>
-                                    </Accordion.ItemBody>
-                                  </RouterLink>
-                                </Accordion.ItemContent>
-                              ))}
+                                    </RouterLink>
+                                  ))}
+                                </Accordion.ItemBody>
+                              </Accordion.ItemContent>
+                              
                             </Accordion.Item>
                           </Accordion.Root>
-                        </Accordion.ItemBody>
-                      </Accordion.ItemContent>
 
-                      {categories?.map((category) => (
-                        <Accordion.ItemContent key={category.id}>
-                          <RouterLink
-                            to="/shop"
-                            search={{ page: 1, category_id: category.id }}
-                            hash="root"
-                            onClick={() => setOpen(!open)}
-                          >
-                            <Accordion.ItemBody 
-                              pt="12px"
-                              pb="0"
-                              fontSize="16px"
-                              lineHeight="20px"
-                              fontWeight="300"
-                            >{category[titleKey]}
-                            </Accordion.ItemBody>
-                          </RouterLink>
-                        </Accordion.ItemContent>
-                      ))}
+                          
+                          {categories?.map((category) => (
+                              <RouterLink
+                                key={category.id}
+                                to="/shop"
+                                search={{ page: 1, category_id: category.id }}
+                                hash="root"
+                                onClick={() => setOpen(!open)}
+                              >
+                                <Text
+                                  pt="12px"
+                                  pb="0"
+                                  fontSize="16px"
+                                  lineHeight="20px"
+                                  fontWeight="300"
+                                >
+                                  {category[titleKey]}
+                                </Text>
+                              </RouterLink>
+                          ))}
 
-                      <Box>
-                        <Accordion.ItemContent>
                           <RouterLink
                             to="/gifts"
                             hash="root"
@@ -236,25 +231,25 @@ const MenuDialog = () => {
                             >{t("MenuDialog.shop.categories.gifts")}
                             </Accordion.ItemBody>
                           </RouterLink>
-                        </Accordion.ItemContent>
-                      </Box>
 
-                      <Accordion.ItemContent>
-                        <Accordion.ItemBody 
-                          onClick={() => {
-                            setOpen(!open)
-                            setIsOpen(true)
-                          }}
-                          pt="12px" 
-                          pb="0"
-                          fontSize="16px"
-                          textTransform="uppercase"
-                          lineHeight="20px"
-                          fontWeight="300"
-                        >{t("MenuDialog.bag")}
+                          <Text
+                            onClick={() => {
+                              setOpen(!open)
+                              setIsOpen(true)
+                            }}
+                            pt="12px" 
+                            pb="0"
+                            fontSize="16px"
+                            textTransform="uppercase"
+                            lineHeight="20px"
+                            fontWeight="300"
+                          >
+                            {t("MenuDialog.bag")}
+                          </Text>
+
                         </Accordion.ItemBody>
                       </Accordion.ItemContent>
-
+                      
                     </Accordion.Item>
                 </Accordion.Root>
               </Flex>

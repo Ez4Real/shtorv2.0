@@ -98,6 +98,7 @@ const Footer = () => {
             w="200px"
             alignItems={{ base: "flex-start", sm: "flex-end", md: "flex-end" }}
             gap={["8px", "8px", "12px", "12px"]}
+            whiteSpace="nowrap"
           >
             {footerLinks?.map((link, index) => (
               <RouterLink
