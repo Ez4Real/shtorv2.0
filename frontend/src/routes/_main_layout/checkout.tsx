@@ -49,7 +49,7 @@ function Checkout() {
   const descriptionKey = `description_${i18n.language}` as TranslatableDescription
   const subtotal = getCartTotal(currency)
   const delivery = {
-    "uah": 1500,
+    "uah": 2300,
     "usd": 45,
     "eur": 45,
   }  
