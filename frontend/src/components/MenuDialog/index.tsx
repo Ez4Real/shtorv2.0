@@ -115,6 +115,7 @@ const MenuDialog = () => {
                           cursor="pointer"
                         >{t("MenuDialog.shop.title")}
                         </Text>
+                        <Accordion.ItemIndicator color="black" />
                       </Accordion.ItemTrigger>
 
                       <Accordion.ItemContent>
@@ -150,7 +151,6 @@ const MenuDialog = () => {
                                 css={{
                                   borderRadius: '0',
                                   borderBottom: '1px solid transparent',
-                                  maxWidth: '133px',
                                   _expanded: {
                                     borderBottom: '1px solid',
                                     borderColor: 'ui.border',
@@ -166,10 +166,17 @@ const MenuDialog = () => {
                                 >
                                   {t("MenuDialog.shop.collection")}
                                 </Text>
+                                <Accordion.ItemIndicator
+                                  color="black"
+                                />
                               </Accordion.ItemTrigger>
 
                               <Accordion.ItemContent>
-                                <Accordion.ItemBody pb="0" pt={0}>
+                                <Accordion.ItemBody
+                                  pb="0"
+                                  pt={0}
+                                  p="0 0 0 .5rem"
+                                >
                                   {collections?.map((collection) => (
                                     <RouterLink
                                       key={collection.id}
