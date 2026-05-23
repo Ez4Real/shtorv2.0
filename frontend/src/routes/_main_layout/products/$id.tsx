@@ -1,28 +1,28 @@
 import { Box, Button, Container, Flex, Image, List, RadioGroup, Spinner, Text, useBreakpointValue, VStack } from "@chakra-ui/react"
 import { createFileRoute } from "@tanstack/react-router"
 import { Link as RouterLink } from "@tanstack/react-router"
-import { useEffect, useState } from 'react';
-import type { Swiper as SwiperCore } from "swiper";
-import { useRef } from "react";
+import { useEffect, useState } from 'react'
+import type { Swiper as SwiperCore } from "swiper"
+import { useRef } from "react"
 import { getItemPrice } from "@/utils"
 
 import type { Swiper as SwiperType } from 'swiper'
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { FreeMode, Navigation, Thumbs, Pagination, Scrollbar } from 'swiper/modules';
+import { Swiper, SwiperSlide } from 'swiper/react'
+import { FreeMode, Navigation, Thumbs, Pagination, Scrollbar, Zoom } from 'swiper/modules'
 
 import 'swiper/css'
 import 'swiper/css/free-mode'
 import 'swiper/css/thumbs'
 import 'swiper/css/pagination'
-import Breadcrumbs from "@/components/Common/Breadcrumbs";
-import { useTranslation } from "react-i18next";
-import { OpenAPI, ProductAttachment, ProductsService } from "@/client";
-import { useQuery } from "@tanstack/react-query";
-import { TranslatableDescription, TranslatableTitle } from "@/components/Common/SwitchLocalization";
-import { useCurrency } from "@/contexts/CurrencyContext";
-import ProductCard from "@/components/Product/Card";
-import { useCart } from "@/contexts/CartContext";
-import { pickProductData } from '../../../contexts/CartContext';
+import Breadcrumbs from "@/components/Common/Breadcrumbs"
+import { useTranslation } from "react-i18next"
+import { OpenAPI, ProductAttachment, ProductsService } from "@/client"
+import { useQuery } from "@tanstack/react-query"
+import { TranslatableDescription, TranslatableTitle } from "@/components/Common/SwitchLocalization"
+import { useCurrency } from "@/contexts/CurrencyContext"
+import ProductCard from "@/components/Product/Card"
+import { useCart } from "@/contexts/CartContext"
+import { pickProductData } from '../../../contexts/CartContext'
 
 export const Route = createFileRoute("/_main_layout/products/$id")({
   component: Product,
@@ -76,10 +76,10 @@ function Product() {
 
   const similarProducts = collectionProducts?.data  
   
-  const titleKey = `title_${i18n.language}` as TranslatableTitle;
-  const descriptionKey = `description_${i18n.language}` as TranslatableDescription;
-  const [thumbsSwiper, setThumbsSwiper] = useState<SwiperType | null>(null);
-  const isMobile = useBreakpointValue({ base: true, md: false });
+  const titleKey = `title_${i18n.language}` as TranslatableTitle
+  const descriptionKey = `description_${i18n.language}` as TranslatableDescription
+  const [thumbsSwiper, setThumbsSwiper] = useState<SwiperType | null>(null)
+  const isMobile = useBreakpointValue({ base: true, md: false })
   const swiperRef = useRef<SwiperCore | null>(null)
 
   useEffect(() => {
@@ -173,15 +173,18 @@ function Product() {
                   <Box w={["100%", "100%", "412px", "412px"]} position="relative">
                     <Swiper
                       thumbs={{ swiper: thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null }}
-                      modules={[FreeMode, Thumbs, Pagination]}
+                      modules={[FreeMode, Thumbs, Pagination, Zoom]}
                       pagination={true}
+                      zoom={true}
                     >
                       <>
                         {product.images.map((image, index) => (
                           <SwiperSlide key={index}>
-                            <Image
-                              src={`${OpenAPI.BASE}/media/${image.url}`}
-                            />
+                            <Box className="swiper-zoom-container">
+                              <Image
+                                src={`${OpenAPI.BASE}/media/${image.url}`}
+                              />
+                            </Box>
                           </SwiperSlide>
                         ))}
                       </>
