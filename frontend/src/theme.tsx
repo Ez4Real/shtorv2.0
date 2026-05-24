@@ -117,6 +117,33 @@ export const main = createSystem(defaultConfig, {
         "0%": { transform: "translateY(-9.5px)" },
         "100%": { transform: "translateY(0)" },
       },
+      whatsappPulse: {
+        "0%": {
+          transform: "scale(1)",
+          opacity: 0.6,
+        },
+        "50%": {
+          transform: "scale(1.15)",
+          opacity: 0.2,
+        },
+        "100%": {
+          transform: "scale(1)",
+          opacity: 0.6,
+        },
+      },
+      whatsappRipple: {
+        "0%": {
+          transform: "scale(0)",
+          opacity: 0.45,
+        },
+        "70%": {
+          opacity: 0.15,
+        },
+        "100%": {
+          transform: "scale(1.5)",
+          opacity: 0,
+        },
+      },
     },
     tokens: {
       animations: {
@@ -134,7 +161,15 @@ export const main = createSystem(defaultConfig, {
         },
         spin: {
           value: "spin 1s ease-in-out"
-        }
+        },
+        whatsappPulse: {
+          value: "whatsappPulse 2.2s infinite",
+        },
+
+        whatsappRipple: {
+          value: "whatsappRipple 0.6s ease-out",
+        },
+          
       },
       colors: {
         ui: {

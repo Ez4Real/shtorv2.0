@@ -23,7 +23,7 @@ const Footer = () => {
   return (
     <Box 
       as="footer" 
-      pb={["48px", "48px", "82px", "82px"]}
+      pb={["72px", "72px", "82px", "82px"]}
       px={["16px", "16px", "46px", "46px"]}
       >
       <Flex justifyContent="center">

@@ -7,6 +7,7 @@ import "../index.css"
 import { CurrencyProvider } from "@/contexts/CurrencyContext"
 import { CartProvider } from "@/contexts/CartContext"
 import PreferenceDialog from "@/components/PreferenceDialog"
+import WhatsAppWidget from "@/components/WhatsAppWidget"
 
 export const Route = createFileRoute("/_main_layout")({
   component: MainLayout,
@@ -20,6 +21,7 @@ function MainLayout() {
         <CartProvider>
 
           <PreferenceDialog />
+          <WhatsAppWidget />
           
           <Header />
           <Outlet />
