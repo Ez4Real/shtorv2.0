@@ -2,7 +2,7 @@ import { useState } from "react"
 import { OpenAPI, ProductPublic } from "@/client"
 import { useCurrency } from "@/contexts/CurrencyContext"
 import { getItemPrice } from "@/utils"
-import { Badge, Box, Flex, Image, Text, useBreakpointValue } from "@chakra-ui/react"
+import { Badge, Box, Flex, Image, Text } from "@chakra-ui/react"
 import { useTranslation } from "react-i18next"
 import { Link as RouterLink } from "@tanstack/react-router"
 import { TranslatableTitle } from "../Common/SwitchLocalization"
@@ -34,7 +34,6 @@ const ProductCard = ({
   const { currency } = useCurrency()
   const [thumbsSwiper] = useState<SwiperType | null>(null)
 
-  const isMobile = useBreakpointValue({ base: true, md: false })
   const titleKey = `title_${i18n.language}` as TranslatableTitle
 
   return (
@@ -65,7 +64,7 @@ const ProductCard = ({
             <Swiper
               thumbs={{ swiper: thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null }}
               modules={[FreeMode, Thumbs, Pagination, Zoom]}
-              pagination={isMobile ? false : true}
+              pagination={true}
               zoom={true}
             >
               <>
@@ -88,6 +87,7 @@ const ProductCard = ({
           {product.preorder && (
             <Badge
               position="absolute"
+              zIndex={2}
               top={["10px", "24px", "24px", "24px"]}
               left={["10px", "24px", "24px", "24px"]}
               p={["2px 4px", "6px 8px", "6px 8px", "6px 8px"]}
@@ -104,6 +104,7 @@ const ProductCard = ({
           {!product.in_stock && (
             <Badge
               position="absolute"
+              zIndex={3}
               top={["10px", "24px", "24px", "24px"]}
               left={["10px", "24px", "24px", "24px"]}
               p={["2px 4px", "6px 8px", "6px 8px", "6px 8px"]}

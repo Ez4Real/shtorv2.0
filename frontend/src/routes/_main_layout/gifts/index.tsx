@@ -77,7 +77,7 @@ function Gifts() {
       <Grid
         templateColumns={["repeat(1, 1fr)", "repeat(1, 1fr)", "repeat(2, 1fr)", "repeat(2, 1fr)"]}
         gapX={["60px", "60px", "60px", "120px"]}
-        gapY="60px"
+        gapY={["24px", "24px", "60px", "60px"]}
         mt={["24px", "24px", "24px", "32px"]}
       >
         {isPendingGifts || isPendingProductGifts ? (
@@ -85,26 +85,41 @@ function Gifts() {
             <Spinner size="xl" saturate="1s" color="ui.main" />
           </Flex>
         ) : (
-          <>
-            {gifts?.map((gift: GiftPublic, index: number) => (
-              <GridItem key={index}>
-                <GiftCard
-                  gift={gift}
-                  showPrice={!gift.dynamic_price}
-                />
-              </GridItem>
-            ))}
-            
-            <GridItem />
+          gifts?.map((gift: GiftPublic, index: number) => (
+            <GridItem
+              key={index}
+              minW={0}
+            >
+              <GiftCard
+                gift={gift}
+                showPrice={!gift.dynamic_price}
+              />
+            </GridItem>
+          ))
+        )}
+      </Grid>
 
-            {productGifts?.map((product: ProductPublic, index: number) => (
-              <GridItem key={index}>
+      <Grid
+        templateColumns={["repeat(1, 1fr)", "repeat(1, 1fr)", "repeat(2, 1fr)", "repeat(2, 1fr)"]}
+        gapX={["60px", "60px", "60px", "120px"]}
+        gapY={["24px", "24px", "60px", "60px"]}
+        mt={["24px", "24px", "24px", "32px"]}
+      >
+        {isPendingGifts || isPendingProductGifts ? (
+          <Flex justify="center" align="center" height="100vh">
+            <Spinner size="xl" saturate="1s" color="ui.main" />
+          </Flex>
+        ) : (
+            productGifts?.map((product: ProductPublic, index: number) => (
+              <GridItem
+                key={index}
+                minW={0}
+              >
                 <ProductCard
                   product={product}
                 />
               </GridItem>
-            ))}
-          </>
+            ))
         )}
       </Grid>
     </Container>

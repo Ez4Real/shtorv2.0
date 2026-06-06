@@ -5,7 +5,16 @@ import { TranslatableTitle } from "../Common/SwitchLocalization"
 import { useTranslation } from "react-i18next"
 import { useCurrency } from "@/contexts/CurrencyContext"
 import { getItemPrice } from "@/utils"
-// import { useTranslation } from "react-i18next"
+import type { Swiper as SwiperType } from 'swiper'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import { FreeMode, Thumbs, Pagination, Zoom } from 'swiper/modules'
+import 'swiper/css'
+import 'swiper/css/free-mode'
+import 'swiper/css/thumbs'
+import 'swiper/css/pagination'
+import "swiper/css/zoom"
+import { useState } from "react"
+
 
 interface GiftCardProps {
   gift: GiftPublic
@@ -22,13 +31,16 @@ const GiftCard = ({
 }: GiftCardProps) => {
   const { i18n } = useTranslation()
   const { currency } = useCurrency()
+  const [thumbsSwiper] = useState<SwiperType | null>(null)
 
   const titleKey = `title_${i18n.language}` as TranslatableTitle
   
   return (
     <Flex
       direction="column"
-      alignItems="flex-start"
+      alignItems="stretch"
+      w="100%"
+      minW={0}
       fontWeight="300"
     >
       <RouterLink
@@ -36,13 +48,40 @@ const GiftCard = ({
         params={{ id: gift.id }}
         hash="root"
       >
-        <Box w="100%">
-          <Image
-          src={`${OpenAPI.BASE}/media/${gift.images[0].url}`}
-          alt={gift.images[0].alt_text || "unset"}
+        <Box
           w="100%"
-          h="100%"
-          />
+          position="relative"
+        >
+          <Box
+            w="100%"
+            maxW="100%"
+            position="relative"
+            overflow="hidden"
+            borderRadius="0"
+          >
+            <Swiper
+              thumbs={{ swiper: thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null }}
+              modules={[FreeMode, Thumbs, Pagination, Zoom]}
+              pagination={true}
+              zoom={true}
+            >
+              <>
+                {gift.images.map((image, index) => (
+                  <SwiperSlide key={index}>
+                    <Box className="swiper-zoom-container">
+                      <Image
+                        src={`${OpenAPI.BASE}/media/${image.url}`}
+                        alt={image.alt_text || gift[titleKey]}
+                        w="100%"
+                        objectFit="cover"
+                        display="block"
+                      />
+                    </Box>
+                  </SwiperSlide>
+                ))}
+              </>
+            </Swiper>
+          </Box>
         </Box>
         <Text
           mt={["12px", "12px", "16px", "16px"]}

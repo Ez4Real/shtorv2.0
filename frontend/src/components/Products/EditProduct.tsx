@@ -403,7 +403,7 @@ const EditProduct = ({ product }: EditProductProps) => {
                   render={({ field }) => (
                     <Field 
                       alignSelf="center"
-                      label="Preoder"
+                      label="Pre-order"
                     >
                       <Switch.Root
                         colorPalette="teal"
