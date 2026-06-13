@@ -1,14 +1,14 @@
-import { Box, Container, Flex, Text, VStack } from "@chakra-ui/react"
+import { Container, Link, Text, VStack } from "@chakra-ui/react"
 import { createFileRoute } from "@tanstack/react-router"
 import { useTranslation } from "react-i18next"
 
 
 export const Route = createFileRoute("/_main_layout/returns-and-exchange")({
-  component: ReturnsAndExchange,
+  component: ReturnsAndExchanges,
 })
 
 
-function ReturnsAndExchange() {
+function ReturnsAndExchanges() {
   const { t } = useTranslation()
 
 
@@ -19,65 +19,59 @@ function ReturnsAndExchange() {
       mb={["72px", "72px", "115px", "115px"]}
       padding={["0 16px", "0 16px", "0 16px", "0 200px"]}
     >
-      <VStack
-        gap={0}
-        fontWeight="300"
+      <Text
+        fontSize={["16px", "16px", "16px", "24px"]}
+        lineHeight="30px"
+        textTransform="uppercase"
+        textAlign="center"
       >
-        <Text
-          fontSize={["16px", "16px", "16px", "24px"]}
-          lineHeight="30px"
-          textTransform="uppercase"
-        >
-          {t("ReturnsAndExchange.title")}
+        {t("ReturnsAndExchanges.title")}
+      </Text>
+      <VStack
+        mt={["24px", "24px", "36px", "36px"]}
+        alignItems="flex-start"
+        lineHeight="20px"
+        gapY={0}
+        fontSize="16px"
+      >
+        <Text>
+          {t("ReturnsAndExchanges.term")}
         </Text>
-
-        <VStack
-          mt={["24px", "24px", "36px", "36px"]}
-          alignItems="flex-start"
-          lineHeight="20px"
-          gapY={0}
-          fontSize="16px"
+        <Text
+          mt="16px"
         >
-
-          <Text
-            fontWeight={["300", "300", "500", "500"]}
-          >{t("ReturnsAndExchange.general")}</Text>
-          <Text
-            mt="24px
-          ">{t("ReturnsAndExchange.itemCondition")}</Text>
-          <Flex as="li" align="start" mt="16px">
-            <Box
-                as="span"
-                mt="8px"
-                mr="12px" 
-                w="4px"
-                h="4px"
-                bg="ui.main"
-                borderRadius="full"
-                flexShrink={0}
-                marginInline="10px"
-            />
-            <Text>
-                {t("ReturnsAndExchange.noExchange")}
-            </Text>
-            </Flex>
-          {/* <Box
-            as="li"
-            mt="16px"
-            listStylePosition="inside"
-          >{t("ReturnsAndExchange.noExchange")}</Box> */}
-          <Text
-            mt="24px"
-          >{t("ReturnsAndExchange.returnDelivery")}</Text>
-          <Text
-            mt="24px"
-          >{t("ReturnsAndExchange.returnDeliverydetails")}</Text>
-          <Text
-            mt="24px"
-          >{t("ReturnsAndExchange.fallUnderPolicy")}</Text>
-          
-
-        </VStack>
+          {t("ReturnsAndExchanges.returnContactAddress")}
+            {" "}
+            <Link
+              href="mailto:info@shtor.com.ua"
+              color="#0000FF"
+            >info@shtor.com.ua</Link>
+        </Text>
+        <Text
+          mt="16px"
+        >
+          {t("ReturnsAndExchanges.productCondition")}
+        </Text>
+        <Text
+          mt="16px"
+        >
+          {t("ReturnsAndExchanges.customOrder")}
+        </Text>
+        <Text
+          mt="16px"
+        >
+          {t("ReturnsAndExchanges.returnDelivery")}
+        </Text>
+        <Text
+          mt="20px"
+        >
+          {t("ReturnsAndExchanges.contactAddress")}
+            {" "}
+            <Link
+              href="mailto:info@shtor.com.ua"
+              color="#0000FF"
+            >info@shtor.com.ua</Link>
+        </Text>
       </VStack>
     </Container>
   )

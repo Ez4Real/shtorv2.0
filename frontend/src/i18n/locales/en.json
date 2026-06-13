@@ -121,29 +121,23 @@
   },
   "PaymentAndDelivery": {
     "title": "Payment and Delivery",
-    "appeal": "Dear customers",
-    "general": "Please note that all shipments are from our warehouse in Odesa (Ukraine). Due to the war in our country, there are slight changes in delivery terms.The production of the item will take till 10 business days.",
-    "taxesInfo": "Please note that the brand is not responsible for local taxes.",
-    "excludedCountries": "DELIVERY TO RUSSIA AND BELARUS IS NOT AVAILABLE. We are praying for peace! Stand with Ukraine!",
-    "internationalOrders": {
-      "title": "International orders:",
-      "info": "All international orders will be shipped by Ukrposhta service and DHL Express.",
-      "deliveryCost": "Standard delivery - $45 (10-20 business days)"
-    },
-    "ukraine": {
-      "name": "Ukraine:",
-      "info": "All orders within Ukraine we will be delivered via the Nova Poshta service.The delivery time during martial law is 2-5 business days.",
-      "free": "Free delivery"
-    }
+    "policyTitle": "SHIPPING POLICY",
+    "appeal": "Dear Customers",
+    "storageInfo": "All orders are shipped from our warehouse in Odesa, Ukraine.",
+    "ukraine": "Free shipping is available within Ukraine and takes 2–5 business days.",
+    "international": "Standard international shipping costs $45 and takes approximately 10–20 business days.\nPlease note that the brand is not responsible for any local taxes, customs duties, or import fees charged by the destination country.",
+    "excludedCountries": "Shipping to Russia and Belarus is not available.",
+    "preorder": "Items marked as “Pre-Order” require extra 10–14 business days for production and dispatch additionally to general delivery terms.",
+    "contactAddress": "If you have any additional questions, please contact us at"
   },
-  "ReturnsAndExchange": {
-    "title": "Returns and Exchange",
-    "general": "Exchange and return of products are possible within 14 days after receiving the order.To arrange a return or an exchange of goods, please contact us at: Shtorga@icloud.com",
-    "itemCondition": "Make sure that the returned product has not been used, is placed in its original packaging, and contains original tags, price tags, and all additional attachments. We reserve the right to refuse returns or exchanges if the item does not comply with the above-mentioned rules.",
-    "noExchange": "Goods from the OUTLET section and products made according to individual measurements are not subject to return and exchange.",
-    "returnDelivery": "You can use any express delivery service for a return (please note that the delivery time should NOT exceed 10 days). SHTOR is not responsible for return shipping costs and customs duties.",
-    "returnDeliverydetails": "After dispatching the package, please let us know the tracking number of the parcel and leave a link to the tracking website.",
-    "fallUnderPolicy": "Any disputes which do not fall under the Returns and Exchange policy are subject to individual resolvement through negotiation between the parties involved."
+  "ReturnsAndExchanges": {
+    "title": "Returns and Exchanges",
+    "term": "You may request a return or exchange within 14 calendar days of receiving your order.",
+    "returnContactAddress": "To initiate a return or exchange, please contact us at:",
+    "productCondition": "Items are eligible for return or exchange only if they have not been worn or used, retain their original condition, tags, labels, packaging, and all accompanying materials.\nWe reserve the right to refuse returns or exchanges if the item does not comply with the above requirements.",
+    "customOrder": "Items made to individual measurements or custom orders are not eligible for return or exchange.",
+    "returnDelivery": "You may use any express delivery service for your return. Please note that the delivery time should not exceed 10 business days.\nReturn shipping costs and any applicable customs duties or fees are the responsibility of the customer.",
+    "contactAddress": "If you have any additional questions, please contact us at"
   },
   "Care": {
     "title": "Care",
