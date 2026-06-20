@@ -10,9 +10,11 @@ import {
   PaymentBasketItem
 } from "@/client"
 import ProductCounter from "@/components/Common/ProductCounter"
-import { TranslatableDescription,
+import {
+  TranslatableDescription,
   TranslatablePrice,
-  TranslatableTitle } from "@/components/Common/SwitchLocalization"
+  TranslatableTitle
+} from "@/components/Common/SwitchLocalization"
 import { InputGroup } from "@/components/ui/input-group"
 import { useCart } from "@/contexts/CartContext"
 import { getCurrencyCode, useCurrency } from "@/contexts/CurrencyContext"
@@ -22,9 +24,10 @@ import { Box, Button, Checkbox, Container, createListCollection, Flex, Grid, Ima
 import { useMutation } from "@tanstack/react-query"
 import { useNavigate } from "@tanstack/react-router"
 import { createFileRoute } from "@tanstack/react-router"
-import axios from "axios"
 import { Field } from "@/components/ui/field"
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useState } from "react"
+import countries from "i18n-iso-countries"
+import en from "i18n-iso-countries/langs/en.json"
 import { Controller, FieldErrors, FormProvider, SubmitHandler, useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import { FiMail, FiSearch } from "react-icons/fi"
@@ -39,10 +42,11 @@ export const Route = createFileRoute("/_main_layout/checkout")({
 
 function Checkout() {
   const { t, i18n } = useTranslation()
-  const [countries, setCountries] = useState<{ value: string; label: string }[]>([])
-  const { items, getCartTotal, clearCart } = useCart() 
-  const { currency } = useCurrency() 
+  const { items, getCartTotal, clearCart } = useCart()
+  const { currency } = useCurrency()
   const navigate = useNavigate()
+  countries.registerLocale(en)
+
   const [suite, setSuite] = useState<boolean>(false)
   const [billing, setBilling] = useState<string>("same")
   const titleKey = `title_${i18n.language}` as TranslatableTitle
@@ -52,8 +56,8 @@ function Checkout() {
     "uah": 2300,
     "usd": 45,
     "eur": 45,
-  }  
-  
+  }
+
   const { showSuccessToast } = useCustomToast()
 
   const getDeliveryCost = (method: string): number => {
@@ -99,7 +103,6 @@ function Checkout() {
     },
   })
 
-  
   const {
     register,
     handleSubmit,
@@ -109,6 +112,22 @@ function Checkout() {
     control,
     formState: { errors },
   } = methods
+
+
+  const countriesToExclude = ["RU", "BY", "KP"]
+
+  const countryOptions = Object.entries(
+    countries.getNames("en", { select: "official" })
+  ).filter(([code]) => !countriesToExclude.includes(code))
+    .map(([code, name]) => ({
+      value: code,
+      label: name,
+    }))
+    .sort((a, b) => a.label.localeCompare(b.label))
+
+  const countryCollection = createListCollection({
+    items: countryOptions,
+  })
 
   const shippingMethod = watch("order.shipping_method")
   const amount = watch("order.amount")
@@ -143,7 +162,7 @@ function Checkout() {
     })
   }
 
-  
+
   const serialisePaymentData = (): PaymentCreate => ({
     amount: amount * 100, // 1
     ccy: getCurrencyCode(ccy), // 980
@@ -155,7 +174,7 @@ function Checkout() {
     },
     webHookUrl: `${OpenAPI.BASE}/api/v1/payments/callback`,
     redirectUrl: "https://shtor.com.ua/thank-you",
-  }) 
+  })
 
 
   const mutation = useMutation({
@@ -169,11 +188,11 @@ function Checkout() {
         })
 
         data.order.invoiceId = paymentResponse.invoiceId
-        
+
         await OrdersService.createOrder({
           formData: data,
         })
-        
+
         window.location.href = paymentResponse.pageUrl
 
         return paymentResponse.pageUrl
@@ -201,7 +220,7 @@ function Checkout() {
     setValue("order.amount", subtotal + getDeliveryCost(shippingMethod))
   }, [shippingMethod, subtotal, currency])
 
-  
+
   useEffect(() => {
     setValue("order.currency", currency.code)
   }, [currency])
@@ -212,41 +231,14 @@ function Checkout() {
     }
   }, [billing])
 
-  useEffect(() => {
-    const fetchCountries = async () => {
-      const response = await axios.get("https://restcountries.com/v3.1/all?fields=name,cca2")
-    
-      const countriesToExclude = ["RU", "BY"]
-      const countryList = response.data
-        .filter((country: any) => !countriesToExclude.includes(country.cca2))
-        .map((country: any) => ({
-          value: country.cca2,
-          label: country.name.common,
-        }))
-        .sort((a: any, b: any) => a.label.localeCompare(b.label))
-
-      setCountries(countryList)
-    }
-
-    fetchCountries()
-  }, [])
-
-
-  const memoizedCountryOptions = useMemo(() => countries, [countries])
-  const countryCollection = createListCollection({
-    items: [
-      ...memoizedCountryOptions
-    ],
-  })
-
   const billingAdress = [
-    { value: "same", label: t("Checkout.billingAddress.same")},
+    { value: "same", label: t("Checkout.billingAddress.same") },
     { value: "different", label: t("Checkout.billingAddress.different") },
   ]
 
   const shippings = [
-    { value: "ups_express", label: t(`Orders.shipping-method.ups_express`), price: "$45"},
-    { value: "nova_post", label: t(`Orders.shipping-method.nova_post`),  price: "Free"},
+    { value: "ups_express", label: t(`Orders.shipping-method.ups_express`), price: "$45" },
+    { value: "nova_post", label: t(`Orders.shipping-method.nova_post`), price: "Free" },
   ]
 
   useEffect(() => {
@@ -264,7 +256,7 @@ function Checkout() {
     if (errors.postcard_image) {
       document
         .getElementById("postcard-upload-section")
-        ?.scrollIntoView({block: "center"})
+        ?.scrollIntoView({ block: "center" })
       return
     }
   }
@@ -275,7 +267,7 @@ function Checkout() {
       mb="238px"
       p={0}
       paddingInline={["16px", "16px", "46px", "46px"]}
-    > 
+    >
       <FormProvider {...methods}>
         <form onSubmit={handleSubmit(onSubmit, onInvalidAdditionalFields)}>
 
@@ -294,7 +286,7 @@ function Checkout() {
               >
                 {t("Checkout.contact.title")}
               </Text>
-            
+
               <Field
                 required
                 invalid={!!errors.order?.email}
@@ -400,9 +392,9 @@ function Checkout() {
                       <Portal>
                         <Select.Positioner>
                           <Select.Content>
-                            {countries.map((framework) => (
-                              <Select.Item item={framework} key={framework.value}>
-                                {framework.label}
+                            {countryOptions.map((country) => (
+                              <Select.Item item={country} key={country.value}>
+                                {country.label}
                                 <Select.ItemIndicator />
                               </Select.Item>
                             ))}
@@ -413,7 +405,7 @@ function Checkout() {
                   )}
                 />
               </Field>
-              
+
               <Flex
                 w="100%"
                 direction={["column", "column", "row", "row"]}
@@ -486,11 +478,11 @@ function Checkout() {
                 <CustomAsterix
                   fieldId="order.delivery_address.address"
                 />
-                
+
               </Field>
 
-              
-              { suite ? (
+
+              {suite ? (
                 <Field
                   invalid={!!errors.order?.delivery_address?.additional}
                   errorText={errors.order?.delivery_address?.additional?.message}
@@ -515,10 +507,10 @@ function Checkout() {
                   gapX="2px"
                   paddingInline="4px"
                   fontWeight="300"
-                  onClick={() =>  setSuite(true)}
+                  onClick={() => setSuite(true)}
                 >
                   <Box p="7px">
-                    <Image src="/assets/icons/add.svg" boxSize="10px"/>
+                    <Image src="/assets/icons/add.svg" boxSize="10px" />
                   </Box>
                   {t("Checkout.delivery.addSuite")}
                 </Button>
@@ -567,7 +559,7 @@ function Checkout() {
                   />
                   <CustomAsterix
                     fieldId="order.delivery_address.city"
-                  />  
+                  />
                 </Field>
               </Flex>
 
@@ -591,10 +583,10 @@ function Checkout() {
                 />
                 <CustomAsterix
                   fieldId="order.delivery_address.phone"
-                />  
+                />
               </Field>
 
-              <VStack 
+              <VStack
                 w="full"
                 alignItems="flex-start"
               >
@@ -605,64 +597,64 @@ function Checkout() {
                 >
                   {t("Checkout.shippingMethod")}
                 </Text>
-                
+
                 <Controller
                   name="order.shipping_method"
                   control={control}
                   render={({ field }) => (
-                  <RadioGroup.Root
-                    w="100%"
-                    variant="subtle"
-                    mt="12px"
-                    name={field.name}
-                    value={field.value}
-                    onValueChange={({ value }) => {
-                      setValue("order.shipping_method", value as ShippingMethods)
-                    }}
-                    defaultValue="ups_express"
-                    
-                  >
-                    <VStack
-                      separator={
-                        <StackSeparator marginBlock="0 !important"/>
-                      }
-                      alignItems="flex-start"
-                      gap="6"
-                      border=".5px solid #3A3A3A"
-                      borderRadius="4px"
+                    <RadioGroup.Root
+                      w="100%"
+                      variant="subtle"
+                      mt="12px"
+                      name={field.name}
+                      value={field.value}
+                      onValueChange={({ value }) => {
+                        setValue("order.shipping_method", value as ShippingMethods)
+                      }}
+                      defaultValue="ups_express"
+
                     >
-                      {shippings.map((shipping) => (
-                        <RadioGroup.Item
-                          w="100%"
-                          key={shipping.value}
-                          value={shipping.value} 
-                          p="10px 12px"
-                          border="none"
-                          borderRadius="inherit"
-                          _checked={{
-                            bg: "ui.lightBlue"
-                          }}
-                        >
-                          <RadioGroup.ItemHiddenInput />
-                          <RadioGroup.ItemIndicator 
-                            border="1px solid black"
-                            boxSize="10px"
-                            bg="transparent"
-                          />
-                          <RadioGroup.ItemText
-                            w="full"
-                            display="flex"
-                            justifyContent="space-between"
-                            fontWeight="300"
+                      <VStack
+                        separator={
+                          <StackSeparator marginBlock="0 !important" />
+                        }
+                        alignItems="flex-start"
+                        gap="6"
+                        border=".5px solid #3A3A3A"
+                        borderRadius="4px"
+                      >
+                        {shippings.map((shipping) => (
+                          <RadioGroup.Item
+                            w="100%"
+                            key={shipping.value}
+                            value={shipping.value}
+                            p="10px 12px"
+                            border="none"
+                            borderRadius="inherit"
+                            _checked={{
+                              bg: "ui.lightBlue"
+                            }}
                           >
-                            <Text>{shipping.label}</Text>
-                            <Text>{shipping.price}</Text>
-                          </RadioGroup.ItemText>
-                        </RadioGroup.Item>
-                      ))}
-                    </VStack>
-                  </RadioGroup.Root>
-                )}
+                            <RadioGroup.ItemHiddenInput />
+                            <RadioGroup.ItemIndicator
+                              border="1px solid black"
+                              boxSize="10px"
+                              bg="transparent"
+                            />
+                            <RadioGroup.ItemText
+                              w="full"
+                              display="flex"
+                              justifyContent="space-between"
+                              fontWeight="300"
+                            >
+                              <Text>{shipping.label}</Text>
+                              <Text>{shipping.price}</Text>
+                            </RadioGroup.ItemText>
+                          </RadioGroup.Item>
+                        ))}
+                      </VStack>
+                    </RadioGroup.Root>
+                  )}
                 />
               </VStack>
 
@@ -675,316 +667,316 @@ function Checkout() {
                   {t("Checkout.billingAddress.title")}
                 </Text>
               </VStack>
-                <RadioGroup.Root
-                  w="100%"
-                  variant="subtle"
-                  mt="12px"
-                  onValueChange={({ value }) => {
-                    if (value !== null) setBilling(value)
-                  }}
-                  defaultValue="same"
-                  
+              <RadioGroup.Root
+                w="100%"
+                variant="subtle"
+                mt="12px"
+                onValueChange={({ value }) => {
+                  if (value !== null) setBilling(value)
+                }}
+                defaultValue="same"
+
+              >
+                <VStack
+                  separator={
+                    <StackSeparator marginBlock="0 !important" />
+                  }
+                  alignItems="flex-start"
+                  gap="6"
+                  border=".5px solid #3A3A3A"
+                  borderTopRadius="4px"
+                  borderBottomRadius={billing === "different" ? "0" : "4px"}
                 >
-                  <VStack
-                    separator={
-                      <StackSeparator marginBlock="0 !important"/>
-                    }
-                    alignItems="flex-start"
-                    gap="6"
-                    border=".5px solid #3A3A3A"
-                    borderTopRadius="4px"
-                    borderBottomRadius={billing==="different" ? "0" : "4px"}
+                  {billingAdress.map((item) => (
+                    <RadioGroup.Item
+                      w="100%"
+                      key={item.value}
+                      value={item.value}
+                      p="10px 12px"
+                      border="none"
+                      borderRadius="inherit"
+                      _checked={{
+                        bg: "ui.lightBlue"
+                      }}
+                    >
+                      <RadioGroup.ItemHiddenInput />
+                      <RadioGroup.ItemIndicator
+                        border="1px solid black"
+                        boxSize="10px"
+                        bg="transparent"
+                      />
+                      <RadioGroup.ItemText>{item.label}</RadioGroup.ItemText>
+                    </RadioGroup.Item>
+                  ))}
+                </VStack>
+              </RadioGroup.Root>
+
+              {billing === "different" &&
+                <VStack
+                  bg="ui.lightBlue"
+                  p="12px"
+                  w="full"
+                  gap={["10px", "10px", "12px", "12px"]}
+                  alignItems="flex-start"
+                  border="1px solid #DEDEDE"
+                  borderTopRadius={0}
+                  borderBottomRadius="6px"
+                >
+                  <Field
+                    invalid={!!errors.order?.billing_address?.country}
+                    errorText={errors.order?.billing_address?.country?.message}
+                    mt={["12px", "12px", "16px", "16px"]}
                   >
-                    {billingAdress.map((item) => (
-                      <RadioGroup.Item
-                        w="100%"
-                        key={item.value}
-                        value={item.value} 
-                        p="10px 12px"
-                        border="none"
-                        borderRadius="inherit"
-                        _checked={{
-                          bg: "ui.lightBlue"
-                        }}
-                      >
-                        <RadioGroup.ItemHiddenInput/>
-                        <RadioGroup.ItemIndicator 
-                          border="1px solid black"
-                          boxSize="10px"
-                          bg="transparent"
-                        />
-                        <RadioGroup.ItemText>{item.label}</RadioGroup.ItemText>
-                      </RadioGroup.Item>
-                    ))}
-                  </VStack>
-                </RadioGroup.Root>
-
-                    { billing==="different" &&
-                      <VStack
-                        bg="ui.lightBlue"
-                        p="12px"
-                        w="full"
-                        gap={["10px", "10px", "12px", "12px"]}
-                        alignItems="flex-start"
-                        border="1px solid #DEDEDE"
-                        borderTopRadius={0}
-                        borderBottomRadius="6px"
-                      >
-                        <Field
-                          invalid={!!errors.order?.billing_address?.country}
-                          errorText={errors.order?.billing_address?.country?.message}
-                          mt={["12px", "12px", "16px", "16px"]}
+                    <Controller
+                      control={control}
+                      name="order.billing_address.country"
+                      rules={{ required: t("Checkout.countryRequired") }}
+                      render={({ field }) => (
+                        <Select.Root
+                          name={field.name}
+                          onValueChange={(e) => {
+                            field.onChange(e.items?.[0]?.label)
+                            field.onBlur()
+                          }}
+                          onInteractOutside={() => field.onBlur()}
+                          collection={countryCollection}
                         >
-                          <Controller
-                            control={control}
-                            name="order.billing_address.country"
-                            rules={{ required: t("Checkout.countryRequired") }}
-                            render={({ field }) => (
-                              <Select.Root
-                                name={field.name}
-                                onValueChange={(e) => {
-                                  field.onChange(e.items?.[0]?.label)
-                                  field.onBlur()
-                                }}
-                                onInteractOutside={() => field.onBlur()}
-                                collection={countryCollection}
-                              >
-                                <Select.HiddenSelect />
-                                <CustomAsterix
-                                  fieldId="order.billing_address.country"
-                                  zIndex={1}
-                                />  
-                                <Select.Control>
-                                  <Select.Trigger
-                                    bg="white"
-                                    borderColor="ui.greyBorder"
-                                  >
-                                    <Select.ValueText
-                                      placeholder={t("Checkout.delivery.country")}
-                                    />
-                                  </Select.Trigger>
-                                  <Select.IndicatorGroup>
-                                    <Select.Indicator />
-                                  </Select.IndicatorGroup>
-                                </Select.Control>
-                                <Portal>
-                                  <Select.Positioner>
-                                    <Select.Content>
-                                      {countries.map((framework) => (
-                                        <Select.Item item={framework} key={framework.value}>
-                                          {framework.label}
-                                          <Select.ItemIndicator />
-                                        </Select.Item>
-                                      ))}
-                                    </Select.Content>
-                                  </Select.Positioner>
-                                </Portal>
-                              </Select.Root>
-                            )}
-                          />
-                        </Field>
-                        
-                        <Flex
-                          w="100%"
-                          direction={["column", "column", "row", "row"]}
-                          gap="8px"
-                        >
-                          <Field
-                            required
-                            invalid={!!errors.order?.billing_address?.first_name}
-                            errorText={errors.order?.billing_address?.first_name?.message}
-                            w="100%"
-                          >
-                            <Input
-                              id="billing_address.first_name"
-                              {...register("order.billing_address.first_name", {
-                                required: t("Checkout.firstNameRequired")
-                              })}
-                              variant="subtle"
-                              placeholder={t("Checkout.delivery.firstName")}
-                              border=".5px solid"
-                              borderColor="ui.greyBorder"
-                              borderRadius="4px"
-                              type="text"
-                              h="42px"
-                            />
-                            <CustomAsterix
-                              fieldId="order.billing_address.first_name"
-                              zIndex={0}
-                            />  
-                          </Field>
-                          <Field
-                            invalid={!!errors.order?.billing_address?.last_name}
-                            errorText={errors.order?.billing_address?.last_name?.message}
-                            w="100%"
-                          >
-                            <Input
-                              id="billing_address.last_name"
-                              {...register("order.billing_address.last_name", {
-                                required: t("Checkout.lastNameRequired")
-                              })}
-                              variant="subtle"
-                              placeholder={t("Checkout.delivery.lastName")}
-                              border=".5px solid"
-                              borderColor="ui.greyBorder"
-                              borderRadius="4px"
-                              type="text"
-                              h="42px"
-                            />
-                            <CustomAsterix
-                              fieldId="order.billing_address.last_name"
-                              zIndex={0}
-                            /> 
-                          </Field>
-                        </Flex>
-
-                        <Field
-                          required
-                          invalid={!!errors.order?.billing_address?.address}
-                          errorText={errors.order?.billing_address?.address?.message}
-                        >
-                          <InputGroup
-                            endElement={<FiSearch />}
-                            w="full"
-                          >
-                            <Input
-                              id="billing_address.address"
-                              {...register("order.billing_address.address", {
-                                required: t("Checkout.addressRequired")
-                              })}
-                              variant="subtle"
-                              placeholder={t("Checkout.delivery.address")}
-                              type="text"
-                              h="42px"
-                              border=".5px solid"
-                              borderColor="ui.greyBorder"
-                              borderRadius="4px"
-                            
-                            />
-                          </InputGroup>
+                          <Select.HiddenSelect />
                           <CustomAsterix
-                            fieldId="order.billing_address.address"
-                            zIndex={0}
+                            fieldId="order.billing_address.country"
+                            zIndex={1}
                           />
-                        </Field>
-
-                        { suite ? (
-                          <Field
-                            invalid={!!errors.order?.billing_address?.additional}
-                            errorText={errors.order?.billing_address?.additional?.message}
-                            w="100%"
-                          >
-                            <Input
-                              id="billing_address.additional"
-                              {...register("order.billing_address.additional")}
-                              variant="subtle"
-                              placeholder={t("Checkout.delivery.suite")}
-                              border=".5px solid"
+                          <Select.Control>
+                            <Select.Trigger
+                              bg="white"
                               borderColor="ui.greyBorder"
-                              borderRadius="4px"
-                              type="text"
-                              h="42px"
-                            />
-                          </Field>
-                        ) : (
-                          <Button
-                            variant="plain"
-                            w="auto"
-                            h="24px"
-                            gapX="2px"
-                            paddingInline="4px"
-                            fontWeight="300"
-                            onClick={() =>  setSuite(true)}
-                          >
-                            <Box p="7px">
-                              <Image src="/assets/icons/add.svg" boxSize="10px"/>
-                            </Box>
-                            {t("Checkout.delivery.addSuite")}
-                          </Button>
-                        )}
+                            >
+                              <Select.ValueText
+                                placeholder={t("Checkout.delivery.country")}
+                              />
+                            </Select.Trigger>
+                            <Select.IndicatorGroup>
+                              <Select.Indicator />
+                            </Select.IndicatorGroup>
+                          </Select.Control>
+                          <Portal>
+                            <Select.Positioner>
+                              <Select.Content>
+                                {countryOptions.map((country) => (
+                                  <Select.Item item={country} key={country.value}>
+                                    {country.label}
+                                    <Select.ItemIndicator />
+                                  </Select.Item>
+                                ))}
+                              </Select.Content>
+                            </Select.Positioner>
+                          </Portal>
+                        </Select.Root>
+                      )}
+                    />
+                  </Field>
 
-                        <Flex
-                          w="100%"
-                          direction={["column", "column", "row", "row"]}
-                          gap="8px"
-                        >
-                          <Field
-                            required
-                            invalid={!!errors.order?.billing_address?.postal_code}
-                            errorText={errors.order?.billing_address?.postal_code?.message}
-                            w="100%"
-                          >
-                            <Input
-                              id="billing_address.postal_code"
-                              {...register("order.billing_address.postal_code", {
-                                required: t("Checkout.postalCodeRequired")
-                              })}
-                              variant="subtle"
-                              placeholder={t("Checkout.delivery.postalCode")}
-                              border=".5px solid"
-                              borderColor="ui.greyBorder"
-                              borderRadius="4px"
-                              type="text"
-                              h="42px"
-                            />
-                            <CustomAsterix
-                              fieldId="order.billing_address.postal_code"
-                              zIndex={0}
-                            />
-                          </Field>
-                          <Field
-                            required
-                            invalid={!!errors.order?.billing_address?.city}
-                            errorText={errors.order?.billing_address?.city?.message}
-                            w="100%"
-                          >
-                            <Input
-                              id="billing_address.city"
-                              {...register("order.billing_address.city", {
-                                required: t("Checkout.cityRequired")
-                              })}
-                              variant="subtle"
-                              placeholder={t("Checkout.delivery.city")}
-                              border=".5px solid"
-                              borderColor="ui.greyBorder"
-                              borderRadius="4px"
-                              type="text"
-                              h="42px"
-                            />
-                            <CustomAsterix
-                              fieldId="order.billing_address.city"
-                              zIndex={0}
-                            />
-                          </Field>
-                        </Flex>
+                  <Flex
+                    w="100%"
+                    direction={["column", "column", "row", "row"]}
+                    gap="8px"
+                  >
+                    <Field
+                      required
+                      invalid={!!errors.order?.billing_address?.first_name}
+                      errorText={errors.order?.billing_address?.first_name?.message}
+                      w="100%"
+                    >
+                      <Input
+                        id="billing_address.first_name"
+                        {...register("order.billing_address.first_name", {
+                          required: t("Checkout.firstNameRequired")
+                        })}
+                        variant="subtle"
+                        placeholder={t("Checkout.delivery.firstName")}
+                        border=".5px solid"
+                        borderColor="ui.greyBorder"
+                        borderRadius="4px"
+                        type="text"
+                        h="42px"
+                      />
+                      <CustomAsterix
+                        fieldId="order.billing_address.first_name"
+                        zIndex={0}
+                      />
+                    </Field>
+                    <Field
+                      invalid={!!errors.order?.billing_address?.last_name}
+                      errorText={errors.order?.billing_address?.last_name?.message}
+                      w="100%"
+                    >
+                      <Input
+                        id="billing_address.last_name"
+                        {...register("order.billing_address.last_name", {
+                          required: t("Checkout.lastNameRequired")
+                        })}
+                        variant="subtle"
+                        placeholder={t("Checkout.delivery.lastName")}
+                        border=".5px solid"
+                        borderColor="ui.greyBorder"
+                        borderRadius="4px"
+                        type="text"
+                        h="42px"
+                      />
+                      <CustomAsterix
+                        fieldId="order.billing_address.last_name"
+                        zIndex={0}
+                      />
+                    </Field>
+                  </Flex>
 
-                        <Field
-                          required
-                          invalid={!!errors.order?.billing_address?.phone}
-                          errorText={errors.order?.billing_address?.phone?.message}
-                          w="100%"
-                        >
-                          <Input
-                            id="billing_address.phone"
-                            {...register("order.billing_address.phone", {
-                              required: t("Checkout.phoneRequired")
-                            })}
-                            variant="subtle"
-                            placeholder={t("Checkout.delivery.phone")}
-                            border=".5px solid"
-                            borderColor="ui.greyBorder"
-                            borderRadius="4px"
-                            type="text"
-                            h="42px"
-                          />
-                          <CustomAsterix
-                            fieldId="order.billing_address.phone"
-                            zIndex={0}
-                          />
-                        </Field>
+                  <Field
+                    required
+                    invalid={!!errors.order?.billing_address?.address}
+                    errorText={errors.order?.billing_address?.address?.message}
+                  >
+                    <InputGroup
+                      endElement={<FiSearch />}
+                      w="full"
+                    >
+                      <Input
+                        id="billing_address.address"
+                        {...register("order.billing_address.address", {
+                          required: t("Checkout.addressRequired")
+                        })}
+                        variant="subtle"
+                        placeholder={t("Checkout.delivery.address")}
+                        type="text"
+                        h="42px"
+                        border=".5px solid"
+                        borderColor="ui.greyBorder"
+                        borderRadius="4px"
 
-                      </VStack>
-                    }
+                      />
+                    </InputGroup>
+                    <CustomAsterix
+                      fieldId="order.billing_address.address"
+                      zIndex={0}
+                    />
+                  </Field>
+
+                  {suite ? (
+                    <Field
+                      invalid={!!errors.order?.billing_address?.additional}
+                      errorText={errors.order?.billing_address?.additional?.message}
+                      w="100%"
+                    >
+                      <Input
+                        id="billing_address.additional"
+                        {...register("order.billing_address.additional")}
+                        variant="subtle"
+                        placeholder={t("Checkout.delivery.suite")}
+                        border=".5px solid"
+                        borderColor="ui.greyBorder"
+                        borderRadius="4px"
+                        type="text"
+                        h="42px"
+                      />
+                    </Field>
+                  ) : (
+                    <Button
+                      variant="plain"
+                      w="auto"
+                      h="24px"
+                      gapX="2px"
+                      paddingInline="4px"
+                      fontWeight="300"
+                      onClick={() => setSuite(true)}
+                    >
+                      <Box p="7px">
+                        <Image src="/assets/icons/add.svg" boxSize="10px" />
+                      </Box>
+                      {t("Checkout.delivery.addSuite")}
+                    </Button>
+                  )}
+
+                  <Flex
+                    w="100%"
+                    direction={["column", "column", "row", "row"]}
+                    gap="8px"
+                  >
+                    <Field
+                      required
+                      invalid={!!errors.order?.billing_address?.postal_code}
+                      errorText={errors.order?.billing_address?.postal_code?.message}
+                      w="100%"
+                    >
+                      <Input
+                        id="billing_address.postal_code"
+                        {...register("order.billing_address.postal_code", {
+                          required: t("Checkout.postalCodeRequired")
+                        })}
+                        variant="subtle"
+                        placeholder={t("Checkout.delivery.postalCode")}
+                        border=".5px solid"
+                        borderColor="ui.greyBorder"
+                        borderRadius="4px"
+                        type="text"
+                        h="42px"
+                      />
+                      <CustomAsterix
+                        fieldId="order.billing_address.postal_code"
+                        zIndex={0}
+                      />
+                    </Field>
+                    <Field
+                      required
+                      invalid={!!errors.order?.billing_address?.city}
+                      errorText={errors.order?.billing_address?.city?.message}
+                      w="100%"
+                    >
+                      <Input
+                        id="billing_address.city"
+                        {...register("order.billing_address.city", {
+                          required: t("Checkout.cityRequired")
+                        })}
+                        variant="subtle"
+                        placeholder={t("Checkout.delivery.city")}
+                        border=".5px solid"
+                        borderColor="ui.greyBorder"
+                        borderRadius="4px"
+                        type="text"
+                        h="42px"
+                      />
+                      <CustomAsterix
+                        fieldId="order.billing_address.city"
+                        zIndex={0}
+                      />
+                    </Field>
+                  </Flex>
+
+                  <Field
+                    required
+                    invalid={!!errors.order?.billing_address?.phone}
+                    errorText={errors.order?.billing_address?.phone?.message}
+                    w="100%"
+                  >
+                    <Input
+                      id="billing_address.phone"
+                      {...register("order.billing_address.phone", {
+                        required: t("Checkout.phoneRequired")
+                      })}
+                      variant="subtle"
+                      placeholder={t("Checkout.delivery.phone")}
+                      border=".5px solid"
+                      borderColor="ui.greyBorder"
+                      borderRadius="4px"
+                      type="text"
+                      h="42px"
+                    />
+                    <CustomAsterix
+                      fieldId="order.billing_address.phone"
+                      zIndex={0}
+                    />
+                  </Field>
+
+                </VStack>
+              }
 
             </VStack>
             <VStack
@@ -999,7 +991,7 @@ function Checkout() {
               >
                 {t("Checkout.orderSummary.title")}
               </Text>
-              { items.map((item: OrderBasketItem_Output, index) => (
+              {items.map((item: OrderBasketItem_Output, index) => (
                 <Flex
                   w="full"
                   key={index}
@@ -1017,7 +1009,7 @@ function Checkout() {
                     alignItems="flex-start"
                     justifyContent="space-between"
                   >
-                    <VStack 
+                    <VStack
                       alignItems="flex-start"
                       gap={0}
                     >
@@ -1026,14 +1018,14 @@ function Checkout() {
                         {item.data[titleKey]}
                       </Text>
                       {item.data.type === 'product' && (
-                        <Text 
+                        <Text
                           mt={["8px", "8px", "16px", "16px"]}
                         >
                           {item.data[descriptionKey]}
                         </Text>
                       )}
                       <Box mt={["8px", "8px", "16px", "16px"]}>
-                        {item.data.type === "product" && item.data.size && (  
+                        {item.data.type === "product" && item.data.size && (
                           <Text>
                             {t("Checkout.size")}: {item.data.size}
                           </Text>
@@ -1075,7 +1067,7 @@ function Checkout() {
                 >
                   <Box>{t("Checkout.orderSummary.shipping")}</Box>
                   <Box>{shippingMethod === "ups_express"
-                    ? ( 
+                    ? (
                       currency.symbol + getDeliveryCost(shippingMethod)
                     ) : (
                       <>{t("Checkout.orderSummary.freeDelivery")}</>
@@ -1088,13 +1080,13 @@ function Checkout() {
                   fontSize="18px"
                 >
                   <Box>{t("Checkout.orderSummary.total")}</Box>
-                  <Flex 
+                  <Flex
                     alignItems="center"
                     gap="6px"
                   >
                     <Mark
                       color="#BBBBBB"
-                      fontSize={["12px", "12px", "14px", "14px", ]}
+                      fontSize={["12px", "12px", "14px", "14px",]}
                       textTransform="uppercase"
                     >
                       {currency.code}
