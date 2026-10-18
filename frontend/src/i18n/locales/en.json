@@ -80,7 +80,7 @@
     "logoSymbol": {
       "1": "The image of the logo takes me back to the beginning of my story - to my home.",
       "2": "It is in the symbol of the seashell that the image of home, the calm sea, the morning sunrise or evening sunset, shells on the beach and stormy waves lives.",
-      "3": "Moreover, it is not in vain that it resembles the golden ratio, which speaks of the perfection of form, while the brand broadcasts the idea that every woman is perfect due to her own uniqueness. The soft combination of the idea of ​​the sea - a symbol of birth and the beginning of life that a woman gives, the image of the mother (which is a key figure in the life of the brand), the ideal criterion of the golden ratio and the manifestation of the beauty of every woman in a single symbol of a shell with a pearl carries deep meanings."
+      "3": "Moreover, it is not in vain that the logo resembles the golden ratio, which speaks of the perfection of form, while the brand broadcasts the idea that every woman is perfect due to her own uniqueness. The soft combination of the idea of ​​the sea - a symbol of birth and the beginning of life that a woman gives, the image of the mother (which is a key figure in the life of the brand), the ideal criterion of the golden ratio and the manifestation of the beauty of every woman in a single symbol of a shell with a pearl carries deep meanings."
     },
     "manifest": "SHTOR is a manifesto of a woman's authenticity",
     "values": {
@@ -290,6 +290,11 @@
       "phone": "Phone"
     },
     "shippingMethod": "Shipping method",
+    "paymentMethod": {
+      "title": "Payment",
+      "full": "Pay in full",
+      "installment": "Pay in installments with monobank"
+    },
     "billingAddress": {
       "title": "Billing address",
       "same": "Same as shipping address",
